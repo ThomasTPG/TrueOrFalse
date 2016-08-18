@@ -1,0 +1,9 @@
+Raccoons are cute#true
+Owls are cute#true
+Dogs are cute#false
+Cows are cute#true
+Goats are cute#true
+Mice are cute#false
+Sloths are cute#true
+Insects are cute#false
+Gorillas are cute#false
