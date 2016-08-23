@@ -68,6 +68,6 @@ public class GameOver extends AppCompatActivity {
     }
 
     private void showNumQuestions(int num) {
-        mNumberofQuestions.setText("Numnber of Questions: " + num);
+        mNumberofQuestions.setText("Number of Questions: " + num);
     }
 }
