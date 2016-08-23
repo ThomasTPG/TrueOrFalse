@@ -116,7 +116,7 @@ public class QuestionDisplayer extends Activity {
                     mTrueButton.setEnabled(true);
                     mFalseButton.setEnabled(true);
                 }
-            }, 3000);
+            }, 2000);
 
         } else {
             //Answer is wrong
