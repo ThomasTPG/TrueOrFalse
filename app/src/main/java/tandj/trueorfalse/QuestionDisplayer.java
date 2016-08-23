@@ -260,6 +260,8 @@ public class QuestionDisplayer extends Activity {
             mScore = mScore - mPointsToGamble;
         }
         setScoreDisplays();
+
+        FileTools.writeData(FactFileNames.fileNames[FactFileNames.MATHS_FACTS], mScore);
     }
 
     private int currentScore(){

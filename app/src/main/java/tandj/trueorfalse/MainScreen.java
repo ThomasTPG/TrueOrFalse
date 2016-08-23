@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.File;
+
 /**
  * Created by Thomas on 17/08/2016.
  * Class which is displayed on start up
@@ -16,6 +18,11 @@ public class MainScreen extends Activity{
      * Button which starts the true or false game
      */
     private Button mStartButton;
+
+    /**
+     * File tools
+     */
+    private FileTools mFileTools;
 
     /**
      * Method called when the activity is created
@@ -37,6 +44,23 @@ public class MainScreen extends Activity{
         mStartButton = (Button) findViewById(R.id.start);
 
         setStartButton();
+
+        setUpFileTools();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mStartButton.setText("Start, score = " + mFileTools.getScore(FactFileNames.fileNames[FactFileNames.MATHS_FACTS]));
+
+    }
+
+    private void setUpFileTools()
+    {
+        String scoreDataFilePath = getFilesDir() + "/" + FileTools.scoreDataFileName;
+        mFileTools.setScoreFile(new File(scoreDataFilePath));
+        mFileTools.init();
+        mStartButton.setText("Start, score = " + mFileTools.getScore(FactFileNames.fileNames[FactFileNames.MATHS_FACTS]));
     }
 
     /**
