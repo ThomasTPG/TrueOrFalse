@@ -1,6 +1,7 @@
 package tandj.trueorfalse;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -123,13 +124,13 @@ public class QuestionDisplayer extends Activity {
         mScoreDisplay  = (TextView) findViewById(R.id.score_displayer);
         mScoreToGambleDisplay = (TextView) findViewById(R.id.score_to_gamble);
         mGamblingBar   = (SeekBar)  findViewById(R.id.seekBar);
-        mGamblingBar.setProgress(0);
+        mGamblingBar.setProgress(1);
         mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                mPointsToGamble = (int) (progress * mScore / 100);
+                mPointsToGamble = (int) ((progress * (mScore - 1) / 100)+1);
                 mScoreToGambleDisplay.setText("Gamble: " + mPointsToGamble);
             }
 
@@ -190,6 +191,11 @@ public class QuestionDisplayer extends Activity {
             },2000);
             calculateNewScore(false);
         }
+        if (currentScore() == 0)
+        {
+            Intent returnToStart = new Intent(QuestionDisplayer.this, MainScreen.class);
+            startActivity(returnToStart);
+        }
     }
 
     /**
@@ -236,5 +242,9 @@ public class QuestionDisplayer extends Activity {
             mScore = mScore - mPointsToGamble;
         }
         setScoreDisplays();
+    }
+
+    private int currentScore(){
+        return mScore;
     }
 }

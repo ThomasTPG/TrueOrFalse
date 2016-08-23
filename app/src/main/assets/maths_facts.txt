@@ -12,11 +12,11 @@
 11 is even#false
 13 is even#false
 15 is even#false
-16 is even#false
+16 is even#true
 17 is even#false
-18 is even#false
+18 is even#true
 19 is even#false
-20 is even#false
+20 is even#true
 14 is greater than 3#true
 10 is greater than 6#true
 11 is greater than 10#true
