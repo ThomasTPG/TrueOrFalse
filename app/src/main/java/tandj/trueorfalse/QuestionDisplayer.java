@@ -2,11 +2,13 @@ package tandj.trueorfalse;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Thomas on 17/08/2016.
@@ -39,11 +41,13 @@ public class QuestionDisplayer extends Activity{
      */
     private Button mTrueButton;
 
+    private Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mHashMapTools = new HashMapTools(FactFiles.CUTE_ANIMAL_FACTS, this);
+        mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);
 
         setUpDisplay();
 
@@ -62,6 +66,7 @@ public class QuestionDisplayer extends Activity{
         mFalseButton   = (Button)   findViewById(R.id.false_button);
 
         setUpButtons();
+        setUpCorrectDisplay();
     }
 
     /**
@@ -78,14 +83,25 @@ public class QuestionDisplayer extends Activity{
      */
     private void onButtonClicked(Boolean answer)
     {
+        setUpCorrectDisplay();
         if (answer == mHashMapTools.getTrueOrFalse())
         {
             //Answer is correct, set a new question
-            setFact();
+            TextView correct = (TextView)findViewById(R.id.correct_display);
+            correct.setVisibility(View.VISIBLE);
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    setFact();
+                    setUpCorrectDisplay();
+                }
+            }, 3000);
+
         }
         else
         {
             //Answer is wrong
+            TextView incorrect = (TextView)findViewById(R.id.incorrect_display);
+            incorrect.setVisibility(View.VISIBLE);
         }
     }
 
@@ -108,5 +124,13 @@ public class QuestionDisplayer extends Activity{
             }
         });
 
+    }
+
+    private void setUpCorrectDisplay()
+    {
+        TextView correct = (TextView)findViewById(R.id.correct_display);
+        correct.setVisibility(View.GONE);
+        TextView incorrect = (TextView)findViewById(R.id.incorrect_display);
+        incorrect.setVisibility(View.GONE);
     }
 }

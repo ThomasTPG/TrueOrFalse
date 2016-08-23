@@ -10,4 +10,5 @@ public class FactFiles
      * File name for facts relating to cuteness of animals
      */
     static final String CUTE_ANIMAL_FACTS = "cute_animal_facts.txt";
+    static final String MATHS_FACTS = "maths_facts.txt";
 }
