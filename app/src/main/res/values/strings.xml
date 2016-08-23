@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TrueOrFalse</string>
+    <string name="correct">Correct!</string>
+    <string name="incorrect">"Incorrect :(</string>
 </resources>
