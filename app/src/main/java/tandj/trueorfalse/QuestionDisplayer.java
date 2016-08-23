@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -41,13 +43,59 @@ public class QuestionDisplayer extends Activity{
      */
     private Button mTrueButton;
 
+    /**
+     * Handler to provide timing to the game
+     */
     private Handler mHandler = new Handler();
+
+    /**
+     * Score
+     */
+    private int mScore;
+
+    /**
+     * Number of rounds
+     */
+    private int mNumberOfQuestions;
+
+    /**
+     * Maximum number of questions to be asked
+     */
+    private int MAX_QUESTIONS;
+
+    /**
+     * Seek bar to set how many points you want to gamble
+     */
+    private SeekBar mGamblingBar;
+
+    /**
+     * Text view showing current score
+     */
+    private TextView mScoreDisplay;
+
+    /**
+     * Text view showing score to gamble
+     */
+    private TextView mScoreToGambleDisplay;
+
+    /**
+     * LinearLayout containg fact and buttons
+     */
+    private LinearLayout mButtonAndFactDisplayer;
+
+    /**
+     * Integer showing points we're willing to gamble
+     */
+    private int mPointsToGamble;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);
+
+        mScore = getResources().getInteger(R.integer.starting_score);
+        MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
 
         setUpDisplay();
 
@@ -61,12 +109,37 @@ public class QuestionDisplayer extends Activity{
     {
         setContentView(R.layout.question_displayer_layout);
 
+        mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
         mTrueButton    = (Button)   findViewById(R.id.true_button);
         mFalseButton   = (Button)   findViewById(R.id.false_button);
+        mScoreDisplay  = (TextView) findViewById(R.id.score_displayer);
+        mScoreToGambleDisplay = (TextView) findViewById(R.id.score_to_gamble);
+        mGamblingBar   = (SeekBar)  findViewById(R.id.seekBar);
+        mGamblingBar.setProgress(0);
+        mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
+                mPointsToGamble = (int) (progress * mScore / 100);
+                mScoreToGambleDisplay.setText("Gamble: " + mPointsToGamble);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         setUpButtons();
         setUpCorrectDisplay();
+        setScoreDisplays();
     }
 
     /**
@@ -87,21 +160,36 @@ public class QuestionDisplayer extends Activity{
         if (answer == mHashMapTools.getTrueOrFalse())
         {
             //Answer is correct, set a new question
-            TextView correct = (TextView)findViewById(R.id.correct_display);
+            final TextView correct = (TextView)findViewById(R.id.correct_display);
             correct.setVisibility(View.VISIBLE);
+            mButtonAndFactDisplayer.setVisibility(View.GONE);
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     setFact();
                     setUpCorrectDisplay();
+                    correct.setVisibility(View.GONE);
+                    mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
                 }
             }, 3000);
+            calculateNewScore(true);
 
         }
         else
         {
             //Answer is wrong
-            TextView incorrect = (TextView)findViewById(R.id.incorrect_display);
+            final TextView incorrect = (TextView)findViewById(R.id.incorrect_display);
             incorrect.setVisibility(View.VISIBLE);
+            mButtonAndFactDisplayer.setVisibility(View.GONE);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setFact();
+                    setUpCorrectDisplay();
+                    incorrect.setVisibility(View.GONE);
+                    mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                }
+            },3000);
+            calculateNewScore(false);
         }
     }
 
@@ -126,11 +214,40 @@ public class QuestionDisplayer extends Activity{
 
     }
 
+    /**
+     * Sets up the correct frame to show
+     */
     private void setUpCorrectDisplay()
     {
         TextView correct = (TextView)findViewById(R.id.correct_display);
         correct.setVisibility(View.GONE);
         TextView incorrect = (TextView)findViewById(R.id.incorrect_display);
         incorrect.setVisibility(View.GONE);
+    }
+
+    /**
+     * Updates the score display and the seek bar
+     */
+    private void setScoreDisplays()
+    {
+        mGamblingBar.setProgress(0);
+        mScoreDisplay.setText("Score = " +mScore);
+    }
+
+    /**
+     * Calculates the new score once an answer is given
+     * @param correct If the answer is correct or now
+     */
+    private void calculateNewScore(boolean correct)
+    {
+        if (correct)
+        {
+            mScore = mScore + mPointsToGamble;
+        }
+        else
+        {
+            mScore = mScore - mPointsToGamble;
+        }
+        setScoreDisplays();
     }
 }
