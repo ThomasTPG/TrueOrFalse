@@ -1,17 +1,13 @@
 package tandj.trueorfalse;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -46,17 +42,54 @@ public class QuestionDisplayer extends Activity {
      */
     private Button mTrueButton;
 
-    //Used to implement pause
-    private Handler mHandler = new Handler();
-
     //Text views that display the correct & incorrect messages
     private TextView mCorrect;
     private TextView mIncorrect;
+
     /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     * Handler to provide timing to the game
      */
-    private GoogleApiClient client;
+    private Handler mHandler = new Handler();
+
+    /**
+     * Score
+     */
+    private int mScore;
+
+    /**
+     * Number of rounds
+     */
+    private int mNumberOfQuestions;
+
+    /**
+     * Maximum number of questions to be asked
+     */
+    private int MAX_QUESTIONS;
+
+    /**
+     * Seek bar to set how many points you want to gamble
+     */
+    private SeekBar mGamblingBar;
+
+    /**
+     * Text view showing current score
+     */
+    private TextView mScoreDisplay;
+
+    /**
+     * Text view showing score to gamble
+     */
+    private TextView mScoreToGambleDisplay;
+
+    /**
+     * LinearLayout containg fact and buttons
+     */
+    private LinearLayout mButtonAndFactDisplayer;
+
+    /**
+     * Integer showing points we're willing to gamble
+     */
+    private int mPointsToGamble;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +97,12 @@ public class QuestionDisplayer extends Activity {
 
         mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);
 
+        mScore = getResources().getInteger(R.integer.starting_score);
+        MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
+
         setUpDisplay();
 
         setFact();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
@@ -78,16 +111,41 @@ public class QuestionDisplayer extends Activity {
     private void setUpDisplay() {
         setContentView(R.layout.question_displayer_layout);
 
+        mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
-        mTrueButton = (Button) findViewById(R.id.true_button);
-        mFalseButton = (Button) findViewById(R.id.false_button);
 
         mCorrect = (TextView) findViewById(R.id.correct_display);
         mIncorrect = (TextView) findViewById(R.id.incorrect_display);
+        mIncorrect.setVisibility(View.GONE);
+        mCorrect.setVisibility(View.GONE);
+        mTrueButton    = (Button)   findViewById(R.id.true_button);
+        mFalseButton   = (Button)   findViewById(R.id.false_button);
+        mScoreDisplay  = (TextView) findViewById(R.id.score_displayer);
+        mScoreToGambleDisplay = (TextView) findViewById(R.id.score_to_gamble);
+        mGamblingBar   = (SeekBar)  findViewById(R.id.seekBar);
+        mGamblingBar.setProgress(0);
+        mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
+                mPointsToGamble = (int) (progress * mScore / 100);
+                mScoreToGambleDisplay.setText("Gamble: " + mPointsToGamble);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         setUpButtons();
-        setUpCorrectDisplay();
+        setScoreDisplays();
     }
 
     /**
@@ -103,24 +161,34 @@ public class QuestionDisplayer extends Activity {
      * @param answer The button that has been pressed
      */
     private void onButtonClicked(Boolean answer) {
-        setUpCorrectDisplay();
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
+
             mCorrect.setVisibility(View.VISIBLE);
-            mTrueButton.setEnabled(false);
-            mFalseButton.setEnabled(false);
+            mButtonAndFactDisplayer.setVisibility(View.GONE);
+
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     setFact();
-                    setUpCorrectDisplay();
-                    mTrueButton.setEnabled(true);
-                    mFalseButton.setEnabled(true);
+                    mCorrect.setVisibility(View.GONE);
+                    mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
                 }
             }, 2000);
+            calculateNewScore(true);
 
         } else {
             //Answer is wrong
             mIncorrect.setVisibility(View.VISIBLE);
+            mButtonAndFactDisplayer.setVisibility(View.GONE);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setFact();
+                    mIncorrect.setVisibility(View.GONE);
+                    mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                }
+            },2000);
+            calculateNewScore(false);
         }
     }
 
@@ -144,48 +212,29 @@ public class QuestionDisplayer extends Activity {
 
     }
 
-    private void setUpCorrectDisplay() {
-        mCorrect.setVisibility(View.GONE);
-        mIncorrect.setVisibility(View.GONE);
+    /**
+     * Updates the score display and the seek bar
+     */
+    private void setScoreDisplays()
+    {
+        mGamblingBar.setProgress(0);
+        mScoreDisplay.setText("Score = " +mScore);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "QuestionDisplayer Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://tandj.trueorfalse/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "QuestionDisplayer Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://tandj.trueorfalse/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
+    /**
+     * Calculates the new score once an answer is given
+     * @param correct If the answer is correct or now
+     */
+    private void calculateNewScore(boolean correct)
+    {
+        if (correct)
+        {
+            mScore = mScore + mPointsToGamble;
+        }
+        else
+        {
+            mScore = mScore - mPointsToGamble;
+        }
+        setScoreDisplays();
     }
 }

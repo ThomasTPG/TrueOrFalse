@@ -1,0 +1,4 @@
+<resources>
+    <integer name="starting_score">10</integer>
+    <integer name="number_of_questions_per_round">10</integer>
+</resources>
