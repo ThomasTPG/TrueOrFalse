@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Thomas on 17/08/2016.
  * Class which displays the questions and allows the user to answer
  */
-public class QuestionDisplayer extends Activity{
+public class QuestionDisplayer extends Activity {
 
     /**
      * The hashmap containing all the facts
@@ -42,6 +41,10 @@ public class QuestionDisplayer extends Activity{
      * True button
      */
     private Button mTrueButton;
+
+    //Text views that display the correct & incorrect messages
+    private TextView mCorrect;
+    private TextView mIncorrect;
 
     /**
      * Handler to provide timing to the game
@@ -105,12 +108,16 @@ public class QuestionDisplayer extends Activity{
     /**
      * Sets up the display for the user
      */
-    private void setUpDisplay()
-    {
+    private void setUpDisplay() {
         setContentView(R.layout.question_displayer_layout);
 
         mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
+
+        mCorrect = (TextView) findViewById(R.id.correct_display);
+        mIncorrect = (TextView) findViewById(R.id.incorrect_display);
+        mIncorrect.setVisibility(View.GONE);
+        mCorrect.setVisibility(View.GONE);
         mTrueButton    = (Button)   findViewById(R.id.true_button);
         mFalseButton   = (Button)   findViewById(R.id.false_button);
         mScoreDisplay  = (TextView) findViewById(R.id.score_displayer);
@@ -138,57 +145,49 @@ public class QuestionDisplayer extends Activity{
         });
 
         setUpButtons();
-        setUpCorrectDisplay();
         setScoreDisplays();
     }
 
     /**
      * Fills the text view with a random fact from the hashmap
      */
-    private void setFact()
-    {
+    private void setFact() {
         mFactDisplayer.setText(mHashMapTools.getRandomItem());
     }
 
     /**
      * Method which deals with the result of a true or false button being pressed
+     *
      * @param answer The button that has been pressed
      */
-    private void onButtonClicked(Boolean answer)
-    {
-        setUpCorrectDisplay();
-        if (answer == mHashMapTools.getTrueOrFalse())
-        {
+    private void onButtonClicked(Boolean answer) {
+        if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
-            final TextView correct = (TextView)findViewById(R.id.correct_display);
-            correct.setVisibility(View.VISIBLE);
+
+            mCorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
+
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     setFact();
-                    setUpCorrectDisplay();
-                    correct.setVisibility(View.GONE);
+                    mCorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
                 }
-            }, 3000);
+            }, 2000);
             calculateNewScore(true);
 
-        }
-        else
-        {
+        } else {
             //Answer is wrong
-            final TextView incorrect = (TextView)findViewById(R.id.incorrect_display);
-            incorrect.setVisibility(View.VISIBLE);
+            mIncorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     setFact();
-                    setUpCorrectDisplay();
-                    incorrect.setVisibility(View.GONE);
+                    mIncorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
                 }
-            },3000);
+            },2000);
             calculateNewScore(false);
         }
     }
@@ -196,8 +195,7 @@ public class QuestionDisplayer extends Activity{
     /**
      * Sets the on click listeners for the true and false buttons
      */
-    private void setUpButtons()
-    {
+    private void setUpButtons() {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,17 +210,6 @@ public class QuestionDisplayer extends Activity{
             }
         });
 
-    }
-
-    /**
-     * Sets up the correct frame to show
-     */
-    private void setUpCorrectDisplay()
-    {
-        TextView correct = (TextView)findViewById(R.id.correct_display);
-        correct.setVisibility(View.GONE);
-        TextView incorrect = (TextView)findViewById(R.id.incorrect_display);
-        incorrect.setVisibility(View.GONE);
     }
 
     /**
