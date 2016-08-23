@@ -1,6 +1,7 @@
 package tandj.trueorfalse;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -190,6 +191,11 @@ public class QuestionDisplayer extends Activity {
             },2000);
             calculateNewScore(false);
         }
+        if (currentScore() == 0)
+        {
+            Intent returnToStart = new Intent(QuestionDisplayer.this, MainScreen.class);
+            startActivity(returnToStart);
+        }
     }
 
     /**
@@ -236,5 +242,9 @@ public class QuestionDisplayer extends Activity {
             mScore = mScore - mPointsToGamble;
         }
         setScoreDisplays();
+    }
+
+    private int currentScore(){
+        return mScore;
     }
 }
