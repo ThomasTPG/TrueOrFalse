@@ -124,13 +124,13 @@ public class QuestionDisplayer extends Activity {
         mScoreDisplay  = (TextView) findViewById(R.id.score_displayer);
         mScoreToGambleDisplay = (TextView) findViewById(R.id.score_to_gamble);
         mGamblingBar   = (SeekBar)  findViewById(R.id.seekBar);
-        mGamblingBar.setProgress(0);
+        mGamblingBar.setProgress(1);
         mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                mPointsToGamble = (int) (progress * mScore / 100);
+                mPointsToGamble = (int) ((progress * (mScore - 1) / 100)+1);
                 mScoreToGambleDisplay.setText("Gamble: " + mPointsToGamble);
             }
 
