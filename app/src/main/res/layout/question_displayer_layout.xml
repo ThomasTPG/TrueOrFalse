@@ -20,6 +20,13 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_width="94dp"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/question_num"
+                    android:layout_weight="0.5" />
+
+                <TextView
                     android:id="@+id/fact_displayer"
                     android:layout_weight="0.5"
                     android:textSize="40sp"

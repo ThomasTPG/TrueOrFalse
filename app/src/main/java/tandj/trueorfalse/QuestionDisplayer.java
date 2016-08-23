@@ -77,6 +77,9 @@ public class QuestionDisplayer extends Activity {
      */
     private TextView mScoreDisplay;
 
+    //Text view showing question number
+    private TextView mQuestionNumber;
+
     /**
      * Text view showing score to gamble
      */
@@ -114,7 +117,8 @@ public class QuestionDisplayer extends Activity {
 
         mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
-
+        mQuestionNumber = (TextView) findViewById(R.id.question_num);
+        mNumberOfQuestions = 0;
         mCorrect = (TextView) findViewById(R.id.correct_display);
         mIncorrect = (TextView) findViewById(R.id.incorrect_display);
         mIncorrect.setVisibility(View.GONE);
@@ -153,7 +157,10 @@ public class QuestionDisplayer extends Activity {
      * Fills the text view with a random fact from the hashmap
      */
     private void setFact() {
+
         mFactDisplayer.setText(mHashMapTools.getRandomItem());
+        mNumberOfQuestions++;
+        mQuestionNumber.setText("Question " + mNumberOfQuestions);
     }
 
     /**
@@ -193,9 +200,20 @@ public class QuestionDisplayer extends Activity {
         }
         if (currentScore() == 0)
         {
-            Intent returnToStart = new Intent(QuestionDisplayer.this, MainScreen.class);
-            startActivity(returnToStart);
+            Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
+            GameOver.putExtra("win",false);
+            GameOver.putExtra("score",currentScore());
+            GameOver.putExtra("numQuestions", mNumberOfQuestions);
+            startActivity(GameOver);
         }
+        if (mNumberOfQuestions == MAX_QUESTIONS) {
+            Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
+            GameOver.putExtra("win",true);
+            GameOver.putExtra("score",currentScore());
+            GameOver.putExtra("numQuestions", mNumberOfQuestions);
+            startActivity(GameOver);
+        }
+
     }
 
     /**
