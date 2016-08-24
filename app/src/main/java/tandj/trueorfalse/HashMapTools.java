@@ -82,4 +82,16 @@ public class HashMapTools {
         }
     }
 
+    public String recordFact(Boolean correct)
+    {
+        String fact = mItem;
+        String entry = "recordFact error";
+        if (correct) {
+            entry = fact + "#correct\n";
+        }
+        else {
+            entry = fact + "#incorrect\n";
+        }
+        return entry;
+    }
 }

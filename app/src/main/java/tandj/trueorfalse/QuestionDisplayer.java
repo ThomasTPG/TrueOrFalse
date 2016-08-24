@@ -95,6 +95,18 @@ public class QuestionDisplayer extends Activity {
      */
     private int mPointsToGamble;
 
+    //array to track the number of points after each round
+    private int[] mPointsTracker;
+
+    //array to track the questions asked and if the user was correct
+    private int[][] mQuestionTracker;
+
+    //private String[] mFactsList = new String[10];
+    private String mFactsList;
+
+    //was previous answer correct?
+    private Boolean mWasCorrect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +173,11 @@ public class QuestionDisplayer extends Activity {
         mFactDisplayer.setText(mHashMapTools.getRandomItem());
         mNumberOfQuestions++;
         mQuestionNumber.setText("Question " + mNumberOfQuestions);
+        if (mWasCorrect != null) {
+            mFactsList = mFactsList.concat(mHashMapTools.recordFact(mWasCorrect));
+        } else {
+            mFactsList = "";
+        }
     }
 
     /**
@@ -172,6 +189,7 @@ public class QuestionDisplayer extends Activity {
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
 
+            mWasCorrect = true;
             mCorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
 
@@ -186,6 +204,7 @@ public class QuestionDisplayer extends Activity {
 
         } else {
             //Answer is wrong
+            mWasCorrect = false;
             mIncorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
             mHandler.postDelayed(new Runnable() {
@@ -198,19 +217,18 @@ public class QuestionDisplayer extends Activity {
             },2000);
             calculateNewScore(false);
         }
+        Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
+        GameOver.putExtra("score",currentScore());
+        GameOver.putExtra("numQuestions", mNumberOfQuestions);
+        GameOver.putExtra("pointTracker", mPointsTracker);
+        GameOver.putExtra("factsList", mFactsList);
         if (currentScore() == 0)
         {
-            Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
             GameOver.putExtra("win",false);
-            GameOver.putExtra("score",currentScore());
-            GameOver.putExtra("numQuestions", mNumberOfQuestions);
             startActivity(GameOver);
         }
         if (mNumberOfQuestions == MAX_QUESTIONS) {
-            Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
             GameOver.putExtra("win",true);
-            GameOver.putExtra("score",currentScore());
-            GameOver.putExtra("numQuestions", mNumberOfQuestions);
             startActivity(GameOver);
         }
 
@@ -260,7 +278,7 @@ public class QuestionDisplayer extends Activity {
             mScore = mScore - mPointsToGamble;
         }
         setScoreDisplays();
-
+        //mPointsTracker[mNumberOfQuestions] = mScore;
         FileTools.writeData(FactFileNames.fileNames[FactFileNames.MATHS_FACTS], mScore);
     }
 

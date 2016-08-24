@@ -14,6 +14,7 @@ public class GameOver extends AppCompatActivity {
     private TextView mUnlucky;
     private TextView mScore;
     private TextView mNumberofQuestions;
+    private TextView mFactsList;
 
 
 
@@ -37,11 +38,17 @@ public class GameOver extends AppCompatActivity {
         boolean win = b.getBoolean("win");
         int score = b.getInt("score");
         int numQuestions = b.getInt("numQuestions");
+        int[] pointsTracker = b.getIntArray("pointsTracker");
+        String factsList = b.getString("factsList");
 
         setUpDisplay();
         WinOrLose(win);
         showScore(score);
         showNumQuestions(numQuestions);
+        if (factsList != null) {
+            mFactsList.setText(factsList);
+        }
+
     }
 
     private void setUpDisplay() {
@@ -49,6 +56,7 @@ public class GameOver extends AppCompatActivity {
         mUnlucky = (TextView) findViewById(R.id.unlucky);
         mScore = (TextView) findViewById(R.id.scoretext);
         mNumberofQuestions = (TextView) findViewById(R.id.numquestionstext);
+        mFactsList = (TextView) findViewById(R.id.summaryQuestions);
 
 
 
