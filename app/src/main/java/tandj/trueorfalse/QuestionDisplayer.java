@@ -195,6 +195,8 @@ public class QuestionDisplayer extends Activity {
      * @param answer The button that has been pressed
      */
     private void onButtonClicked(Boolean answer) {
+        String answerString = String.valueOf(answer);
+        mFactsList = mFactsList.concat(answerString+"#");
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
 
@@ -236,7 +238,7 @@ public class QuestionDisplayer extends Activity {
             GameOver.putExtra("win",false);
             startActivity(GameOver);
         }
-        if (mNumberOfQuestions == MAX_QUESTIONS) {
+        if (mNumberOfQuestions >= MAX_QUESTIONS) {
             GameOver.putExtra("win",true);
             startActivity(GameOver);
         }
