@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -111,7 +113,14 @@ public class QuestionDisplayer extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);
+        Bundle b = getIntent().getExtras();
+        String theme = b.getString("theme");
+        Toast.makeText(QuestionDisplayer.this,
+                "On Button Click : " +
+                        "\n" + theme,
+                Toast.LENGTH_LONG).show();
+        if (theme.equals("Maths Facts")) {mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);}
+        if (theme.equals("Animal Facts")) {mHashMapTools = new HashMapTools(FactFiles.CUTE_ANIMAL_FACTS, this);}
 
         mScore = getResources().getInteger(R.integer.starting_score);
         MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);

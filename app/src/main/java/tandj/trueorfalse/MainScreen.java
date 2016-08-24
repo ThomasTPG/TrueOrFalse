@@ -71,7 +71,8 @@ public class MainScreen extends Activity{
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent start = new Intent(MainScreen.this, QuestionDisplayer.class);
+                //Intent start = new Intent(MainScreen.this, QuestionDisplayer.class);
+                Intent start = new Intent(MainScreen.this, ThemeSelect.class);
                 startActivity(start);
             }
         });
