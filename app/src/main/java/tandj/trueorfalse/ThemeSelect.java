@@ -17,6 +17,7 @@ import android.widget.Toast;
 public class ThemeSelect extends AppCompatActivity {
 
     private Spinner mThemeSpinner;
+    private Spinner mDifficultySpinner;
     private Button  mGoButton;
 
     @Override
@@ -39,14 +40,9 @@ public class ThemeSelect extends AppCompatActivity {
     }
 
     private void setUpDisplay() {
-        mThemeSpinner = (Spinner) findViewById(R.id.theme_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.planets_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        mThemeSpinner.setAdapter(adapter);
+
+        setUpThemeSpinner();
+        setUpDifficultySpinner();
 
         mGoButton = (Button) findViewById(R.id.go);
 
@@ -77,5 +73,27 @@ public class ThemeSelect extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void setUpThemeSpinner() {
+        mThemeSpinner = (Spinner) findViewById(R.id.theme_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.easy_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        mThemeSpinner.setAdapter(adapter);
+    }
+
+    private void setUpDifficultySpinner() {
+        mDifficultySpinner = (Spinner) findViewById(R.id.difficulty_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.difficulty_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        mDifficultySpinner.setAdapter(adapter);
     }
 }
