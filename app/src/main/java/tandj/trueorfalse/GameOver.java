@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import android.widget.Toast;
+
+import java.util.HashMap;
+
 public class GameOver extends AppCompatActivity {
 
     private TextView mCongrats;
@@ -21,6 +25,8 @@ public class GameOver extends AppCompatActivity {
     private Button   mGoHome;
     private Button   mPlayAgain;
 
+    private HashMap<String, Boolean> mHashMap;
+    private HashMapTools mHashMapTools;
 
 
 
@@ -45,6 +51,10 @@ public class GameOver extends AppCompatActivity {
         int numQuestions = b.getInt("numQuestions");
         int[] pointsTracker = b.getIntArray("pointsTracker");
         String factsList = b.getString("factsList");
+
+        mHashMapTools = new HashMapTools(factsList, this);
+        String test  = mHashMapTools.getRandomItem();
+        Toast.makeText(GameOver.this,"test=" + test,Toast.LENGTH_LONG).show();
 
         setUpDisplay();
         setUpContent();

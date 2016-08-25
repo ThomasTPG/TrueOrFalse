@@ -126,6 +126,7 @@ public class QuestionDisplayer extends Activity {
 
         mScore = getResources().getInteger(R.integer.starting_score);
         MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
+        mPointsTracker = new int[MAX_QUESTIONS];
 
         setUpDisplay();
 
@@ -184,6 +185,7 @@ public class QuestionDisplayer extends Activity {
      */
     private void setFact() {
 
+        recordPoints();
         mFactDisplayer.setText(mHashMapTools.getRandomItem());
         mNumberOfQuestions++;
         mQuestionNumber.setText("Question " + mNumberOfQuestions);
@@ -308,5 +310,9 @@ public class QuestionDisplayer extends Activity {
                 startActivity(start);
             }
         });
+    }
+
+    private void recordPoints() {
+        mPointsTracker[mNumberOfQuestions] = mScore;
     }
 }

@@ -106,4 +106,10 @@ public class HashMapTools {
         }
         return entry;
     }
+
+    public String getSpecificItem(int itemNumber)
+    {
+        mItem = mListOfValues.get(itemNumber);
+        return mItem;
+    }
 }
