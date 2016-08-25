@@ -8,96 +8,69 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class GameOver extends AppCompatActivity {
 
-    private TextView mCongrats;
-    private TextView mUnlucky;
+    private TextView mResults;
     private TextView mScore;
     private TextView mNumberofQuestions;
-    private TextView mFactsList;
-
+    private LinearLayout mFactDisplay;
     private Button   mGoHome;
     private Button   mPlayAgain;
-
-    private HashMap<String, Boolean> mHashMap;
-    private HashMapTools mHashMapTools;
-
-
+    private Bundle results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_over);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.content_game_over);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        Bundle b = getIntent().getExtras();
-        boolean win = b.getBoolean("win");
-        int score = b.getInt("score");
-        int numQuestions = b.getInt("numQuestions");
-        int[] pointsTracker = b.getIntArray("pointsTracker");
-        String factsList = b.getString("factsList");
-
-        //mHashMapTools = new HashMapTools(factsList, this);
-        //String test  = mHashMapTools.getRandomItem();
-        //Toast.makeText(GameOver.this,"test=" + test,Toast.LENGTH_LONG).show();
+        results = getIntent().getExtras();
 
         setUpDisplay();
         setUpContent();
-        WinOrLose(win);
-        showScore(score);
-        showNumQuestions(numQuestions);
-        if (factsList != null) {
-            mFactsList.setText(factsList);
-        }
-
     }
 
     private void setUpDisplay() {
-        mCongrats = (TextView) findViewById(R.id.congrats);
-        mUnlucky = (TextView) findViewById(R.id.unlucky);
+        mResults = (TextView) findViewById(R.id.result_text);
         mScore = (TextView) findViewById(R.id.scoretext);
         mNumberofQuestions = (TextView) findViewById(R.id.numquestionstext);
-        mFactsList = (TextView) findViewById(R.id.summaryQuestions);
+        mFactDisplay = (LinearLayout) findViewById(R.id.fact_linear_layout);
     }
 
     private void setUpContent() {
+        if (results.getBoolean("win"))
+        {
+            mResults.setText("Congrats! You win!");
+        }
+        else
+        {
+            mResults.setText("You lose!");
+        }
+        mScore.setText("Score: " + results.getInt("score"));
+
+        mNumberofQuestions.setText("Number of questions answered: " + results.getInt("numQuestions"));
+
+        setScrollView();
+
         mGoHome = (Button) findViewById(R.id.goHome);
         mPlayAgain = (Button) findViewById(R.id.playAgain);
 
         setPlayAgainButton();
         setGoHomeButton();
-    }
-
-    private void WinOrLose(boolean win) {
-        if (win) {
-            mUnlucky.setVisibility(View.GONE);
-        }
-        else {
-            mCongrats.setVisibility(View.GONE);
-        }
-    }
-
-    private void showScore(int score) {
-        mScore.setText("Score: " + score);
-    }
-
-    private void showNumQuestions(int num) {
-        mNumberofQuestions.setText("Number of Questions: " + num);
     }
 
     private void setPlayAgainButton() {
@@ -119,6 +92,40 @@ public class GameOver extends AppCompatActivity {
             }
         });
     }
+
+    private void setScrollView()
+    {
+        String str = (String) results.get("factsList");
+        Gson gson = new Gson();
+        Type entityType = new TypeToken< LinkedHashMap<String, Boolean>>(){}.getType();
+        LinkedHashMap<String, Boolean> questionsAsked = gson.fromJson(str, entityType);
+        int[] answers = results.getIntArray("answerTracker");
+        int index = 0;
+        Iterator factIterator = questionsAsked.entrySet().iterator();
+        while (factIterator.hasNext())
+        {
+            Map.Entry factDetails = (Map.Entry) factIterator.next();
+            String fact = (String) factDetails.getKey();
+            String correctAnswer = Boolean.toString((Boolean) factDetails.getValue());
+            String givenAnswer = "";
+            switch (answers[index])
+            {
+                case (1):
+                    givenAnswer = "True";
+                    break;
+                case (0):
+                    givenAnswer = "False";
+                    break;
+            }
+            TextView display = new TextView(this);
+            display.setText(fact + "\nYour answer: " + givenAnswer + "\nCorrect answer: " + correctAnswer);
+            mFactDisplay.addView(display);
+            index ++;
+        }
+
+        questionsAsked.size();
+    }
+
 
 
 }

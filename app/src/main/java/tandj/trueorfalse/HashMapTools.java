@@ -8,8 +8,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ public class HashMapTools {
     private int mNumberOfValues;
     private String mItem = null;
     private Context mContext;
-    private List mUsedNumbers = new ArrayList();
+    private LinkedHashMap<String, Boolean> mAskedQuestions = new LinkedHashMap<>();
 
     public HashMapTools(String fileName, Context context)
     {
@@ -63,18 +65,19 @@ public class HashMapTools {
      */
     public String getRandomItem()
     {
-        boolean repeat = true;
-        int randomIndex = -1;
-        while (repeat) {
-            repeat=false;
-            randomIndex = (int) Math.floor(Math.random() * mNumberOfValues);
-            for (int i=0; i<mUsedNumbers.size(); i++)
+        ArrayList<String> listOfAskedQuestion = new ArrayList(mAskedQuestions.keySet());
+        boolean originalQuestion = false;
+        while (!originalQuestion)
+        {
+            int randomIndex = (int) Math.floor(Math.random() * mNumberOfValues);
+            mItem = mListOfValues.get(randomIndex);
+            if (!listOfAskedQuestion.contains(mItem))
             {
-                if ((int) mUsedNumbers.get(i) == randomIndex) {repeat = true;}
+                originalQuestion = true;
             }
+
         }
-        mItem = mListOfValues.get(randomIndex);
-        mUsedNumbers.add(randomIndex);
+        mAskedQuestions.put(mItem, getTrueOrFalse());
         return mItem;
     }
 
@@ -94,22 +97,9 @@ public class HashMapTools {
         }
     }
 
-    public String recordFact(Boolean correct)
+    public LinkedHashMap<String, Boolean> getAskedQuestion()
     {
-        String fact = mItem;
-        String entry = "recordFact error";
-        if (correct) {
-            entry = fact + "#correct";
-        }
-        else {
-            entry = fact + "#incorrect";
-        }
-        return entry;
+        return mAskedQuestions;
     }
 
-    public String getSpecificItem(int itemNumber)
-    {
-        mItem = mListOfValues.get(itemNumber);
-        return mItem;
-    }
 }

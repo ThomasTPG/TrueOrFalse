@@ -8,10 +8,23 @@ import java.util.List;
  */
 public class FactFileNames
 {
-    static final int CUTE_ANIMAL_FACTS = 0;
+    // Add any new file to the following:
+    // 1) Add it to the correct difficulty array
+    // 2) Add it to the allFiles array and the fileNames array, making sure that they are at the same index in both
 
-    static final int MATHS_FACTS = 1;
+    static final String[] easyFiles = {"Cute animal facts", "Number facts"};
+
+    static final String[] mediumFiles = {};
+
+    static final String[] hardFiles = {};
+
+    static final String[] allFiles = {"Cute animal facts", "Number facts"};
 
     static final String[] fileNames = {"cute_animal_facts.txt", "maths_facts.txt"};
+
+    static final String[] difficulties = {"Easy", "Medium", "Hard"};
+
+    static final String[][] difficultyArrays = {easyFiles, mediumFiles, hardFiles};
+
 
 }

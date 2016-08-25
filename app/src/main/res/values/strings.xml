@@ -7,21 +7,6 @@
     <string name="you_win">Congratulations, You Win!</string>
     <string name="you_lose">Unlucky, you ran out of points!</string>
     <string name="title_activity_theme_select">ThemeSelect</string>
-    <string-array name="easy_array">
-        <item>Animal Facts</item>
-        <item>Maths Facts</item>
-    </string-array>
-    <string-array name="normal_array">
-        <item>Normal Facts 1</item>
-        <item>Normal Facts 2</item>
-    </string-array>
-    <string-array name="difficulty_array">
-        <item>Easy</item>
-        <item>Normal</item>
-        <item>Hard</item>
-        <item>Harder</item>
-        <item>Even Harder</item>
-        <item>Borderline Insane</item>
-        <item>Impossible</item>
-    </string-array>
+    <string name="select_easy">Easy</string>
+>>>>>>> 3a03ff8fa7a5e6f32037d469f2da94b2b7af740b
 </resources>

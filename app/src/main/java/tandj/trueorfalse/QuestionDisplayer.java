@@ -12,6 +12,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -102,33 +104,31 @@ public class QuestionDisplayer extends Activity {
     private int[] mPointsTracker;
 
     //array to track the questions asked and if the user was correct
-    private int[][] mQuestionTracker;
-
-    //private String[] mFactsList = new String[10];
-    private String mFactsList;
-
-    //was previous answer correct?
-    private Boolean mWasCorrect;
+    private int[] mAnswerTracker;
 
     private Button mQuitButton;
+
 
     private TextView mCountdownText;
 
     private CountDownTimer mCountdownTimer;
+
+    private String mTheme;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle b = getIntent().getExtras();
-        String theme = b.getString("theme");
-        //Toast.makeText(QuestionDisplayer.this, "On Button Click : " + "\n" + theme, Toast.LENGTH_LONG).show();
-        if (theme.equals("Maths Facts")) {mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);}
-        if (theme.equals("Animal Facts")) {mHashMapTools = new HashMapTools(FactFiles.CUTE_ANIMAL_FACTS, this);}
+        mTheme = b.getString("theme");
+        mHashMapTools = new HashMapTools(mTheme, this);
+
 
         mScore = getResources().getInteger(R.integer.starting_score);
         MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
         mPointsTracker = new int[MAX_QUESTIONS];
+        mAnswerTracker = new int[MAX_QUESTIONS];
 
         setUpDisplay();
 
@@ -180,9 +180,6 @@ public class QuestionDisplayer extends Activity {
 
             }
         });
-
-        mFactsList = "";
-
         setUpButtons();
         setScoreDisplays();
     }
@@ -208,8 +205,8 @@ public class QuestionDisplayer extends Activity {
         mCountdownText.setText("Time Up!");
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
+            mAnswerTracker[mNumberOfQuestions - 1] = 1;
 
-            mWasCorrect = true;
             mCorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
 
@@ -218,7 +215,7 @@ public class QuestionDisplayer extends Activity {
                     setFact();
                     mCorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-                    if (currentScore() > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                    if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
                         mCountdownTimer.start();
                     }
                 }
@@ -227,7 +224,7 @@ public class QuestionDisplayer extends Activity {
 
         } else {
             //Answer is wrong
-            mWasCorrect = false;
+            mAnswerTracker[mNumberOfQuestions - 1] = 0;
             mIncorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
             mHandler.postDelayed(new Runnable() {
@@ -236,15 +233,48 @@ public class QuestionDisplayer extends Activity {
                     setFact();
                     mIncorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-                    if (currentScore() > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                    if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
                         mCountdownTimer.start();
                     }
                 }
             },2000);
             calculateNewScore(false);
         }
+        checkIfFinished();
+    }
 
-        postQuestionChecks(answer, false);
+    private void createGameOver(boolean win)
+    {
+        //Save the score if it's a new hiscore
+        if (mScore > FileTools.getScore(mTheme))
+        {
+            FileTools.writeData(mTheme, mScore);
+        }
+
+        //Create an intent for the summary page
+        Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
+        GameOver.putExtra("win", win);
+        GameOver.putExtra("score", mScore);
+        GameOver.putExtra("numQuestions", mNumberOfQuestions);
+        GameOver.putExtra("pointTracker", mPointsTracker);
+        GameOver.putExtra("answerTracker", mAnswerTracker);
+        Gson gson = new Gson();
+        String list = gson.toJson( mHashMapTools.getAskedQuestion());
+        GameOver.putExtra("factsList",list);
+        startActivity(GameOver);
+
+    }
+
+    private void checkIfFinished()
+    {
+        if (mScore == 0)
+        {
+            createGameOver(false);
+        }
+        if (mNumberOfQuestions >= MAX_QUESTIONS)
+        {
+            createGameOver(true);
+        }
     }
 
     /**
@@ -275,7 +305,7 @@ public class QuestionDisplayer extends Activity {
     private void setScoreDisplays()
     {
         mGamblingBar.setProgress(0);
-        mScoreDisplay.setText("Score = " +mScore);
+        mScoreDisplay.setText("Score = " + mScore);
     }
 
     /**
@@ -294,11 +324,6 @@ public class QuestionDisplayer extends Activity {
         }
         setScoreDisplays();
         //mPointsTracker[mNumberOfQuestions] = mScore;
-        FileTools.writeData(FactFileNames.fileNames[FactFileNames.MATHS_FACTS], mScore);
-    }
-
-    private int currentScore(){
-        return mScore;
     }
 
     private void setQuitButton() {
@@ -326,58 +351,24 @@ public class QuestionDisplayer extends Activity {
 
             public void onFinish() {
                 mCountdownText.setText("Time Up!");
-                mWasCorrect = false;
                 mIncorrect.setVisibility(View.VISIBLE);
                 mButtonAndFactDisplayer.setVisibility(View.GONE);
 
                 mHandler.postDelayed(new Runnable() {
                     public void run() {
+                        mAnswerTracker[mNumberOfQuestions - 1] = 2;
                         setFact();
-                        //setUpCountdownTimer();
-                        //mCountdownTimer.start();
                         mIncorrect.setVisibility(View.GONE);
                         mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-                        if (currentScore() > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                        if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
                             mCountdownTimer.start();
                         }
                     }
                 }, 2000);
                 //calculateNewScore(false);
-                //mScore = mScore/2;
-                mScore = mScore + 1;
-                setScoreDisplays();
-                FileTools.writeData(FactFileNames.fileNames[FactFileNames.MATHS_FACTS], mScore);
-
-                postQuestionChecks(false , true);
             }
         };
     }
 
-    private void postQuestionChecks(Boolean answer, Boolean noTime) {
-        mFactsList = mFactsList.concat(mHashMapTools.recordFact(mWasCorrect));
-        if (noTime) {
-            mFactsList = mFactsList.concat("#noTime\n");
-        }
-        else {
-            String answerString = String.valueOf(answer);
-            mFactsList = mFactsList.concat("#" + answerString + "\n");
-        }
-        Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
-        GameOver.putExtra("score",currentScore());
-        GameOver.putExtra("numQuestions", mNumberOfQuestions);
-        GameOver.putExtra("pointTracker", mPointsTracker);
-        GameOver.putExtra("factsList", mFactsList);
-        if (currentScore() == 0)
-        {
-            GameOver.putExtra("win",false);
-            startActivity(GameOver);
-            mCountdownTimer.cancel();
-        }
-        if (mNumberOfQuestions >= MAX_QUESTIONS) {
-            GameOver.putExtra("win",true);
-            startActivity(GameOver);
-            mCountdownTimer.cancel();
-        }
 
-    }
 }
