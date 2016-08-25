@@ -115,6 +115,8 @@ public class QuestionDisplayer extends Activity {
 
     private String mTheme;
 
+    private int mMissedQuestions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +147,6 @@ public class QuestionDisplayer extends Activity {
         setContentView(R.layout.question_displayer_layout);
 
         mCountdownText = (TextView) findViewById(R.id.countdown_timer);
-        mCountdownText.setText("Countdown here");
         mQuitButton = (Button) findViewById(R.id.quit);
         mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
@@ -161,6 +162,7 @@ public class QuestionDisplayer extends Activity {
         mScoreToGambleDisplay = (TextView) findViewById(R.id.score_to_gamble);
         mGamblingBar   = (SeekBar)  findViewById(R.id.seekBar);
         mGamblingBar.setProgress(1);
+        mMissedQuestions = 0;
         mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -258,6 +260,7 @@ public class QuestionDisplayer extends Activity {
         GameOver.putExtra("numQuestions", mNumberOfQuestions);
         GameOver.putExtra("pointTracker", mPointsTracker);
         GameOver.putExtra("answerTracker", mAnswerTracker);
+        GameOver.putExtra("missedTracker", mMissedQuestions);
         Gson gson = new Gson();
         String list = gson.toJson( mHashMapTools.getAskedQuestion());
         GameOver.putExtra("factsList",list);
@@ -351,12 +354,13 @@ public class QuestionDisplayer extends Activity {
 
             public void onFinish() {
                 mCountdownText.setText("Time Up!");
+                mMissedQuestions = mMissedQuestions + 1;
                 mIncorrect.setVisibility(View.VISIBLE);
                 mButtonAndFactDisplayer.setVisibility(View.GONE);
-
+                mAnswerTracker[mNumberOfQuestions - 1] = 2;
+                
                 mHandler.postDelayed(new Runnable() {
                     public void run() {
-                        mAnswerTracker[mNumberOfQuestions - 1] = 2;
                         setFact();
                         mIncorrect.setVisibility(View.GONE);
                         mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
@@ -365,7 +369,8 @@ public class QuestionDisplayer extends Activity {
                         }
                     }
                 }, 2000);
-                //calculateNewScore(false);
+                calculateNewScore(false);
+                checkIfFinished();
             }
         };
     }
