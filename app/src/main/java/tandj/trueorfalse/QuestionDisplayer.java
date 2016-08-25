@@ -109,6 +109,8 @@ public class QuestionDisplayer extends Activity {
     //was previous answer correct?
     private Boolean mWasCorrect;
 
+    private Button mQuitButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +138,7 @@ public class QuestionDisplayer extends Activity {
     private void setUpDisplay() {
         setContentView(R.layout.question_displayer_layout);
 
+        mQuitButton = (Button) findViewById(R.id.quit);
         mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
         mQuestionNumber = (TextView) findViewById(R.id.question_num);
@@ -263,6 +266,8 @@ public class QuestionDisplayer extends Activity {
             }
         });
 
+        setQuitButton();
+
     }
 
     /**
@@ -295,5 +300,15 @@ public class QuestionDisplayer extends Activity {
 
     private int currentScore(){
         return mScore;
+    }
+
+    private void setQuitButton() {
+        mQuitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
+                startActivity(start);
+            }
+        });
     }
 }
