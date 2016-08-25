@@ -173,6 +173,8 @@ public class QuestionDisplayer extends Activity {
             }
         });
 
+        mFactsList = "";
+
         setUpButtons();
         setScoreDisplays();
     }
@@ -185,11 +187,6 @@ public class QuestionDisplayer extends Activity {
         mFactDisplayer.setText(mHashMapTools.getRandomItem());
         mNumberOfQuestions++;
         mQuestionNumber.setText("Question " + mNumberOfQuestions);
-        if (mWasCorrect != null) {
-            mFactsList = mFactsList.concat(mHashMapTools.recordFact(mWasCorrect));
-        } else {
-            mFactsList = "";
-        }
     }
 
     /**
@@ -198,8 +195,6 @@ public class QuestionDisplayer extends Activity {
      * @param answer The button that has been pressed
      */
     private void onButtonClicked(Boolean answer) {
-        String answerString = String.valueOf(answer);
-        mFactsList = mFactsList.concat(answerString+"#");
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
 
@@ -231,6 +226,9 @@ public class QuestionDisplayer extends Activity {
             },2000);
             calculateNewScore(false);
         }
+        mFactsList = mFactsList.concat(mHashMapTools.recordFact(mWasCorrect));
+        String answerString = String.valueOf(answer);
+        mFactsList = mFactsList.concat("#" + answerString + "\n");
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
         GameOver.putExtra("score",currentScore());
         GameOver.putExtra("numQuestions", mNumberOfQuestions);

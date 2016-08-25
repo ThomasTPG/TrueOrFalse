@@ -99,10 +99,10 @@ public class HashMapTools {
         String fact = mItem;
         String entry = "recordFact error";
         if (correct) {
-            entry = fact + "#correct\n";
+            entry = fact + "#correct";
         }
         else {
-            entry = fact + "#incorrect\n";
+            entry = fact + "#incorrect";
         }
         return entry;
     }
