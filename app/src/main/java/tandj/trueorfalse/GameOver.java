@@ -52,9 +52,9 @@ public class GameOver extends AppCompatActivity {
         int[] pointsTracker = b.getIntArray("pointsTracker");
         String factsList = b.getString("factsList");
 
-        mHashMapTools = new HashMapTools(factsList, this);
-        String test  = mHashMapTools.getRandomItem();
-        Toast.makeText(GameOver.this,"test=" + test,Toast.LENGTH_LONG).show();
+        //mHashMapTools = new HashMapTools(factsList, this);
+        //String test  = mHashMapTools.getRandomItem();
+        //Toast.makeText(GameOver.this,"test=" + test,Toast.LENGTH_LONG).show();
 
         setUpDisplay();
         setUpContent();

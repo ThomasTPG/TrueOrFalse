@@ -313,6 +313,8 @@ public class QuestionDisplayer extends Activity {
     }
 
     private void recordPoints() {
-        mPointsTracker[mNumberOfQuestions] = mScore;
+        if (mNumberOfQuestions < MAX_QUESTIONS) {
+            mPointsTracker[mNumberOfQuestions] = mScore;
+        }
     }
 }
