@@ -122,10 +122,7 @@ public class QuestionDisplayer extends Activity {
 
         Bundle b = getIntent().getExtras();
         String theme = b.getString("theme");
-        Toast.makeText(QuestionDisplayer.this,
-                "On Button Click : " +
-                        "\n" + theme,
-                Toast.LENGTH_LONG).show();
+        //Toast.makeText(QuestionDisplayer.this, "On Button Click : " + "\n" + theme, Toast.LENGTH_LONG).show();
         if (theme.equals("Maths Facts")) {mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);}
         if (theme.equals("Animal Facts")) {mHashMapTools = new HashMapTools(FactFiles.CUTE_ANIMAL_FACTS, this);}
 
@@ -135,9 +132,10 @@ public class QuestionDisplayer extends Activity {
 
         setUpDisplay();
 
-        setFact();
-        //setUpCountdownTimer();
+        setUpCountdownTimer();
         mCountdownTimer.start();
+
+        setFact();
     }
 
     /**
@@ -206,6 +204,8 @@ public class QuestionDisplayer extends Activity {
      * @param answer The button that has been pressed
      */
     private void onButtonClicked(Boolean answer) {
+        mCountdownTimer.cancel();
+        mCountdownText.setText("Time Up!");
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
 
@@ -216,10 +216,11 @@ public class QuestionDisplayer extends Activity {
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     setFact();
-                    //setUpCountdownTimer();
-                    mCountdownTimer.start();
                     mCorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                    if (currentScore() > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                        mCountdownTimer.start();
+                    }
                 }
             }, 2000);
             calculateNewScore(true);
@@ -233,32 +234,17 @@ public class QuestionDisplayer extends Activity {
                 @Override
                 public void run() {
                     setFact();
-                    //setUpCountdownTimer();
-                    mCountdownTimer.start();
                     mIncorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                    if (currentScore() > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                        mCountdownTimer.start();
+                    }
                 }
             },2000);
             calculateNewScore(false);
         }
-        mFactsList = mFactsList.concat(mHashMapTools.recordFact(mWasCorrect));
-        String answerString = String.valueOf(answer);
-        mFactsList = mFactsList.concat("#" + answerString + "\n");
-        Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
-        GameOver.putExtra("score",currentScore());
-        GameOver.putExtra("numQuestions", mNumberOfQuestions);
-        GameOver.putExtra("pointTracker", mPointsTracker);
-        GameOver.putExtra("factsList", mFactsList);
-        if (currentScore() == 0)
-        {
-            GameOver.putExtra("win",false);
-            startActivity(GameOver);
-        }
-        if (mNumberOfQuestions >= MAX_QUESTIONS) {
-            GameOver.putExtra("win",true);
-            startActivity(GameOver);
-        }
 
+        postQuestionChecks(answer, false);
     }
 
     /**
@@ -331,16 +317,67 @@ public class QuestionDisplayer extends Activity {
         }
     }
 
-    //private void setUpCountdownTimer() {
-      //  CountDownTimer mCountdownTimer = new CountDownTimer(5000, 1000) {
+    private void setUpCountdownTimer() {
+        mCountdownTimer = new CountDownTimer(6000, 1000) {
 
-//            public void onTick(long millisUntilFinished) {
-  //              mCountdownText.setText("seconds remaining: " + millisUntilFinished / 1000);
-    //        }
+            public void onTick(long millisUntilFinished) {
+                mCountdownText.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
 
-  //          public void onFinish() {
-//                mCountdownText.setText("Time Up!");
-  //          }
-    //    };
-    //}
+            public void onFinish() {
+                mCountdownText.setText("Time Up!");
+                mWasCorrect = false;
+                mIncorrect.setVisibility(View.VISIBLE);
+                mButtonAndFactDisplayer.setVisibility(View.GONE);
+
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        setFact();
+                        //setUpCountdownTimer();
+                        //mCountdownTimer.start();
+                        mIncorrect.setVisibility(View.GONE);
+                        mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                        if (currentScore() > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                            mCountdownTimer.start();
+                        }
+                    }
+                }, 2000);
+                //calculateNewScore(false);
+                //mScore = mScore/2;
+                mScore = mScore + 1;
+                setScoreDisplays();
+                FileTools.writeData(FactFileNames.fileNames[FactFileNames.MATHS_FACTS], mScore);
+
+                postQuestionChecks(false , true);
+            }
+        };
+    }
+
+    private void postQuestionChecks(Boolean answer, Boolean noTime) {
+        mFactsList = mFactsList.concat(mHashMapTools.recordFact(mWasCorrect));
+        if (noTime) {
+            mFactsList = mFactsList.concat("#noTime\n");
+        }
+        else {
+            String answerString = String.valueOf(answer);
+            mFactsList = mFactsList.concat("#" + answerString + "\n");
+        }
+        Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
+        GameOver.putExtra("score",currentScore());
+        GameOver.putExtra("numQuestions", mNumberOfQuestions);
+        GameOver.putExtra("pointTracker", mPointsTracker);
+        GameOver.putExtra("factsList", mFactsList);
+        if (currentScore() == 0)
+        {
+            GameOver.putExtra("win",false);
+            startActivity(GameOver);
+            mCountdownTimer.cancel();
+        }
+        if (mNumberOfQuestions >= MAX_QUESTIONS) {
+            GameOver.putExtra("win",true);
+            startActivity(GameOver);
+            mCountdownTimer.cancel();
+        }
+
+    }
 }
