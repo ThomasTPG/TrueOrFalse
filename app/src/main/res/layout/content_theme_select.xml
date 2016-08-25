@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Choose Theme:"
-            android:id="@+id/textView" />
+            android:id="@+id/choose_theme" />
 
         <Spinner
             android:layout_width="match_parent"

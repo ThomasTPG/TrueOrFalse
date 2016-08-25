@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ThemeSelect extends AppCompatActivity {
@@ -56,6 +57,19 @@ public class ThemeSelect extends AppCompatActivity {
     //add spinner data
     public void addListenerOnSpinnerItemSelection() {
         mThemeSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+        mDifficultySpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener() {
+            //@Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos,
+                                       long id) {
+                String difficulty = String.valueOf(mDifficultySpinner.getSelectedItem());
+                TextView selectThemeString = (TextView) findViewById(R.id.choose_theme);
+                selectThemeString.setText("Select a " + difficulty + " theme:");
+                updateThemeSpinner(difficulty);
+
+            }
+        });
+
+
     }
 
     //get selected spinner value
@@ -78,8 +92,22 @@ public class ThemeSelect extends AppCompatActivity {
     private void setUpThemeSpinner() {
         mThemeSpinner = (Spinner) findViewById(R.id.theme_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.easy_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.easy_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        mThemeSpinner.setAdapter(adapter);
+    }
+
+    private void updateThemeSpinner(String difficulty) {
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.easy_array, android.R.layout.simple_spinner_item);
+        if (difficulty.equals("Easy")) {
+            adapter = ArrayAdapter.createFromResource(this, R.array.easy_array, android.R.layout.simple_spinner_item);
+        }
+        if (difficulty.equals("Normal")) {
+            adapter = ArrayAdapter.createFromResource(this, R.array.normal_array, android.R.layout.simple_spinner_item);
+        }
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner

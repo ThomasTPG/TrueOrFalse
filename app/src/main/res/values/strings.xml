@@ -11,6 +11,10 @@
         <item>Animal Facts</item>
         <item>Maths Facts</item>
     </string-array>
+    <string-array name="normal_array">
+        <item>Normal Facts 1</item>
+        <item>Normal Facts 2</item>
+    </string-array>
     <string-array name="difficulty_array">
         <item>Easy</item>
         <item>Normal</item>
