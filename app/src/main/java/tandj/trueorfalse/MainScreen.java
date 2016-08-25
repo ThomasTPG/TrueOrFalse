@@ -43,6 +43,9 @@ public class MainScreen extends Activity{
 
         mStartButton = (Button) findViewById(R.id.start);
 
+        mStartButton.setText("Start");
+
+
         setStartButton();
 
         setUpFileTools();
@@ -51,7 +54,6 @@ public class MainScreen extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
-        mStartButton.setText("Start, score = " + mFileTools.getScore(FactFileNames.fileNames[FactFileNames.MATHS_FACTS]));
 
     }
 
@@ -60,7 +62,6 @@ public class MainScreen extends Activity{
         String scoreDataFilePath = getFilesDir() + "/" + FileTools.scoreDataFileName;
         mFileTools.setScoreFile(new File(scoreDataFilePath));
         mFileTools.init();
-        mStartButton.setText("Start, score = " + mFileTools.getScore(FactFileNames.fileNames[FactFileNames.MATHS_FACTS]));
     }
 
     /**

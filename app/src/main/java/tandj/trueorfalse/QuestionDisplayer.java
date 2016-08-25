@@ -107,18 +107,15 @@ public class QuestionDisplayer extends Activity {
 
     private Button mQuitButton;
 
+    private String mTheme;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle b = getIntent().getExtras();
-        String theme = b.getString("theme");
-        Toast.makeText(QuestionDisplayer.this,
-                "On Button Click : " +
-                        "\n" + theme,
-                Toast.LENGTH_LONG).show();
-        if (theme.equals("Maths Facts")) {mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);}
-        if (theme.equals("Animal Facts")) {mHashMapTools = new HashMapTools(FactFiles.CUTE_ANIMAL_FACTS, this);}
+        mTheme = b.getString("theme");
+        mHashMapTools = new HashMapTools(mTheme, this);
 
         mScore = getResources().getInteger(R.integer.starting_score);
         MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
@@ -227,9 +224,16 @@ public class QuestionDisplayer extends Activity {
 
     private void createGameOver(boolean win)
     {
+        //Save the score if it's a new hiscore
+        if (mScore > FileTools.getScore(mTheme))
+        {
+            FileTools.writeData(mTheme, mScore);
+        }
+
+        //Create an intent for the summary page
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
         GameOver.putExtra("win", win);
-        GameOver.putExtra("score", currentScore());
+        GameOver.putExtra("score", mScore);
         GameOver.putExtra("numQuestions", mNumberOfQuestions);
         GameOver.putExtra("pointTracker", mPointsTracker);
         GameOver.putExtra("answerTracker", mAnswerTracker);
@@ -242,7 +246,7 @@ public class QuestionDisplayer extends Activity {
 
     private void checkIfFinished()
     {
-        if (currentScore() == 0)
+        if (mScore == 0)
         {
             createGameOver(false);
         }
@@ -280,7 +284,7 @@ public class QuestionDisplayer extends Activity {
     private void setScoreDisplays()
     {
         mGamblingBar.setProgress(0);
-        mScoreDisplay.setText("Score = " +mScore);
+        mScoreDisplay.setText("Score = " + mScore);
     }
 
     /**
@@ -299,11 +303,6 @@ public class QuestionDisplayer extends Activity {
         }
         setScoreDisplays();
         //mPointsTracker[mNumberOfQuestions] = mScore;
-        FileTools.writeData(FactFileNames.fileNames[FactFileNames.MATHS_FACTS], mScore);
-    }
-
-    private int currentScore(){
-        return mScore;
     }
 
     private void setQuitButton() {
