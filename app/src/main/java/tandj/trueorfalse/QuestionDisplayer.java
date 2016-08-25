@@ -3,6 +3,7 @@ package tandj.trueorfalse;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -111,6 +112,10 @@ public class QuestionDisplayer extends Activity {
 
     private Button mQuitButton;
 
+    private TextView mCountdownText;
+
+    private CountDownTimer mCountdownTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +136,8 @@ public class QuestionDisplayer extends Activity {
         setUpDisplay();
 
         setFact();
+        //setUpCountdownTimer();
+        mCountdownTimer.start();
     }
 
     /**
@@ -139,6 +146,8 @@ public class QuestionDisplayer extends Activity {
     private void setUpDisplay() {
         setContentView(R.layout.question_displayer_layout);
 
+        mCountdownText = (TextView) findViewById(R.id.countdown_timer);
+        mCountdownText.setText("Countdown here");
         mQuitButton = (Button) findViewById(R.id.quit);
         mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
@@ -207,6 +216,8 @@ public class QuestionDisplayer extends Activity {
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     setFact();
+                    //setUpCountdownTimer();
+                    mCountdownTimer.start();
                     mCorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
                 }
@@ -222,6 +233,8 @@ public class QuestionDisplayer extends Activity {
                 @Override
                 public void run() {
                     setFact();
+                    //setUpCountdownTimer();
+                    mCountdownTimer.start();
                     mIncorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
                 }
@@ -317,4 +330,17 @@ public class QuestionDisplayer extends Activity {
             mPointsTracker[mNumberOfQuestions] = mScore;
         }
     }
+
+    //private void setUpCountdownTimer() {
+      //  CountDownTimer mCountdownTimer = new CountDownTimer(5000, 1000) {
+
+//            public void onTick(long millisUntilFinished) {
+  //              mCountdownText.setText("seconds remaining: " + millisUntilFinished / 1000);
+    //        }
+
+  //          public void onFinish() {
+//                mCountdownText.setText("Time Up!");
+  //          }
+    //    };
+    //}
 }
