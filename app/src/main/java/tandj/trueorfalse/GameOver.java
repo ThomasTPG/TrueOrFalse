@@ -1,11 +1,13 @@
 package tandj.trueorfalse;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class GameOver extends AppCompatActivity {
@@ -15,6 +17,9 @@ public class GameOver extends AppCompatActivity {
     private TextView mScore;
     private TextView mNumberofQuestions;
     private TextView mFactsList;
+
+    private Button   mGoHome;
+    private Button   mPlayAgain;
 
 
 
@@ -42,6 +47,7 @@ public class GameOver extends AppCompatActivity {
         String factsList = b.getString("factsList");
 
         setUpDisplay();
+        setUpContent();
         WinOrLose(win);
         showScore(score);
         showNumQuestions(numQuestions);
@@ -57,9 +63,14 @@ public class GameOver extends AppCompatActivity {
         mScore = (TextView) findViewById(R.id.scoretext);
         mNumberofQuestions = (TextView) findViewById(R.id.numquestionstext);
         mFactsList = (TextView) findViewById(R.id.summaryQuestions);
+    }
 
+    private void setUpContent() {
+        mGoHome = (Button) findViewById(R.id.goHome);
+        mPlayAgain = (Button) findViewById(R.id.playAgain);
 
-
+        setPlayAgainButton();
+        setGoHomeButton();
     }
 
     private void WinOrLose(boolean win) {
@@ -78,4 +89,26 @@ public class GameOver extends AppCompatActivity {
     private void showNumQuestions(int num) {
         mNumberofQuestions.setText("Number of Questions: " + num);
     }
+
+    private void setPlayAgainButton() {
+        mPlayAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent start = new Intent(GameOver.this, ThemeSelect.class);
+                startActivity(start);
+            }
+        });
+    }
+
+    private void setGoHomeButton() {
+        mGoHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent start = new Intent(GameOver.this, MainScreen.class);
+                startActivity(start);
+            }
+        });
+    }
+
+
 }
