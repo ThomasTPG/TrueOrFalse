@@ -7,3 +7,5 @@ Mice are cute#false
 Sloths are cute#true
 Insects are cute#false
 Gorillas are cute#false
+Cats have 4 legs#true
+Dogs have 4 legs#true
