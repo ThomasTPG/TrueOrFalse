@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TrueOrFalse</string>
     <string name="correct">Correct!</string>
@@ -5,4 +6,9 @@
     <string name="title_activity_game_over">GameOver</string>
     <string name="you_win">Congratulations, You Win!</string>
     <string name="you_lose">Unlucky, you ran out of points!</string>
+    <string name="title_activity_theme_select">ThemeSelect</string>
+    <string-array name="planets_array">
+        <item>Animal Facts</item>
+        <item>Maths Facts</item>
+    </string-array>
 </resources>
