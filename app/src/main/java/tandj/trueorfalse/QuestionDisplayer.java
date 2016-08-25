@@ -11,6 +11,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -101,13 +103,7 @@ public class QuestionDisplayer extends Activity {
     private int[] mPointsTracker;
 
     //array to track the questions asked and if the user was correct
-    private int[][] mQuestionTracker;
-
-    //private String[] mFactsList = new String[10];
-    private String mFactsList;
-
-    //was previous answer correct?
-    private Boolean mWasCorrect;
+    private int[] mAnswerTracker;
 
     private Button mQuitButton;
 
@@ -127,6 +123,7 @@ public class QuestionDisplayer extends Activity {
         mScore = getResources().getInteger(R.integer.starting_score);
         MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
         mPointsTracker = new int[MAX_QUESTIONS];
+        mAnswerTracker = new int[MAX_QUESTIONS];
 
         setUpDisplay();
 
@@ -173,9 +170,6 @@ public class QuestionDisplayer extends Activity {
 
             }
         });
-
-        mFactsList = "";
-
         setUpButtons();
         setScoreDisplays();
     }
@@ -199,8 +193,8 @@ public class QuestionDisplayer extends Activity {
     private void onButtonClicked(Boolean answer) {
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
+            mAnswerTracker[mNumberOfQuestions - 1] = 1;
 
-            mWasCorrect = true;
             mCorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
 
@@ -215,7 +209,7 @@ public class QuestionDisplayer extends Activity {
 
         } else {
             //Answer is wrong
-            mWasCorrect = false;
+            mAnswerTracker[mNumberOfQuestions - 1] = 0;
             mIncorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
             mHandler.postDelayed(new Runnable() {
@@ -228,24 +222,34 @@ public class QuestionDisplayer extends Activity {
             },2000);
             calculateNewScore(false);
         }
-        mFactsList = mFactsList.concat(mHashMapTools.recordFact(mWasCorrect));
-        String answerString = String.valueOf(answer);
-        mFactsList = mFactsList.concat("#" + answerString + "\n");
+        checkIfFinished();
+    }
+
+    private void createGameOver(boolean win)
+    {
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
-        GameOver.putExtra("score",currentScore());
+        GameOver.putExtra("win", win);
+        GameOver.putExtra("score", currentScore());
         GameOver.putExtra("numQuestions", mNumberOfQuestions);
         GameOver.putExtra("pointTracker", mPointsTracker);
-        GameOver.putExtra("factsList", mFactsList);
+        GameOver.putExtra("answerTracker", mAnswerTracker);
+        Gson gson = new Gson();
+        String list = gson.toJson( mHashMapTools.getAskedQuestion());
+        GameOver.putExtra("factsList",list);
+        startActivity(GameOver);
+
+    }
+
+    private void checkIfFinished()
+    {
         if (currentScore() == 0)
         {
-            GameOver.putExtra("win",false);
-            startActivity(GameOver);
+            createGameOver(false);
         }
-        if (mNumberOfQuestions >= MAX_QUESTIONS) {
-            GameOver.putExtra("win",true);
-            startActivity(GameOver);
+        if (mNumberOfQuestions >= MAX_QUESTIONS)
+        {
+            createGameOver(true);
         }
-
     }
 
     /**

@@ -1,5 +1,6 @@
 package tandj.trueorfalse;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-public class ThemeSelect extends AppCompatActivity {
+public class ThemeSelect extends Activity {
 
     private Spinner mThemeSpinner;
     private Spinner mDifficultySpinner;
@@ -23,18 +24,7 @@ public class ThemeSelect extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_theme_select);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        setContentView(R.layout.content_theme_select);
         setUpDisplay();
         addListenerOnButton();
     }
@@ -64,7 +54,6 @@ public class ThemeSelect extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String theme = String.valueOf(mThemeSpinner.getSelectedItem());
-                //Toast.makeText(ThemeSelect.this,"theme=" + theme,Toast.LENGTH_LONG).show();
                 Intent Start = new Intent(ThemeSelect.this, QuestionDisplayer.class);
                 Start.putExtra("theme", String.valueOf(mThemeSpinner.getSelectedItem()));
                 if (theme.equals("Maths Facts") || theme.equals("Animal Facts")) {

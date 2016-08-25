@@ -9,8 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="tandj.trueorfalse.GameOver"
-    tools:showIn="@layout/activity_game_over">
+    tools:context="tandj.trueorfalse.GameOver">
 
     <LinearLayout
         android:orientation="vertical"
@@ -24,71 +23,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Congratulations! You Win!"
-            android:id="@+id/congrats"
+            android:layout_weight="0.1"
+            android:id="@+id/result_text"
             android:layout_gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.1"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Unlucky! You Lose!"
-            android:id="@+id/unlucky"
-            android:layout_gravity="center_horizontal" />
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.11"></LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"></LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Score:"
             android:id="@+id/scoretext" />
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></LinearLayout>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.1"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Number of Questions:"
             android:id="@+id/numquestionstext" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="list of qs"
-            android:id="@+id/summaryQuestions" />
-
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"></LinearLayout>
+            android:id="@+id/fact_scroll_view"
+            android:layout_weight="0.5"
+            android:layout_height="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/fact_linear_layout"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+
+            </LinearLayout>
+
+
+
+
+        </ScrollView>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.1"
             android:text="Play Again"
             android:id="@+id/playAgain" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.1"
             android:text="Home"
             android:id="@+id/goHome" />
 
