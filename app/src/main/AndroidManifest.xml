@@ -25,6 +25,10 @@
         <activity
             android:name=".GameOver"
             android:label="@string/title_activity_game_over"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ThemeSelect"
+            android:label="@string/title_activity_theme_select"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

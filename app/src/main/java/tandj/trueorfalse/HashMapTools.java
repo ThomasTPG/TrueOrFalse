@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Thomas on 16/08/2016.
@@ -22,6 +23,7 @@ public class HashMapTools {
     private int mNumberOfValues;
     private String mItem = null;
     private Context mContext;
+    private List mUsedNumbers = new ArrayList();
 
     public HashMapTools(String fileName, Context context)
     {
@@ -61,8 +63,18 @@ public class HashMapTools {
      */
     public String getRandomItem()
     {
-        int randomIndex = (int) Math.floor(Math.random() * mNumberOfValues);
+        boolean repeat = true;
+        int randomIndex = -1;
+        while (repeat) {
+            repeat=false;
+            randomIndex = (int) Math.floor(Math.random() * mNumberOfValues);
+            for (int i=0; i<mUsedNumbers.size(); i++)
+            {
+                if ((int) mUsedNumbers.get(i) == randomIndex) {repeat = true;}
+            }
+        }
         mItem = mListOfValues.get(randomIndex);
+        mUsedNumbers.add(randomIndex);
         return mItem;
     }
 
@@ -82,4 +94,16 @@ public class HashMapTools {
         }
     }
 
+    public String recordFact(Boolean correct)
+    {
+        String fact = mItem;
+        String entry = "recordFact error";
+        if (correct) {
+            entry = fact + "#correct\n";
+        }
+        else {
+            entry = fact + "#incorrect\n";
+        }
+        return entry;
+    }
 }

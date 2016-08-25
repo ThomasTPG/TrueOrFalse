@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -95,11 +97,32 @@ public class QuestionDisplayer extends Activity {
      */
     private int mPointsToGamble;
 
+    //array to track the number of points after each round
+    private int[] mPointsTracker;
+
+    //array to track the questions asked and if the user was correct
+    private int[][] mQuestionTracker;
+
+    //private String[] mFactsList = new String[10];
+    private String mFactsList;
+
+    //was previous answer correct?
+    private Boolean mWasCorrect;
+
+    private Button mQuitButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);
+        Bundle b = getIntent().getExtras();
+        String theme = b.getString("theme");
+        Toast.makeText(QuestionDisplayer.this,
+                "On Button Click : " +
+                        "\n" + theme,
+                Toast.LENGTH_LONG).show();
+        if (theme.equals("Maths Facts")) {mHashMapTools = new HashMapTools(FactFiles.MATHS_FACTS, this);}
+        if (theme.equals("Animal Facts")) {mHashMapTools = new HashMapTools(FactFiles.CUTE_ANIMAL_FACTS, this);}
 
         mScore = getResources().getInteger(R.integer.starting_score);
         MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
@@ -115,6 +138,7 @@ public class QuestionDisplayer extends Activity {
     private void setUpDisplay() {
         setContentView(R.layout.question_displayer_layout);
 
+        mQuitButton = (Button) findViewById(R.id.quit);
         mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
         mQuestionNumber = (TextView) findViewById(R.id.question_num);
@@ -161,6 +185,11 @@ public class QuestionDisplayer extends Activity {
         mFactDisplayer.setText(mHashMapTools.getRandomItem());
         mNumberOfQuestions++;
         mQuestionNumber.setText("Question " + mNumberOfQuestions);
+        if (mWasCorrect != null) {
+            mFactsList = mFactsList.concat(mHashMapTools.recordFact(mWasCorrect));
+        } else {
+            mFactsList = "";
+        }
     }
 
     /**
@@ -169,9 +198,12 @@ public class QuestionDisplayer extends Activity {
      * @param answer The button that has been pressed
      */
     private void onButtonClicked(Boolean answer) {
+        String answerString = String.valueOf(answer);
+        mFactsList = mFactsList.concat(answerString+"#");
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
 
+            mWasCorrect = true;
             mCorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
 
@@ -186,6 +218,7 @@ public class QuestionDisplayer extends Activity {
 
         } else {
             //Answer is wrong
+            mWasCorrect = false;
             mIncorrect.setVisibility(View.VISIBLE);
             mButtonAndFactDisplayer.setVisibility(View.GONE);
             mHandler.postDelayed(new Runnable() {
@@ -198,19 +231,18 @@ public class QuestionDisplayer extends Activity {
             },2000);
             calculateNewScore(false);
         }
+        Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
+        GameOver.putExtra("score",currentScore());
+        GameOver.putExtra("numQuestions", mNumberOfQuestions);
+        GameOver.putExtra("pointTracker", mPointsTracker);
+        GameOver.putExtra("factsList", mFactsList);
         if (currentScore() == 0)
         {
-            Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
             GameOver.putExtra("win",false);
-            GameOver.putExtra("score",currentScore());
-            GameOver.putExtra("numQuestions", mNumberOfQuestions);
             startActivity(GameOver);
         }
-        if (mNumberOfQuestions == MAX_QUESTIONS) {
-            Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
+        if (mNumberOfQuestions >= MAX_QUESTIONS) {
             GameOver.putExtra("win",true);
-            GameOver.putExtra("score",currentScore());
-            GameOver.putExtra("numQuestions", mNumberOfQuestions);
             startActivity(GameOver);
         }
 
@@ -233,6 +265,8 @@ public class QuestionDisplayer extends Activity {
                 onButtonClicked(false);
             }
         });
+
+        setQuitButton();
 
     }
 
@@ -260,11 +294,21 @@ public class QuestionDisplayer extends Activity {
             mScore = mScore - mPointsToGamble;
         }
         setScoreDisplays();
-
+        //mPointsTracker[mNumberOfQuestions] = mScore;
         FileTools.writeData(FactFileNames.fileNames[FactFileNames.MATHS_FACTS], mScore);
     }
 
     private int currentScore(){
         return mScore;
+    }
+
+    private void setQuitButton() {
+        mQuitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
+                startActivity(start);
+            }
+        });
     }
 }
