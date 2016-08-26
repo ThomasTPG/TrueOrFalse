@@ -17,6 +17,7 @@ public class ThemeSelect extends Activity {
     private Spinner mDifficultySpinner;
     private Button  mGoButton;
     private TextView mScoreDisplay;
+    private TextView mDifficultyScoreDisplay;
     private String defaultFile = FactFileNames.fileNames[0];
     String mFileToOpen;
     private TextView mChooseThemeText;
@@ -36,6 +37,8 @@ public class ThemeSelect extends Activity {
         mDifficultySpinner = (Spinner) findViewById(R.id.difficulty_spinner);
         mScoreDisplay = (TextView) findViewById(R.id.your_hiscore);
         mScoreDisplay.setText("High score: " + FileTools.getScore(defaultFile));
+        mDifficultyScoreDisplay = (TextView) findViewById(R.id.difficulty_score);
+        mDifficultyScoreDisplay.setText("Difficuly Score");
         mChooseThemeText = (TextView) findViewById(R.id.choose_theme);
 
         setUpThemeSpinner(FactFileNames.easyFiles);
@@ -81,27 +84,33 @@ public class ThemeSelect extends Activity {
 
                 for (int ii = 0; ii < FactFileNames.difficulties.length; ii++) {
                     if (selectedDifficulty.equals(FactFileNames.difficulties[ii])) {
-                        if (ii == 1) {
-                            if (difficultyThresholds() < 1) {
-                                mChooseThemeText.setText("You need 200 points in Easy mode to unlock Normal mode");
-                                mThemeSpinner.setVisibility(View.GONE);
-                            }
-                            else {
+                        switch (ii) {
+                            case 0:
                                 setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
-                            }
+                                mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("easy"));
+                                break;
+                            case 1:
+                                mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("normal"));
+                                if (difficultyThresholds() < 1) {
+                                    mChooseThemeText.setText("You need 2000 points in Easy mode to unlock Medium mode");
+                                    mThemeSpinner.setVisibility(View.GONE);
+                                }
+                                else {
+                                    setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                                }
+                                break;
+                            case 2:
+                                mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("hard"));
+                                if (difficultyThresholds() < 2) {
+                                    mChooseThemeText.setText("You need 2000 points in Normal mode to unlock Hard mode");
+                                    mThemeSpinner.setVisibility(View.GONE);
+                                }
+                                else {
+                                    setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                                }
+                                break;
                         }
-                        if (ii == 2) {
-                            if (difficultyThresholds() < 2) {
-                                mChooseThemeText.setText("You need 200 points in Normal mode to unlock Hard mode");
-                                mThemeSpinner.setVisibility(View.GONE);
-                            }
-                            else {
-                                setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
-                            }
-                        }
-                        if (ii == 0) {
-                            setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
-                        }
+
                     }
                 }
             }
