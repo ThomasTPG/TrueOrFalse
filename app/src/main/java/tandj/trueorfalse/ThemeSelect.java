@@ -19,6 +19,7 @@ public class ThemeSelect extends Activity {
     private TextView mScoreDisplay;
     private String defaultFile = FactFileNames.fileNames[0];
     String mFileToOpen;
+    private TextView mChooseThemeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class ThemeSelect extends Activity {
         mDifficultySpinner = (Spinner) findViewById(R.id.difficulty_spinner);
         mScoreDisplay = (TextView) findViewById(R.id.your_hiscore);
         mScoreDisplay.setText("High score: " + FileTools.getScore(defaultFile));
+        mChooseThemeText = (TextView) findViewById(R.id.choose_theme);
 
         setUpThemeSpinner(FactFileNames.easyFiles);
         setUpDifficultySpinner();
@@ -73,11 +75,33 @@ public class ThemeSelect extends Activity {
         mDifficultySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mChooseThemeText.setText("Choose Theme:");
+                mThemeSpinner.setVisibility(View.VISIBLE);
                 String selectedDifficulty = String.valueOf(mDifficultySpinner.getSelectedItem());
 
                 for (int ii = 0; ii < FactFileNames.difficulties.length; ii++) {
                     if (selectedDifficulty.equals(FactFileNames.difficulties[ii])) {
-                        setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                        if (ii == 1) {
+                            if (difficultyThresholds() < 1) {
+                                mChooseThemeText.setText("You need 200 points in Easy mode to unlock Normal mode");
+                                mThemeSpinner.setVisibility(View.GONE);
+                            }
+                            else {
+                                setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                            }
+                        }
+                        if (ii == 2) {
+                            if (difficultyThresholds() < 2) {
+                                mChooseThemeText.setText("You need 200 points in Normal mode to unlock Hard mode");
+                                mThemeSpinner.setVisibility(View.GONE);
+                            }
+                            else {
+                                setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                            }
+                        }
+                        if (ii == 0) {
+                            setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                        }
                     }
                 }
             }
@@ -119,4 +143,66 @@ public class ThemeSelect extends Activity {
         // Apply the adapter to the spinner
         mDifficultySpinner.setAdapter(adapter);
     }
+
+    public int countDifficultyScores(String difficulty) {
+        int totalScore = 0;
+        if (difficulty.equals("easy")) {
+            for (int i = 0; i < FactFileNames.easyFiles.length; i++) {
+                String selectedTheme = FactFileNames.easyFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        if (difficulty.equals("medium")) {
+            for (int i = 0; i < FactFileNames.mediumFiles.length; i++) {
+                String selectedTheme = FactFileNames.mediumFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        if (difficulty.equals("hard")) {
+            for (int i = 0; i < FactFileNames.hardFiles.length; i++) {
+                String selectedTheme = FactFileNames.hardFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        return totalScore;
+    }
+
+    private int difficultyThresholds() {
+        int val = 0;
+        if (countDifficultyScores("easy") > 2000){
+            val=1;
+            if (countDifficultyScores("medium") > 2000) {
+                val =2;
+            }
+        }
+        return val;
+    }
+
+//    private void enforceDifficultyThreshold() {
+//        int val = difficultyThresholds()
+//        if (val == 0)
+//        {
+//
+//        }
+//    }
+
+
 }
