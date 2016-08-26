@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+
 /**
  * Created by Thomas on 17/08/2016.
  * Class which displays the questions and allows the user to answer
