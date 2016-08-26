@@ -43,7 +43,8 @@ public class MainScreen extends Activity{
 
         mStartButton = (Button) findViewById(R.id.start);
 
-        mStartButton.setText("Start");
+        statisticsUpdated stats = new statisticsUpdated(this);
+        mStartButton.setText("Start. Number of questions answered: " + stats.getStat(statisticsUpdated.NUMBER_OF_QUESTIONS_ANSWERED));
 
 
         setStartButton();
@@ -75,7 +76,13 @@ public class MainScreen extends Activity{
                 //Intent start = new Intent(MainScreen.this, QuestionDisplayer.class);
                 Intent start = new Intent(MainScreen.this, ThemeSelect.class);
                 startActivity(start);
+                finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }
