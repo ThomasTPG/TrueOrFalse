@@ -134,4 +134,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="58dp" />
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timer_progress"
+        android:layout_above="@+id/countdown_timer"
+        android:layout_alignLeft="@+id/countdown_timer"
+        android:layout_alignStart="@+id/countdown_timer"
+        android:max="5"
+        android:progress="0"
+        android:indeterminate="false" />
+
 </RelativeLayout>

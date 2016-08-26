@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -117,6 +118,8 @@ public class QuestionDisplayer extends Activity {
 
     private int mMissedQuestions;
 
+    private ProgressBar mTimerProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +166,7 @@ public class QuestionDisplayer extends Activity {
         mGamblingBar   = (SeekBar)  findViewById(R.id.seekBar);
         mGamblingBar.setProgress(1);
         mMissedQuestions = 0;
+        mTimerProgress = (ProgressBar) findViewById(R.id.timer_progress);
         mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -350,15 +354,18 @@ public class QuestionDisplayer extends Activity {
 
             public void onTick(long millisUntilFinished) {
                 mCountdownText.setText("seconds remaining: " + millisUntilFinished / 1000);
+                if (millisUntilFinished < 5000)
+                mTimerProgress.incrementProgressBy(1);
             }
 
             public void onFinish() {
                 mCountdownText.setText("Time Up!");
+                mTimerProgress.incrementProgressBy(1);
                 mMissedQuestions = mMissedQuestions + 1;
                 mIncorrect.setVisibility(View.VISIBLE);
                 mButtonAndFactDisplayer.setVisibility(View.GONE);
                 mAnswerTracker[mNumberOfQuestions - 1] = 2;
-                
+
                 mHandler.postDelayed(new Runnable() {
                     public void run() {
                         setFact();
@@ -366,6 +373,7 @@ public class QuestionDisplayer extends Activity {
                         mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
                         if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
                             mCountdownTimer.start();
+                            mTimerProgress.setProgress(0);
                         }
                     }
                 }, 2000);
