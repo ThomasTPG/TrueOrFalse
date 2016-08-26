@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+
 /**
  * Created by Thomas on 17/08/2016.
  * Class which displays the questions and allows the user to answer
@@ -170,9 +171,8 @@ public class QuestionDisplayer extends Activity {
         mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                mPointsToGamble = (int) ((progress * (mScore - 1) / 100)+1);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mPointsToGamble = (int) ((progress * (mScore - 1) / 100) + 1);
                 mScoreToGambleDisplay.setText("Gamble: " + mPointsToGamble);
             }
 
@@ -257,6 +257,16 @@ public class QuestionDisplayer extends Activity {
             FileTools.writeData(mTheme, mScore);
         }
 
+        //Update stats
+        statisticsUpdated  stats = new statisticsUpdated(this);
+        stats.updateStat(statisticsUpdated.NUMBER_OF_QUESTIONS_ANSWERED, mNumberOfQuestions);
+        int numberCorrect = 0;
+        for (int ii = 0; ii < mAnswerTracker.length; ii ++)
+        {
+            numberCorrect = numberCorrect + mAnswerTracker[ii];
+        }
+        stats.updateStat(statisticsUpdated.NUMBER_OF_CORRECT_ANSWERS, numberCorrect);
+
         //Create an intent for the summary page
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
         GameOver.putExtra("win", win);
@@ -337,11 +347,19 @@ public class QuestionDisplayer extends Activity {
         mQuitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
-                startActivity(start);
+                quit();
+
             }
         });
     }
+
+    private void quit()
+    {
+        Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
+        startActivity(start);
+        finish();
+    }
+
 
     private void recordPoints() {
         if (mNumberOfQuestions < MAX_QUESTIONS) {
@@ -383,5 +401,8 @@ public class QuestionDisplayer extends Activity {
         };
     }
 
-
+    @Override
+    public void onBackPressed() {
+        quit();
+    }
 }

@@ -105,6 +105,7 @@ public class FileTools
 
     public static void writeData(String factFileName, int score)
     {
+        init();
         boolean error = true;
         for (int ii = 0; ii < mListOfAllFactFileNames.length; ii++)
         {
@@ -140,6 +141,7 @@ public class FileTools
 
     public static int getScore(String factFileName)
     {
+        init();
         for (int ii = 0; ii < mListOfScores.length; ii++)
         {
             if (mListOfAllFactFileNames[ii].equals(factFileName))

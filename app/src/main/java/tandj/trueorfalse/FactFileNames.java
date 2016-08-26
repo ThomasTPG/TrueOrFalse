@@ -14,13 +14,13 @@ public class FactFileNames
 
     static final String[] easyFiles = {"Cute animal facts", "Number facts"};
 
-    static final String[] mediumFiles = {};
+    static final String[] mediumFiles = {"Tasty Foods"};
 
     static final String[] hardFiles = {};
 
-    static final String[] allFiles = {"Cute animal facts", "Number facts"};
+    static final String[] allFiles = {"Cute animal facts", "Number facts", "Tasty Foods"};
 
-    static final String[] fileNames = {"cute_animal_facts.txt", "maths_facts.txt"};
+    static final String[] fileNames = {"cute_animal_facts.txt", "maths_facts.txt", "tasty_foods.txt"};
 
     static final String[] difficulties = {"Easy", "Medium", "Hard"};
 
