@@ -3,10 +3,12 @@ package tandj.trueorfalse;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -108,7 +110,17 @@ public class QuestionDisplayer extends Activity {
 
     private Button mQuitButton;
 
+
+    private TextView mCountdownText;
+
+    private CountDownTimer mCountdownTimer;
+
     private String mTheme;
+
+    private int mMissedQuestions;
+
+    private ProgressBar mTimerProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,12 +130,16 @@ public class QuestionDisplayer extends Activity {
         mTheme = b.getString("theme");
         mHashMapTools = new HashMapTools(mTheme, this);
 
+
         mScore = getResources().getInteger(R.integer.starting_score);
         MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
         mPointsTracker = new int[MAX_QUESTIONS];
         mAnswerTracker = new int[MAX_QUESTIONS];
 
         setUpDisplay();
+
+        setUpCountdownTimer();
+        mCountdownTimer.start();
 
         setFact();
     }
@@ -134,6 +150,7 @@ public class QuestionDisplayer extends Activity {
     private void setUpDisplay() {
         setContentView(R.layout.question_displayer_layout);
 
+        mCountdownText = (TextView) findViewById(R.id.countdown_timer);
         mQuitButton = (Button) findViewById(R.id.quit);
         mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
@@ -149,12 +166,13 @@ public class QuestionDisplayer extends Activity {
         mScoreToGambleDisplay = (TextView) findViewById(R.id.score_to_gamble);
         mGamblingBar   = (SeekBar)  findViewById(R.id.seekBar);
         mGamblingBar.setProgress(1);
+        mMissedQuestions = 0;
+        mTimerProgress = (ProgressBar) findViewById(R.id.timer_progress);
         mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                mPointsToGamble = (int) ((progress * (mScore - 1) / 100)+1);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mPointsToGamble = (int) ((progress * (mScore - 1) / 100) + 1);
                 mScoreToGambleDisplay.setText("Gamble: " + mPointsToGamble);
             }
 
@@ -189,6 +207,8 @@ public class QuestionDisplayer extends Activity {
      * @param answer The button that has been pressed
      */
     private void onButtonClicked(Boolean answer) {
+        mCountdownTimer.cancel();
+        mCountdownText.setText("Time Up!");
         if (answer == mHashMapTools.getTrueOrFalse()) {
             //Answer is correct, set a new question
             mAnswerTracker[mNumberOfQuestions - 1] = 1;
@@ -201,6 +221,9 @@ public class QuestionDisplayer extends Activity {
                     setFact();
                     mCorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                    if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                        mCountdownTimer.start();
+                    }
                 }
             }, 2000);
             calculateNewScore(true);
@@ -216,6 +239,9 @@ public class QuestionDisplayer extends Activity {
                     setFact();
                     mIncorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                    if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                        mCountdownTimer.start();
+                    }
                 }
             },2000);
             calculateNewScore(false);
@@ -231,6 +257,16 @@ public class QuestionDisplayer extends Activity {
             FileTools.writeData(mTheme, mScore);
         }
 
+        //Update stats
+        statisticsUpdated  stats = new statisticsUpdated(this);
+        stats.updateStat(statisticsUpdated.NUMBER_OF_QUESTIONS_ANSWERED, mNumberOfQuestions);
+        int numberCorrect = 0;
+        for (int ii = 0; ii < mAnswerTracker.length; ii ++)
+        {
+            numberCorrect = numberCorrect + mAnswerTracker[ii];
+        }
+        stats.updateStat(statisticsUpdated.NUMBER_OF_CORRECT_ANSWERS, numberCorrect);
+
         //Create an intent for the summary page
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
         GameOver.putExtra("win", win);
@@ -238,6 +274,7 @@ public class QuestionDisplayer extends Activity {
         GameOver.putExtra("numQuestions", mNumberOfQuestions);
         GameOver.putExtra("pointTracker", mPointsTracker);
         GameOver.putExtra("answerTracker", mAnswerTracker);
+        GameOver.putExtra("missedTracker", mMissedQuestions);
         Gson gson = new Gson();
         String list = gson.toJson( mHashMapTools.getAskedQuestion());
         GameOver.putExtra("factsList",list);
@@ -310,15 +347,62 @@ public class QuestionDisplayer extends Activity {
         mQuitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
-                startActivity(start);
+                quit();
+
             }
         });
     }
+
+    private void quit()
+    {
+        Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
+        startActivity(start);
+        finish();
+    }
+
 
     private void recordPoints() {
         if (mNumberOfQuestions < MAX_QUESTIONS) {
             mPointsTracker[mNumberOfQuestions] = mScore;
         }
+    }
+
+    private void setUpCountdownTimer() {
+        mCountdownTimer = new CountDownTimer(6000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                mCountdownText.setText("seconds remaining: " + millisUntilFinished / 1000);
+                if (millisUntilFinished < 5000)
+                mTimerProgress.incrementProgressBy(1);
+            }
+
+            public void onFinish() {
+                mCountdownText.setText("Time Up!");
+                mTimerProgress.incrementProgressBy(1);
+                mMissedQuestions = mMissedQuestions + 1;
+                mIncorrect.setVisibility(View.VISIBLE);
+                mButtonAndFactDisplayer.setVisibility(View.GONE);
+                mAnswerTracker[mNumberOfQuestions - 1] = 2;
+
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        setFact();
+                        mIncorrect.setVisibility(View.GONE);
+                        mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                        if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                            mCountdownTimer.start();
+                            mTimerProgress.setProgress(0);
+                        }
+                    }
+                }, 2000);
+                calculateNewScore(false);
+                checkIfFinished();
+            }
+        };
+    }
+
+    @Override
+    public void onBackPressed() {
+        quit();
     }
 }

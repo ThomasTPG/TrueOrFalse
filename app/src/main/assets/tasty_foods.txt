@@ -1,0 +1,10 @@
+Jelly is tasty#true
+Fish is tasty#false
+Malteasers are tasty#true
+Porridge is tasty#true
+Stew is tasty#true
+Glue is tasty#false
+Metal is tasty#false
+Chips are tasty#true
+Milk is tasty#true
+Sweets are tasty#true

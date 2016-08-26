@@ -60,6 +60,7 @@ public class statisticsUpdated {
                 for (int ii = 0; ii < statisticArray.length; ii++)
                 {
                     bufferedWriter.write(statisticArray[ii] + "#" + statValueArray[ii]);
+                    bufferedWriter.newLine();
                 }
                 bufferedWriter.close();
             }
@@ -123,6 +124,7 @@ public class statisticsUpdated {
                 String line = bufferedReader.readLine();
                 if (!(line == null)) {
                     String[] split = line.split("#");
+                    System.out.println(line);
                     statValueArray[ii] = Integer.parseInt(split[1]);
                 }
             }
