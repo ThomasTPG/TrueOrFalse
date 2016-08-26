@@ -278,6 +278,7 @@ public class QuestionDisplayer extends Activity {
         Gson gson = new Gson();
         String list = gson.toJson( mHashMapTools.getAskedQuestion());
         GameOver.putExtra("factsList",list);
+        mCountdownTimer.cancel();
         startActivity(GameOver);
 
     }
@@ -288,7 +289,7 @@ public class QuestionDisplayer extends Activity {
         {
             createGameOver(false);
         }
-        if (mNumberOfQuestions >= MAX_QUESTIONS)
+        else if (mNumberOfQuestions >= MAX_QUESTIONS)
         {
             createGameOver(true);
         }
