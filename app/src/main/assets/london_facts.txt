@@ -1,0 +1,12 @@
+London is the capital of England#true
+London was founded by the Romans#true
+London is the largest city in the EU#true
+London has 22 postcode areas#true
+London has cable car over the Thames#true
+London has hosted the Olympic games twice#false
+Greater London has an area of 550 square miles#false
+London contains 3 World Heritage Sites#false
+London is the world's most populous city#false
+The BBC's 'Luther' is based in London#true
+Arsenal FC are based in London#true
+London was originally called Londown#false
