@@ -48,14 +48,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Split Screen"
-                android:id="@+id/button4"
+                android:id="@+id/split_screen_button"
                 android:layout_gravity="center_horizontal" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Time Trial"
-                android:id="@+id/button2"
+                android:id="@+id/time_trial_button"
                 android:layout_gravity="center_horizontal" />
 
         </LinearLayout>

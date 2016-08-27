@@ -21,6 +21,7 @@ public class TwoPlayer extends AppCompatActivity {
     private void setUpContent()
     {
         setHomeButton();
+        setSplitScreenButton();
     }
 
     private void setHomeButton() {
@@ -29,6 +30,18 @@ public class TwoPlayer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent start = new Intent(TwoPlayer.this, MainScreen.class);
+                startActivity(start);
+                finish();
+            }
+        });
+    }
+
+    private void setSplitScreenButton() {
+        Button splitScreen = (Button) findViewById(R.id.split_screen_button);
+        splitScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent start = new Intent(TwoPlayer.this, SplitScreen.class);
                 startActivity(start);
                 finish();
             }
