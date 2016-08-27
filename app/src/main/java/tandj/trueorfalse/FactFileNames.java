@@ -20,7 +20,7 @@ public class FactFileNames
 
     static final String[] allFiles = {"Cute animal facts", "Number facts", "Tasty Foods", "Cambridge", "Cambridge-easy", "London"};
 
-    static final String[] fileNames = {"cute_animal_facts.txt", "maths_facts.txt", "tasty_foods.txt", "cambridge_facts.txt", "cambridge_facts.txt", "london_facts"};
+    static final String[] fileNames = {"cute_animal_facts.txt", "maths_facts.txt", "tasty_foods.txt", "cambridge_facts.txt", "cambridge_facts.txt", "london_facts.txt"};
 
     static final String[] difficulties = {"Easy", "Medium", "Hard"};
 
