@@ -36,9 +36,12 @@ public class statisticsUpdated {
 
     public static final int NUMBER_OF_ROUNDS_COMPLETE = 2;
 
+    public static final int TOTAL_SCORE = 3;
+
     public static final String[] statisticArray = {"Number of questions answered",
                                                    "Number of correct answers",
-                                                   "Number of rounds complete"};
+                                                   "Number of rounds complete",
+                                                   "Total score"};
 
     public statisticsUpdated(Context c)
     {

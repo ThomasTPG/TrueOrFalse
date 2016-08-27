@@ -194,12 +194,15 @@ public class QuestionDisplayer extends Activity {
     /**
      * Fills the text view with a random fact from the hashmap
      */
-    private void setFact() {
+    private void setFact()
+    {
+        if (mNumberOfQuestions < MAX_QUESTIONS)
+        {
+            mFactDisplayer.setText(mHashMapTools.getRandomItem());
+            mNumberOfQuestions++;
+            mQuestionNumber.setText("Question " + mNumberOfQuestions);
+        }
 
-//        recordPoints();
-        mFactDisplayer.setText(mHashMapTools.getRandomItem());
-        mNumberOfQuestions++;
-        mQuestionNumber.setText("Question " + mNumberOfQuestions);
     }
 
     /**
@@ -268,6 +271,7 @@ public class QuestionDisplayer extends Activity {
         }
         stats.updateStat(statisticsUpdated.NUMBER_OF_CORRECT_ANSWERS, numberCorrect);
         stats.updateStat(statisticsUpdated.NUMBER_OF_ROUNDS_COMPLETE,1);
+        stats.updateStat(statisticsUpdated.TOTAL_SCORE,mScore);
 
         //Create an intent for the summary page
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
