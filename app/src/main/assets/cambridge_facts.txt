@@ -1,0 +1,10 @@
+The University of Cambridge was founded in 1209#true
+The University of Cambridge has 31 colleges#true
+The University of Cambridge is the best university in the UK#true
+The University of Cambridge has 3 female-only colleges#true
+The University of Cambridge has over 750 registered societies#true
+The University of Cambridge is not internationally competitive#false
+The University of Cambridge has a total endowment of over £6 billion#false
+The University of Cambridge is located in Oxford#false
+The University of Cambridge is the only university in it's city#false
+The University of Cambridge has over 20,000 students#false

@@ -128,6 +128,7 @@ public class QuestionDisplayer extends Activity {
 
         Bundle b = getIntent().getExtras();
         mTheme = b.getString("theme");
+//        mTheme = "cambridge_facts.txt";
         mHashMapTools = new HashMapTools(mTheme, this);
 
 
@@ -195,7 +196,7 @@ public class QuestionDisplayer extends Activity {
      */
     private void setFact() {
 
-        recordPoints();
+//        recordPoints();
         mFactDisplayer.setText(mHashMapTools.getRandomItem());
         mNumberOfQuestions++;
         mQuestionNumber.setText("Question " + mNumberOfQuestions);
@@ -278,6 +279,7 @@ public class QuestionDisplayer extends Activity {
         Gson gson = new Gson();
         String list = gson.toJson( mHashMapTools.getAskedQuestion());
         GameOver.putExtra("factsList",list);
+        mCountdownTimer.cancel();
         startActivity(GameOver);
 
     }
@@ -288,7 +290,7 @@ public class QuestionDisplayer extends Activity {
         {
             createGameOver(false);
         }
-        if (mNumberOfQuestions >= MAX_QUESTIONS)
+        else if (mNumberOfQuestions >= MAX_QUESTIONS)
         {
             createGameOver(true);
         }
