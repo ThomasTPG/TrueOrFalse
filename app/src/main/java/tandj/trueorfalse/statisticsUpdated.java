@@ -34,8 +34,11 @@ public class statisticsUpdated {
 
     public static final int NUMBER_OF_CORRECT_ANSWERS = 1;
 
+    public static final int NUMBER_OF_ROUNDS_COMPLETE = 2;
+
     public static final String[] statisticArray = {"Number of questions answered",
-                                                   "Number of correct answers"};
+                                                   "Number of correct answers",
+                                                   "Number of rounds complete"};
 
     public statisticsUpdated(Context c)
     {
@@ -66,6 +69,7 @@ public class statisticsUpdated {
             }
             catch (IOException e)
             {
+                e.printStackTrace();
 
             }
         }
@@ -104,13 +108,12 @@ public class statisticsUpdated {
         }
         catch (FileNotFoundException e)
         {
+            e.printStackTrace();
 
         }
         catch (IOException e)
         {
-
-        }
-        finally {
+            e.printStackTrace();
 
         }
     }
@@ -132,6 +135,7 @@ public class statisticsUpdated {
         }
         catch (IOException e)
         {
+            e.printStackTrace();
 
         }
         return statValueArray[stat];

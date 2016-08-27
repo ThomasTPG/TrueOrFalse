@@ -44,7 +44,7 @@ public class MainScreen extends Activity{
         mStartButton = (Button) findViewById(R.id.start);
 
         statisticsUpdated stats = new statisticsUpdated(this);
-        mStartButton.setText("Start. Number of questions answered: " + stats.getStat(statisticsUpdated.NUMBER_OF_QUESTIONS_ANSWERED));
+        mStartButton.setText("Start. Number of questions answered: " + stats.getStat(statisticsUpdated.NUMBER_OF_ROUNDS_COMPLETE));
 
 
         setStartButton();

@@ -82,8 +82,10 @@ public class GameOver extends Activity {
         mPlayAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("again");
                 Intent start = new Intent(GameOver.this, ThemeSelect.class);
                 startActivity(start);
+                finish();
             }
         });
     }
@@ -94,6 +96,7 @@ public class GameOver extends Activity {
             public void onClick(View view) {
                 Intent start = new Intent(GameOver.this, MainScreen.class);
                 startActivity(start);
+                finish();
             }
         });
     }
