@@ -266,6 +266,7 @@ public class QuestionDisplayer extends Activity {
             numberCorrect = numberCorrect + mAnswerTracker[ii];
         }
         stats.updateStat(statisticsUpdated.NUMBER_OF_CORRECT_ANSWERS, numberCorrect);
+        stats.updateStat(statisticsUpdated.NUMBER_OF_ROUNDS_COMPLETE,1);
 
         //Create an intent for the summary page
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
