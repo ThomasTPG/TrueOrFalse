@@ -48,6 +48,8 @@ public class MainScreen extends Activity{
 
         setStatsButton();
 
+        setTwoPlayerButton();
+
         setStartButton();
 
         setUpFileTools();
@@ -60,6 +62,19 @@ public class MainScreen extends Activity{
             @Override
             public void onClick(View v) {
                 Intent start = new Intent(MainScreen.this, StatisticDisplay.class);
+                startActivity(start);
+                finish();
+            }
+        });
+    }
+
+    private void setTwoPlayerButton()
+    {
+        Button twoPlayer = (Button) findViewById(R.id.two_player_button);
+        twoPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent start = new Intent(MainScreen.this, TwoPlayer.class);
                 startActivity(start);
                 finish();
             }
@@ -94,6 +109,8 @@ public class MainScreen extends Activity{
             }
         });
     }
+
+
 
     @Override
     public void onBackPressed() {
