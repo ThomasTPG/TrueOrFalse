@@ -194,12 +194,15 @@ public class QuestionDisplayer extends Activity {
     /**
      * Fills the text view with a random fact from the hashmap
      */
-    private void setFact() {
+    private void setFact()
+    {
+        if (mNumberOfQuestions < MAX_QUESTIONS)
+        {
+            mFactDisplayer.setText(mHashMapTools.getRandomItem());
+            mNumberOfQuestions++;
+            mQuestionNumber.setText("Question " + mNumberOfQuestions);
+        }
 
-//        recordPoints();
-        mFactDisplayer.setText(mHashMapTools.getRandomItem());
-        mNumberOfQuestions++;
-        mQuestionNumber.setText("Question " + mNumberOfQuestions);
     }
 
     /**
@@ -264,10 +267,16 @@ public class QuestionDisplayer extends Activity {
         int numberCorrect = 0;
         for (int ii = 0; ii < mAnswerTracker.length; ii ++)
         {
-            numberCorrect = numberCorrect + mAnswerTracker[ii];
+            if (mAnswerTracker[ii] == 1)
+            {
+                numberCorrect++;
+            }
         }
         stats.updateStat(statisticsUpdated.NUMBER_OF_CORRECT_ANSWERS, numberCorrect);
         stats.updateStat(statisticsUpdated.NUMBER_OF_ROUNDS_COMPLETE,1);
+        stats.updateStat(statisticsUpdated.TOTAL_SCORE,mScore);
+        stats.updateStat(statisticsUpdated.NUMBER_OF_INCORRECT_ANSWERS, mNumberOfQuestions - numberCorrect - mMissedQuestions);
+        stats.updateStat(statisticsUpdated.NUMBER_OF_MISSED_QUESTIONS, mMissedQuestions);
 
         //Create an intent for the summary page
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
@@ -282,6 +291,7 @@ public class QuestionDisplayer extends Activity {
         GameOver.putExtra("factsList",list);
         mCountdownTimer.cancel();
         startActivity(GameOver);
+        finish();
 
     }
 
@@ -392,7 +402,7 @@ public class QuestionDisplayer extends Activity {
                         setFact();
                         mIncorrect.setVisibility(View.GONE);
                         mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-                        if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+                        if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
                             mCountdownTimer.start();
                             mTimerProgress.setProgress(0);
                         }

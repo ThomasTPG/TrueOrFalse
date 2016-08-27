@@ -43,8 +43,6 @@ public class GameOver extends Activity {
 
         setUpDisplay();
         setUpContent();
-
-        Toast.makeText(this, "Hello World", Toast.LENGTH_SHORT).show();
     }
 
     private void setUpDisplay() {
