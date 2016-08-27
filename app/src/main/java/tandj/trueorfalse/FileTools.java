@@ -98,7 +98,7 @@ public class FileTools
 
         }
         catch (IOException e)
-        {
+        {            e.printStackTrace();
 
         }
     }
@@ -135,6 +135,7 @@ public class FileTools
         }
         catch (IOException e)
         {
+            e.printStackTrace();
 
         }
     }

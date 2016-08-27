@@ -8,3 +8,4 @@ Metal is tasty#false
 Chips are tasty#true
 Milk is tasty#true
 Sweets are tasty#true
+Marshmallows are tasty#true

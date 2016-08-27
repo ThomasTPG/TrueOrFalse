@@ -43,13 +43,27 @@ public class MainScreen extends Activity{
 
         mStartButton = (Button) findViewById(R.id.start);
 
-        statisticsUpdated stats = new statisticsUpdated(this);
-        mStartButton.setText("Start. Number of questions answered: " + stats.getStat(statisticsUpdated.NUMBER_OF_QUESTIONS_ANSWERED));
+        mStartButton.setText("Start");
 
+
+        setStatsButton();
 
         setStartButton();
 
         setUpFileTools();
+    }
+
+    private void setStatsButton()
+    {
+        Button stats = (Button) findViewById(R.id.stats_button);
+        stats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent start = new Intent(MainScreen.this, StatisticDisplay.class);
+                startActivity(start);
+                finish();
+            }
+        });
     }
 
     @Override
