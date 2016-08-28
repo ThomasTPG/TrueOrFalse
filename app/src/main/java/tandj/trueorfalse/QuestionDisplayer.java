@@ -408,7 +408,10 @@ public class QuestionDisplayer extends Activity {
                         }
                     }
                 }, 2000);
-                calculateNewScore(false);
+//                calculateNewScore(false);
+                double newScore = mScore * 0.8;
+                mScore = (int) newScore;
+                setScoreDisplays();
                 checkIfFinished();
             }
         };
