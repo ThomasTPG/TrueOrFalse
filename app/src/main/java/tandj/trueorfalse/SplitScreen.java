@@ -2,6 +2,7 @@ package tandj.trueorfalse;
 
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,10 @@ public class SplitScreen extends AppCompatActivity {
     private TextView[] mScoreText = new TextView[2];
     private int[] mScore = new int[2];
     private HashMapTools mHashMapTools;
+    private Handler mHandler = new Handler();
+    private boolean mQuestionIsOver;
+    private int mNumAnswersGiven;
+    private int mPlayerNo;
 
 
 
@@ -33,8 +38,6 @@ public class SplitScreen extends AppCompatActivity {
     }
 
     private void setUpDisplay() {
-        setUpButtons();
-
         mTrueButton[0] = (Button) findViewById(R.id.true_1);
         mFalseButton[0] = (Button) findViewById(R.id.false_1);
         mTrueButton[1] = (Button) findViewById(R.id.true_2);
@@ -44,7 +47,9 @@ public class SplitScreen extends AppCompatActivity {
         mScoreText[0] = (TextView) findViewById(R.id.score_1);
         mScoreText[1] = (TextView) findViewById(R.id.score_2);
 
-        for (int i=0; i<1; i++) {
+        setUpButtons();
+
+        for (int i=0; i<2; i++) {
             mTrueButton[i].setVisibility(View.GONE);
             mFalseButton[i].setVisibility(View.GONE);
         }
@@ -53,9 +58,11 @@ public class SplitScreen extends AppCompatActivity {
     }
 
     private void setUpContent() {
-        for (int i=0; i<1; i++) {
+        for (int i=0; i<2; i++) {
             mScore[i] = 0;
         }
+        mQuestionIsOver = false;
+        mNumAnswersGiven = 0;
     }
 
     private void setHomeButton() {
@@ -85,7 +92,7 @@ public class SplitScreen extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                for (int i=0; i<1; i++) {
+                for (int i=0; i<2; i++) {
                     mTrueButton[i].setVisibility(View.VISIBLE);
                     mFalseButton[i].setVisibility(View.VISIBLE);
                 }
@@ -95,7 +102,7 @@ public class SplitScreen extends AppCompatActivity {
     }
 
     private void setFactDisplays(String text) {
-        for (int i=0; i<1; i++) {
+        for (int i=0; i<2; i++) {
             mFactDisplayer[i].setText(text);
         }
     }
@@ -105,7 +112,7 @@ public class SplitScreen extends AppCompatActivity {
     }
 
     private void updateScoreText() {
-        for (int i=0; i<1; i++) {
+        for (int i=0; i<2; i++) {
             mScoreText[i].setText("Score: " + mScore[i]);
         }
     }
@@ -140,15 +147,43 @@ public class SplitScreen extends AppCompatActivity {
     }
 
     private void onButtonClicked(int playerNo, Boolean answer) {
+        disableButtons(playerNo);
+        mNumAnswersGiven = mNumAnswersGiven + 1;
         if (answer == mHashMapTools.getTrueOrFalse()) {
+            mQuestionIsOver = true;
             if (playerNo == 1) {
                 mFactDisplayer[0].setText("Correct");
-                mFactDisplayer[1].setText("Too slow");
+                if (mNumAnswersGiven == 1) {
+                    mFactDisplayer[1].setText("Too slow");
+                }
                 mScore[0] = mScore[0] + 1;
+                disableButtons(2);
             } else if (playerNo == 2) {
                 mFactDisplayer[1].setText("Correct");
-                mFactDisplayer[0].setText("Too slow");
+                if (mNumAnswersGiven == 1) {
+                    mFactDisplayer[0].setText("Too slow");
+                }
                 mScore[1] = mScore[1] + 1;
+                disableButtons(1);
+            }
+        } else {
+            disableButtons(playerNo);
+            mFactDisplayer[playerNo-1].setText("Incorrect");
+        }
+
+        if (mNumAnswersGiven == 2) {
+            mQuestionIsOver = true;
+        }
+
+        if (mScore[0] < 5 && mScore[1] < 5) {
+            if (mQuestionIsOver) {
+                newFact();
+            }
+        } else {
+            if (mScore[0] > 4) {
+                endGame(1);
+            } else {
+                endGame(2);
             }
         }
 
@@ -157,5 +192,49 @@ public class SplitScreen extends AppCompatActivity {
     private void disableButtons(int playerNo) {
         mTrueButton[playerNo-1].setEnabled(false);
         mFalseButton[playerNo-1].setEnabled(false);
+    }
+
+    private void enableAllButtons() {
+        for (int i=0; i<2; i++) {
+            mTrueButton[i].setEnabled(true);
+            mFalseButton[i].setEnabled(true);
+        }
+    }
+
+    private void newFact() {
+        updateScoreText();
+        mQuestionIsOver = false;
+        mNumAnswersGiven = 0;
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                setFact();
+                enableAllButtons();
+            }
+        }, 2000);
+    }
+
+    private void endGame(int playerNo) {
+        updateScoreText();
+        mQuestionIsOver = false;
+        mNumAnswersGiven = 0;
+        mPlayerNo = playerNo;
+
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                for (int i=0; i<2; i++) {
+                    mTrueButton[i].setVisibility(View.GONE);
+                    mFalseButton[i].setVisibility(View.GONE);
+                }
+                if (mPlayerNo == 1) {
+                    mFactDisplayer[0].setText("You Win!\nPlayer 1 Score: " + mScore[0] + "\nPlayer 2 Score: " + mScore[1]);
+                    mFactDisplayer[1].setText("You Lose!\nPlayer 1 Score: " + mScore[0] + "\nPlayer 2 Score: " + mScore[1]);
+                } else {
+                    mFactDisplayer[1].setText("You Win!\nPlayer 1 Score: " + mScore[0] + "\nPlayer 2 Score: " + mScore[1]);
+                    mFactDisplayer[0].setText("You Lose!\nPlayer 1 Score: " + mScore[0] + "\nPlayer 2 Score: " + mScore[1]);
+                }
+            }
+        }, 2000);
+
+
     }
 }
