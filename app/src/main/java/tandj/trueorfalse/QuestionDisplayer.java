@@ -200,6 +200,12 @@ public class QuestionDisplayer extends Activity {
                     setFact();
                     mCorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+<<<<<<< Updated upstream
+=======
+                    if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
+                        mCountdownTimer.start();
+                    }
+>>>>>>> Stashed changes
                 }
             }, 2000);
             calculateNewScore(true);
@@ -215,6 +221,12 @@ public class QuestionDisplayer extends Activity {
                     setFact();
                     mIncorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+<<<<<<< Updated upstream
+=======
+                    if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
+                        mCountdownTimer.start();
+                    }
+>>>>>>> Stashed changes
                 }
             },2000);
             calculateNewScore(false);
@@ -320,4 +332,48 @@ public class QuestionDisplayer extends Activity {
             mPointsTracker[mNumberOfQuestions] = mScore;
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    private void setUpCountdownTimer() {
+        mCountdownTimer = new CountDownTimer(6000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                mCountdownText.setText("seconds remaining: " + millisUntilFinished / 1000);
+                if (millisUntilFinished < 5000)
+                mTimerProgress.incrementProgressBy(1);
+            }
+
+            public void onFinish() {
+                mCountdownText.setText("Time Up!");
+                mTimerProgress.incrementProgressBy(1);
+                mMissedQuestions = mMissedQuestions + 1;
+                mIncorrect.setVisibility(View.VISIBLE);
+                mButtonAndFactDisplayer.setVisibility(View.GONE);
+                mAnswerTracker[mNumberOfQuestions - 1] = 2;
+
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        setFact();
+                        mIncorrect.setVisibility(View.GONE);
+                        mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                        if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
+                            mCountdownTimer.start();
+                            mTimerProgress.setProgress(0);
+                            System.out.println("NEW TIMER");
+                        }
+                    }
+                }, 2000);
+                calculateNewScore(false);
+                System.err.println("FINISHED");
+                checkIfFinished();
+            }
+        };
+    }
+
+    @Override
+    public void onBackPressed() {
+        quit();
+    }
+>>>>>>> Stashed changes
 }
