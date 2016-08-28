@@ -6,7 +6,7 @@ android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="44dp"></LinearLayout>
+        android:layout_height="35dp"></LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -14,8 +14,8 @@ android:layout_height="match_parent">
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="187dp"
-            android:layout_height="187dp"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
             android:id="@+id/imageView"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/logo_grad" />
@@ -27,31 +27,58 @@ android:layout_height="match_parent">
         android:layout_height="37dp"></LinearLayout>
 
     <Button
-    android:id="@+id/start"
-    android:text="One Player"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/start"
+        android:text="One Player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="5"
+        android:shadowDy="3"
+        android:shadowRadius="5"
+        android:background="@drawable/buttonshape"
+        android:layout_marginBottom="5dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Two Player"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/two_player_button"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="5"
+        android:shadowDy="3"
+        android:shadowRadius="5"
+        android:background="@drawable/buttonshape"
+        android:layout_marginBottom="5dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Stats &amp; Achievements"
         android:id="@+id/stats_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="5"
+        android:shadowDy="3"
+        android:shadowRadius="5"
+        android:background="@drawable/buttonshape"
+        android:layout_marginBottom="5dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Help"
-        android:id="@+id/button3"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/help_button"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="5"
+        android:shadowDy="3"
+        android:shadowRadius="5"
+        android:background="@drawable/buttonshape"/>
 
 </LinearLayout>

@@ -29,7 +29,7 @@
         <activity
             android:name=".ThemeSelect"
             android:label="@string/title_activity_theme_select"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".StatisticDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,6 +37,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".TwoPlayer" />
+        <activity android:name=".SplitScreen"></activity>
     </application>
 
 </manifest>

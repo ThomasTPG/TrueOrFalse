@@ -12,15 +12,15 @@ public class FactFileNames
     // 1) Add it to the correct difficulty array
     // 2) Add it to the allFiles array and the fileNames array, making sure that they are at the same index in both
 
-    static final String[] easyFiles = {"Cute animal facts", "Number facts", "Cambridge-easy"};
+    static final String[] easyFiles = {"Cute animal facts", "Number facts", "Cambridge"};
 
-    static final String[] mediumFiles = {"Tasty Foods", "Cambridge", "London"};
+    static final String[] mediumFiles = {"Tasty Foods", "NBA", "London"};
 
     static final String[] hardFiles = {};
 
-    static final String[] allFiles = {"Cute animal facts", "Number facts", "Tasty Foods", "Cambridge", "Cambridge-easy", "London"};
+    static final String[] allFiles = {"Cute animal facts", "Number facts", "Tasty Foods", "Cambridge", "NBA", "London"};
 
-    static final String[] fileNames = {"cute_animal_facts.txt", "maths_facts.txt", "tasty_foods.txt", "cambridge_facts.txt", "cambridge_facts.txt", "london_facts"};
+    static final String[] fileNames = {"cute_animal_facts.txt", "maths_facts.txt", "tasty_foods.txt", "cambridge_facts.txt", "nba_facts.txt", "london_facts.txt"};
 
     static final String[] difficulties = {"Easy", "Medium", "Hard"};
 
