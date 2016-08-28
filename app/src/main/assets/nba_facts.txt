@@ -1,0 +1,10 @@
+The NBA is made up of 30 teams#true
+The NBA was founded in 1946#true
+The Cleveland Cavaliers were the NBA champions in 2016#true
+The Boston Celtics have the most NBA championships#true
+During the regular NBA season each team plays 82 games#true
+There are two Canadian teams in the NBA#false
+The NBA is made up of 4 divisions#false
+16 teams go into the NBA playoffs#false
+An NBA playoff match is made up of 5 games#false
+The LA Lakers have lost in the NBA Finals more times than any other team#false

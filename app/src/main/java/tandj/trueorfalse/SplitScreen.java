@@ -141,6 +141,9 @@ public class SplitScreen extends AppCompatActivity {
     }
 
     private void onButtonClicked(int buttonNo, Boolean answer) {
+        if (answer == mHashMapTools.getTrueOrFalse()) {
+            
+        }
 
     }
 }
