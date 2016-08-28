@@ -24,6 +24,7 @@ public class MainScreen extends Activity{
      */
     private FileTools mFileTools;
 
+
     /**
      * Method called when the activity is created
      * @param savedInstanceState
@@ -116,4 +117,5 @@ public class MainScreen extends Activity{
     public void onBackPressed() {
 
     }
+
 }

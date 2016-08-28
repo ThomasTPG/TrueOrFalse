@@ -21,6 +21,10 @@ public class ThemeSelect extends Activity {
     private String defaultFile = FactFileNames.fileNames[0];
     String mFileToOpen;
     private TextView mChooseThemeText;
+    private String mSelectedTheme;
+    public static String mLastSinglePlayerTheme;
+    private String mSelectedDifficulty;
+    public static String mLastSinglePlayerDifficulty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +60,11 @@ public class ThemeSelect extends Activity {
         mThemeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedTheme = String.valueOf(mThemeSpinner.getSelectedItem());
+                mSelectedTheme = String.valueOf(mThemeSpinner.getSelectedItem());
 
                 for (int ii = 0; ii < FactFileNames.allFiles.length; ii++)
                 {
-                    if (selectedTheme.equals(FactFileNames.allFiles[ii]))
+                    if (mSelectedTheme.equals(FactFileNames.allFiles[ii]))
                     {
                         mFileToOpen = FactFileNames.fileNames[ii];
                         mScoreDisplay.setText("High score: " + FileTools.getScore(mFileToOpen));
@@ -80,10 +84,10 @@ public class ThemeSelect extends Activity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mChooseThemeText.setText("Choose Theme:");
                 mThemeSpinner.setVisibility(View.VISIBLE);
-                String selectedDifficulty = String.valueOf(mDifficultySpinner.getSelectedItem());
+                mSelectedDifficulty = String.valueOf(mDifficultySpinner.getSelectedItem());
 
                 for (int ii = 0; ii < FactFileNames.difficulties.length; ii++) {
-                    if (selectedDifficulty.equals(FactFileNames.difficulties[ii])) {
+                    if (mSelectedDifficulty.equals(FactFileNames.difficulties[ii])) {
                         switch (ii) {
                             case 0:
                                 setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
@@ -127,6 +131,7 @@ public class ThemeSelect extends Activity {
         mGoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                rememberOptions();
                 Intent Start = new Intent(ThemeSelect.this, QuestionDisplayer.class);
                 Start.putExtra("theme",mFileToOpen);
                 startActivity(Start);
@@ -142,6 +147,10 @@ public class ThemeSelect extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mThemeSpinner.setAdapter(adapter);
+        if (mLastSinglePlayerTheme != null) {
+            mThemeSpinner.setSelection(((ArrayAdapter) mThemeSpinner.getAdapter()).getPosition(mLastSinglePlayerTheme));
+        }
+//        mThemeSpinner.setSelection(1);
     }
 
     private void setUpDifficultySpinner() {
@@ -151,6 +160,10 @@ public class ThemeSelect extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mDifficultySpinner.setAdapter(adapter);
+        if (mLastSinglePlayerDifficulty != null) {
+            mDifficultySpinner.setSelection(((ArrayAdapter) mDifficultySpinner.getAdapter()).getPosition(mLastSinglePlayerDifficulty));
+        }
+//        mDifficultySpinner.setSelection(1);
     }
 
     public int countDifficultyScores(String difficulty) {
@@ -205,13 +218,8 @@ public class ThemeSelect extends Activity {
         return val;
     }
 
-//    private void enforceDifficultyThreshold() {
-//        int val = difficultyThresholds()
-//        if (val == 0)
-//        {
-//
-//        }
-//    }
-
-
+    private void rememberOptions() {
+        mLastSinglePlayerTheme = mSelectedTheme;
+        mLastSinglePlayerDifficulty = mSelectedDifficulty;
+    }
 }
