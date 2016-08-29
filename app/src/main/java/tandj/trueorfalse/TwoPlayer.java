@@ -1,12 +1,13 @@
 package tandj.trueorfalse;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class TwoPlayer extends AppCompatActivity {
+public class TwoPlayer extends Activity {
 
 
 
