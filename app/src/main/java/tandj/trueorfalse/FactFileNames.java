@@ -12,15 +12,33 @@ public class FactFileNames
     // 1) Add it to the correct difficulty array
     // 2) Add it to the allFiles array and the fileNames array, making sure that they are at the same index in both
 
-    static final String[] easyFiles = {"Cute animal facts", "Number facts", "Cambridge"};
+    static final String[] easyFiles = {"Cute animal facts", "Number facts", "Cambridge", "Solar System - Easy"};
 
-    static final String[] mediumFiles = {"Tasty Foods", "NBA", "London"};
+    static final String[] mediumFiles = {"Tasty Foods", "NBA", "London", "Solar System - Medium"};
 
-    static final String[] hardFiles = {};
+    static final String[] hardFiles = {"Solar System - Hard"};
 
-    static final String[] allFiles = {"Cute animal facts", "Number facts", "Tasty Foods", "Cambridge", "NBA", "London"};
+    static final String[] allFiles = {
+            "Cute animal facts",
+            "Number facts",
+            "Tasty Foods",
+            "Cambridge",
+            "NBA",
+            "London",
+            "Solar System - Easy",
+            "Solar System - Medium",
+            "Solar System - Hard"};
 
-    static final String[] fileNames = {"cute_animal_facts.txt", "maths_facts.txt", "tasty_foods.txt", "cambridge_facts.txt", "nba_facts.txt", "london_facts.txt"};
+    static final String[] fileNames = {
+            "cute_animal_facts.txt",
+            "maths_facts.txt",
+            "tasty_foods.txt",
+            "cambridge_facts.txt",
+            "nba_facts.txt",
+            "london_facts.txt",
+            "solar_system_facts_easy",
+            "solar_system_facts_medium",
+            "solar_system_facts_hard"};
 
     static final String[] difficulties = {"Easy", "Medium", "Hard"};
 
