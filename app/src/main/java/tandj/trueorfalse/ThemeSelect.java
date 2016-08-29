@@ -3,10 +3,6 @@ package tandj.trueorfalse;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -14,7 +10,6 @@ import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ThemeSelect extends Activity {
 
@@ -22,8 +17,14 @@ public class ThemeSelect extends Activity {
     private Spinner mDifficultySpinner;
     private Button  mGoButton;
     private TextView mScoreDisplay;
+    private TextView mDifficultyScoreDisplay;
     private String defaultFile = FactFileNames.fileNames[0];
     String mFileToOpen;
+    private TextView mChooseThemeText;
+    private String mSelectedTheme;
+    public static String mLastSinglePlayerTheme;
+    private String mSelectedDifficulty;
+    public static String mLastSinglePlayerDifficulty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,9 @@ public class ThemeSelect extends Activity {
         mDifficultySpinner = (Spinner) findViewById(R.id.difficulty_spinner);
         mScoreDisplay = (TextView) findViewById(R.id.your_hiscore);
         mScoreDisplay.setText("High score: " + FileTools.getScore(defaultFile));
+        mDifficultyScoreDisplay = (TextView) findViewById(R.id.difficulty_score);
+        mDifficultyScoreDisplay.setText("Difficuly Score");
+        mChooseThemeText = (TextView) findViewById(R.id.choose_theme);
 
         setUpThemeSpinner(FactFileNames.easyFiles);
         setUpDifficultySpinner();
@@ -56,11 +60,11 @@ public class ThemeSelect extends Activity {
         mThemeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedTheme = String.valueOf(mThemeSpinner.getSelectedItem());
+                mSelectedTheme = String.valueOf(mThemeSpinner.getSelectedItem());
 
                 for (int ii = 0; ii < FactFileNames.allFiles.length; ii++)
                 {
-                    if (selectedTheme.equals(FactFileNames.allFiles[ii]))
+                    if (mSelectedTheme.equals(FactFileNames.allFiles[ii]))
                     {
                         mFileToOpen = FactFileNames.fileNames[ii];
                         mScoreDisplay.setText("High score: " + FileTools.getScore(mFileToOpen));
@@ -78,11 +82,39 @@ public class ThemeSelect extends Activity {
         mDifficultySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedDifficulty = String.valueOf(mDifficultySpinner.getSelectedItem());
+                mChooseThemeText.setText("Choose Theme:");
+                mThemeSpinner.setVisibility(View.VISIBLE);
+                mSelectedDifficulty = String.valueOf(mDifficultySpinner.getSelectedItem());
 
                 for (int ii = 0; ii < FactFileNames.difficulties.length; ii++) {
-                    if (selectedDifficulty.equals(FactFileNames.difficulties[ii])) {
-                        setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                    if (mSelectedDifficulty.equals(FactFileNames.difficulties[ii])) {
+                        switch (ii) {
+                            case 0:
+                                setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                                mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("Easy"));
+                                break;
+                            case 1:
+                                mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("Normal"));
+                                if (difficultyThresholds() < 1) {
+                                    mChooseThemeText.setText("You need 2000 points in Easy mode to unlock Medium mode");
+                                    mThemeSpinner.setVisibility(View.GONE);
+                                }
+                                else {
+                                    setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                                }
+                                break;
+                            case 2:
+                                mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("Hard"));
+                                if (difficultyThresholds() < 2) {
+                                    mChooseThemeText.setText("You need 2000 points in Normal mode to unlock Hard mode");
+                                    mThemeSpinner.setVisibility(View.GONE);
+                                }
+                                else {
+                                    setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
+                                }
+                                break;
+                        }
+
                     }
                 }
             }
@@ -99,6 +131,7 @@ public class ThemeSelect extends Activity {
         mGoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                rememberOptions();
                 Intent Start = new Intent(ThemeSelect.this, QuestionDisplayer.class);
                 Start.putExtra("theme",mFileToOpen);
                 startActivity(Start);
@@ -114,6 +147,10 @@ public class ThemeSelect extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mThemeSpinner.setAdapter(adapter);
+        if (mLastSinglePlayerTheme != null) {
+            mThemeSpinner.setSelection(((ArrayAdapter) mThemeSpinner.getAdapter()).getPosition(mLastSinglePlayerTheme));
+        }
+//        mThemeSpinner.setSelection(1);
     }
 
     private void setUpDifficultySpinner() {
@@ -123,5 +160,66 @@ public class ThemeSelect extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mDifficultySpinner.setAdapter(adapter);
+        if (mLastSinglePlayerDifficulty != null) {
+            mDifficultySpinner.setSelection(((ArrayAdapter) mDifficultySpinner.getAdapter()).getPosition(mLastSinglePlayerDifficulty));
+        }
+//        mDifficultySpinner.setSelection(1);
+    }
+
+    public int countDifficultyScores(String difficulty) {
+        int totalScore = 0;
+        if (difficulty.equals("Easy")) {
+            for (int i = 0; i < FactFileNames.easyFiles.length; i++) {
+                String selectedTheme = FactFileNames.easyFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        if (difficulty.equals("Normal")) {
+            for (int i = 0; i < FactFileNames.mediumFiles.length; i++) {
+                String selectedTheme = FactFileNames.mediumFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        if (difficulty.equals("Hard")) {
+            for (int i = 0; i < FactFileNames.hardFiles.length; i++) {
+                String selectedTheme = FactFileNames.hardFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        return totalScore;
+    }
+
+    private int difficultyThresholds() {
+        int val = 0;
+        if (countDifficultyScores("Easy") > getResources().getInteger(R.integer.scores_to_unlock_medium)){
+            val=1;
+            if (countDifficultyScores("Normal") > getResources().getInteger(R.integer.scores_to_unlock_hard)) {
+                val =2;
+            }
+        }
+        return val;
+    }
+
+    private void rememberOptions() {
+        mLastSinglePlayerTheme = mSelectedTheme;
+        mLastSinglePlayerDifficulty = mSelectedDifficulty;
     }
 }

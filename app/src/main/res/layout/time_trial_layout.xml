@@ -28,7 +28,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/question_displayer" />
+        android:id="@+id/question_to_display" />
 
     <LinearLayout
         android:layout_width="match_parent"

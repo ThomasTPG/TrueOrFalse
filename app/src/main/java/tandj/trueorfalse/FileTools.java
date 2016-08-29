@@ -68,8 +68,6 @@ public class FileTools
                         mListOfScores[jj] = Integer.parseInt(splitLine[1]);
                     }
                 }
-                System.out.println(splitLine[0]);
-                System.out.println(newFiles);
                 newFiles.remove(splitLine[0]);
             }
             bufferedInput.close();
@@ -98,13 +96,14 @@ public class FileTools
 
         }
         catch (IOException e)
-        {
+        {            e.printStackTrace();
 
         }
     }
 
     public static void writeData(String factFileName, int score)
     {
+        init();
         boolean error = true;
         for (int ii = 0; ii < mListOfAllFactFileNames.length; ii++)
         {
@@ -134,12 +133,14 @@ public class FileTools
         }
         catch (IOException e)
         {
+            e.printStackTrace();
 
         }
     }
 
     public static int getScore(String factFileName)
     {
+        init();
         for (int ii = 0; ii < mListOfScores.length; ii++)
         {
             if (mListOfAllFactFileNames[ii].equals(factFileName))

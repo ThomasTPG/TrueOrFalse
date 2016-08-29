@@ -21,6 +21,8 @@ public class TimeTrialWaiting extends Activity {
         Intent input = getIntent();
         final Bundle b = input.getExtras();
         final String nextPlayer = b.getString("Next Player");
+        final String[] questions = getIntent().getStringArrayExtra("Questions");
+
 
         TextView playerDisplay = (TextView) findViewById(R.id.player_number_display);
         playerDisplay.setText(nextPlayer + ", press the start button to begin.");
@@ -32,6 +34,7 @@ public class TimeTrialWaiting extends Activity {
             public void onClick(View v) {
                 Intent startGame = new Intent(TimeTrialWaiting.this, TimeTrial.class);
                 startGame.putExtra("Current Player", nextPlayer);
+                startGame.putExtra("Questions", questions);
                 if (!(nextPlayer.equals("Player 1")))
                 {
                     startGame.putExtra("Player 1 Score", b.getInt("Player 1 Score"));

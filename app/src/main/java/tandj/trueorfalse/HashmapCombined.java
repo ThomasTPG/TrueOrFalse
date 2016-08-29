@@ -25,6 +25,7 @@ public class HashmapCombined {
     public HashmapCombined(String[] arrayOfFactFileNames, Context c)
     {
         mContext = c;
+        mHashMap = new HashMap<>();
         getHashMap(arrayOfFactFileNames);
 
     }
@@ -66,8 +67,13 @@ public class HashmapCombined {
                 questionsLeft.add(i);
             }
         }
-        int randomItemIndex = (int) Math.floor(Math.random() * listOfAskedQuestion.size());
-        mItem = listOfAskedQuestion.get(randomItemIndex);
+        if (questionsLeft.isEmpty())
+        {
+            questionsLeft = mListOfValues;
+            mAskedQuestions = new HashMap<>();
+        }
+        int randomItemIndex = (int) Math.floor(Math.random() * questionsLeft.size());
+        mItem = questionsLeft.get(randomItemIndex);
         mAskedQuestions.put(mItem, getTrueOrFalse());
         return mItem;
     }

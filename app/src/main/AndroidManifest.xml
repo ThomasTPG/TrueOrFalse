@@ -22,16 +22,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-<<<<<<< Updated upstream
-        <activity
-            android:name=".GameOver"
-            android:label="@string/title_activity_game_over"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ThemeSelect"
-            android:label="@string/title_activity_theme_select"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-=======
         <activity android:name=".ThemeSelect">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -74,7 +64,27 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
->>>>>>> Stashed changes
+        <activity android:name=".TwoPlayer">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SplitScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TwoPlayerThemeSelect">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

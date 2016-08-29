@@ -38,12 +38,16 @@ public class TimeTrial extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.time_trial_layout);
 
         mBundle = getIntent().getExtras();
 
-        mFactStore = new HashmapCombined(mBundle.getStringArray("Selected Facts"), this);
+        String[] questions = mBundle.getStringArray("Questions");
+
+        mFactStore = new HashmapCombined(questions, this);
 
         setUpDisplay();
+        mFactDisplay = (TextView) findViewById(R.id.question_to_display);
 
         mFactDisplay.setText(mFactStore.getRandomItem());
 
@@ -89,9 +93,10 @@ public class TimeTrial extends Activity{
 
     private void setUpCountDown()
     {
-        mCountDownTimer = new CountDownTimer(LENGTH_PER_ROUND_MS, 1000) {
+        mCountDownTimer = new CountDownTimer(LENGTH_PER_ROUND_MS, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
+                System.out.println("TICK");
                 int secondsRemaining = (int) (millisUntilFinished / 1000);
                 mTimeRemainingDisplay.setText("Time remaining: " + secondsRemaining);
             }
@@ -109,12 +114,15 @@ public class TimeTrial extends Activity{
                 {
                     end = new Intent(TimeTrial.this, TimeTrialFinished.class);
                     end.putExtra("Player 1 Score", mBundle.getInt("Player 1 Score"));
+                    end.putExtra("Player 2 Score", mScore);
                 }
+                end.putExtra("Questions", mBundle.getStringArray("Questions"));
                 startActivity(end);
                 this.cancel();
                 finish();
             }
         };
+        mCountDownTimer.start();
     }
 
     private void setScoreDisplay()
@@ -124,11 +132,10 @@ public class TimeTrial extends Activity{
 
     private void setUpDisplay()
     {
-        mFactDisplay = (TextView) findViewById(R.id.fact_displayer);
 
         mPlayerDisplayer = (TextView) findViewById(R.id.current_player);
 
-        mScoreDisplayer = (TextView) findViewById(R.id.score_displayer);
+        mScoreDisplayer = (TextView) findViewById(R.id.current_score);
 
         mTimeRemainingDisplay = (TextView) findViewById(R.id.time_remaining);
 

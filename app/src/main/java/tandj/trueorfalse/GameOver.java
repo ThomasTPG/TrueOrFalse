@@ -1,5 +1,6 @@
 package tandj.trueorfalse;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,7 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class GameOver extends AppCompatActivity {
+public class GameOver extends Activity {
 
     private TextView mResults;
     private TextView mScore;
@@ -62,7 +63,8 @@ public class GameOver extends AppCompatActivity {
         }
         mScore.setText("Score: " + results.getInt("score"));
 
-        mNumberofQuestions.setText("Number of questions answered: " + results.getInt("numQuestions"));
+        int questionsAnswered = results.getInt("numQuestions") - results.getInt("missedTracker");
+        mNumberofQuestions.setText("Number of questions answered: " + questionsAnswered);
 
         setScrollView();
 
@@ -71,14 +73,17 @@ public class GameOver extends AppCompatActivity {
 
         setPlayAgainButton();
         setGoHomeButton();
+
     }
 
     private void setPlayAgainButton() {
         mPlayAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("again");
                 Intent start = new Intent(GameOver.this, ThemeSelect.class);
                 startActivity(start);
+                finish();
             }
         });
     }
@@ -89,6 +94,7 @@ public class GameOver extends AppCompatActivity {
             public void onClick(View view) {
                 Intent start = new Intent(GameOver.this, MainScreen.class);
                 startActivity(start);
+                finish();
             }
         });
     }
@@ -110,6 +116,9 @@ public class GameOver extends AppCompatActivity {
             String givenAnswer = "";
             switch (answers[index])
             {
+                case (2):
+                    givenAnswer = "None";
+                    break;
                 case (1):
                     givenAnswer = "True";
                     break;
@@ -125,7 +134,4 @@ public class GameOver extends AppCompatActivity {
 
         questionsAsked.size();
     }
-
-
-
 }

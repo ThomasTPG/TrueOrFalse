@@ -24,6 +24,7 @@ public class MainScreen extends Activity{
      */
     private FileTools mFileTools;
 
+
     /**
      * Method called when the activity is created
      * @param savedInstanceState
@@ -43,12 +44,43 @@ public class MainScreen extends Activity{
 
         mStartButton = (Button) findViewById(R.id.start);
 
+
         mStartButton.setText("Start");
 
+
+        setStatsButton();
+
+        setTwoPlayerButton();
 
         setStartButton();
 
         setUpFileTools();
+    }
+
+    private void setStatsButton()
+    {
+        Button stats = (Button) findViewById(R.id.stats_button);
+        stats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent start = new Intent(MainScreen.this, StatisticDisplay.class);
+                startActivity(start);
+                finish();
+            }
+        });
+    }
+
+    private void setTwoPlayerButton()
+    {
+        Button twoPlayer = (Button) findViewById(R.id.two_player_button);
+        twoPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent start = new Intent(MainScreen.this, TwoPlayer.class);
+                startActivity(start);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -75,7 +107,16 @@ public class MainScreen extends Activity{
                 //Intent start = new Intent(MainScreen.this, QuestionDisplayer.class);
                 Intent start = new Intent(MainScreen.this, ThemeSelect.class);
                 startActivity(start);
+                finish();
             }
         });
     }
+
+
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
 }
