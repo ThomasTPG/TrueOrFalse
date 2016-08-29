@@ -33,7 +33,7 @@ public class QuestionDisplayer extends Activity {
     /**
      * Tool class for dealing with hashmap
      */
-    private HashMapTools mHashMapTools;
+    private HashmapCombined mHashMapTools;
 
     /**
      * Text view that displays the fact
@@ -117,6 +117,8 @@ public class QuestionDisplayer extends Activity {
 
     private String mTheme;
 
+    private String[] mThemesSelected;
+
     private int mMissedQuestions;
 
     private ProgressBar mTimerProgress;
@@ -127,9 +129,17 @@ public class QuestionDisplayer extends Activity {
         super.onCreate(savedInstanceState);
 
         Bundle b = getIntent().getExtras();
-        mTheme = b.getString("theme");
+        mThemesSelected = b.getStringArray("theme");
+        if(mThemesSelected.length == 1)
+        {
+            mTheme = mThemesSelected[0];
+        }
+        else
+        {
+            mTheme = "All " + b.getString("Difficulty");
+        }
 //        mTheme = "cambridge_facts.txt";
-        mHashMapTools = new HashMapTools(mTheme, this);
+        mHashMapTools = new HashmapCombined(mThemesSelected, this);
 
 
         mScore = getResources().getInteger(R.integer.starting_score);

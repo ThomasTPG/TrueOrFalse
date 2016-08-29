@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Thomas on 28/08/2016.
@@ -17,7 +18,7 @@ public class HashmapCombined {
 
     Context mContext;
     HashMap<String, Boolean> mHashMap;
-    private HashMap<String, Boolean> mAskedQuestions = new HashMap<>();
+    private LinkedHashMap<String, Boolean> mAskedQuestions = new LinkedHashMap<>();
     String mItem;
     private ArrayList<String> mListOfValues;
 
@@ -70,7 +71,7 @@ public class HashmapCombined {
         if (questionsLeft.isEmpty())
         {
             questionsLeft = mListOfValues;
-            mAskedQuestions = new HashMap<>();
+            mAskedQuestions = new LinkedHashMap<String, Boolean>();
         }
         int randomItemIndex = (int) Math.floor(Math.random() * questionsLeft.size());
         mItem = questionsLeft.get(randomItemIndex);
@@ -89,6 +90,12 @@ public class HashmapCombined {
             return null;
         }
     }
+
+    public LinkedHashMap<String, Boolean> getAskedQuestion()
+    {
+        return mAskedQuestions;
+    }
+
 
 
 

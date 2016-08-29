@@ -11,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ThemeSelect extends Activity {
 
     private Spinner mThemeSpinner;
@@ -20,6 +23,7 @@ public class ThemeSelect extends Activity {
     private TextView mDifficultyScoreDisplay;
     private String defaultFile = FactFileNames.fileNames[0];
     String mFileToOpen;
+    ArrayList<String> selectedFactFiles = new ArrayList<String>();
     private TextView mChooseThemeText;
     private String mSelectedTheme;
     public static String mLastSinglePlayerTheme;
@@ -61,14 +65,61 @@ public class ThemeSelect extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mSelectedTheme = String.valueOf(mThemeSpinner.getSelectedItem());
+                mSelectedTheme = mSelectedTheme.split(":")[0];
 
-                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++)
+                if (mSelectedTheme.equals("All"))
                 {
-                    if (mSelectedTheme.equals(FactFileNames.allFiles[ii]))
+                    for (int ii = 0; ii< FactFileNames.difficulties.length; ii++)
                     {
-                        mFileToOpen = FactFileNames.fileNames[ii];
-                        mScoreDisplay.setText("High score: " + FileTools.getScore(mFileToOpen));
+                        if (mSelectedDifficulty.equals(FactFileNames.difficulties[ii]))
+                        {
+                            selectedFactFiles.clear();
+                            for (int jj = 0; jj < FactFileNames.difficultyArrays[ii].length; jj++)
+                            {
+                                for (int kk = 0; kk < FactFileNames.allFiles.length; kk++)
+                                {
+                                    if (FactFileNames.difficultyArrays[ii][jj].equals(FactFileNames.allFiles[kk]))
+                                    {
+                                        selectedFactFiles.add(FactFileNames.fileNames[kk]);
+                                        mScoreDisplay.setText("High score: " + FileTools.getScore("All " + mSelectedDifficulty));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (mSelectedTheme.equals("Random"))
+                {
+                    for (int ii = 0; ii< FactFileNames.difficulties.length; ii++)
+                    {
+                        if (mSelectedDifficulty.equals(FactFileNames.difficulties[ii]))
+                        {
+                            String[] array = FactFileNames.difficultyArrays[ii];
+                            int index = (int) Math.floor(Math.random() * array.length);
+                            selectedFactFiles.clear();
+                            for (int kk = 0; kk < FactFileNames.allFiles.length; kk++)
+                            {
+                                if (FactFileNames.difficultyArrays[ii][index].equals(FactFileNames.allFiles[kk]))
+                                {
+                                    selectedFactFiles.add(FactFileNames.fileNames[kk]);
+                                    mScoreDisplay.setText("");
 
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int ii = 0; ii < FactFileNames.allFiles.length; ii++)
+                    {
+                        if (mSelectedTheme.equals(FactFileNames.allFiles[ii]))
+                        {
+                            selectedFactFiles.clear();
+                            selectedFactFiles.add(FactFileNames.fileNames[ii]);
+                            mScoreDisplay.setText("High score: " + FileTools.getScore(FactFileNames.fileNames[ii]));
+
+                        }
                     }
                 }
             }
@@ -90,6 +141,7 @@ public class ThemeSelect extends Activity {
                     if (mSelectedDifficulty.equals(FactFileNames.difficulties[ii])) {
                         switch (ii) {
                             case 0:
+
                                 setUpThemeSpinner(FactFileNames.difficultyArrays[ii]);
                                 mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("Easy"));
                                 break;
@@ -133,7 +185,8 @@ public class ThemeSelect extends Activity {
             public void onClick(View v) {
                 rememberOptions();
                 Intent Start = new Intent(ThemeSelect.this, QuestionDisplayer.class);
-                Start.putExtra("theme",mFileToOpen);
+                Start.putExtra("theme",(String[]) selectedFactFiles.toArray(new String[0]));
+                Start.putExtra("Difficulty", mSelectedDifficulty);
                 startActivity(Start);
             }
 
@@ -141,8 +194,21 @@ public class ThemeSelect extends Activity {
     }
 
     private void setUpThemeSpinner(String[] array) {
+        String[] newArray = new String[array.length + 2];
+        for (int mm = 0; mm < array.length; mm++)
+        {
+            for (int ii = 0; ii < FactFileNames.allFiles.length; ii++)
+            {
+                if (array[mm].equals(FactFileNames.allFiles[ii]))
+                {
+                    newArray[mm] = array[mm] + ": " + FileTools.getScore(FactFileNames.fileNames[ii]);
+                }
+            }
+        }
+        newArray[array.length] = "Random";
+        newArray[array.length + 1] = "All: " + FileTools.getScore("All " + mSelectedDifficulty);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, array);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, newArray);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner

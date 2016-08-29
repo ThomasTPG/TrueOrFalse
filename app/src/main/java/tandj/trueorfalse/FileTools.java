@@ -31,7 +31,7 @@ public class FileTools
     /**
      * List of all levels for which to store score for
      */
-    private static String[] mListOfAllFactFileNames = FactFileNames.fileNames;
+    private static String[] mListOfAllFactFileNames;
 
     private static int[] mListOfScores;
 
@@ -42,6 +42,16 @@ public class FileTools
 
     public static void init()
     {
+        mListOfAllFactFileNames = new String[FactFileNames.fileNames.length + FactFileNames.difficulties.length];
+        for (int ii = 0; ii < FactFileNames.fileNames.length; ii++)
+        {
+            mListOfAllFactFileNames[ii] = FactFileNames.fileNames[ii];
+        }
+        for (int jj = 0; jj < FactFileNames.difficulties.length; jj++)
+        {
+            mListOfAllFactFileNames[jj + FactFileNames.fileNames.length] = "All " + FactFileNames.difficulties[jj];
+        }
+
         mListOfScores = new int[mListOfAllFactFileNames.length];
         for (int ii = 0; ii < mListOfScores.length; ii ++)
         {
