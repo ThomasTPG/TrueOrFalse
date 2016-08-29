@@ -1,6 +1,10 @@
 package tandj.trueorfalse;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 public class StatisticDisplay extends Activity {
 
     statisticsUpdated mStats;
+
     private int mNumAchievements;
     private LinearLayout mAchievementLayout;
 
@@ -24,6 +29,18 @@ public class StatisticDisplay extends Activity {
         super.onCreate(savedInstanceState);
         mStats = new statisticsUpdated(this);
         setContentView(R.layout.statistic_view);
+
+        Button menu = (Button) findViewById(R.id.menu_button);
+        menu.setText("Menu");
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent start = new Intent(StatisticDisplay.this, MainScreen.class);
+                startActivity(start);
+                finish();
+            }
+        });
+
         addStats();
         mNumAchievements = 5;
         addAchievements();
@@ -93,7 +110,6 @@ public class StatisticDisplay extends Activity {
             return "gold";
         }
     }
-
 
     @Override
     protected void onPause() {

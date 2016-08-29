@@ -44,6 +44,7 @@ public class MainScreen extends Activity{
 
         mStartButton = (Button) findViewById(R.id.start);
 
+
         mStartButton.setText("Start");
 
 

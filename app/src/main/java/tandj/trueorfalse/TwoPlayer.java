@@ -22,6 +22,7 @@ public class TwoPlayer extends AppCompatActivity {
     {
         setHomeButton();
         setSplitScreenButton();
+        setTimeTrialButton();
     }
 
     private void setHomeButton() {
@@ -37,11 +38,25 @@ public class TwoPlayer extends AppCompatActivity {
     }
 
     private void setSplitScreenButton() {
-        Button splitScreen = (Button) findViewById(R.id.split_screen_button);
+        final Button splitScreen = (Button) findViewById(R.id.split_screen_button);
         splitScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent start = new Intent(TwoPlayer.this, SplitScreen.class);
+                Intent start = new Intent(TwoPlayer.this, TwoPlayerThemeSelect.class);
+                start.putExtra("Mode", "Split");
+                startActivity(start);
+                finish();
+            }
+        });
+    }
+
+    private void setTimeTrialButton() {
+        Button splitScreen = (Button) findViewById(R.id.time_trial_button);
+        splitScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent start = new Intent(TwoPlayer.this, TwoPlayerThemeSelect.class);
+                start.putExtra("Mode", "Time Trial");
                 startActivity(start);
                 finish();
             }

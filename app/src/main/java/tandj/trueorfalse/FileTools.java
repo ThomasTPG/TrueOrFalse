@@ -68,8 +68,6 @@ public class FileTools
                         mListOfScores[jj] = Integer.parseInt(splitLine[1]);
                     }
                 }
-                System.out.println(splitLine[0]);
-                System.out.println(newFiles);
                 newFiles.remove(splitLine[0]);
             }
             bufferedInput.close();

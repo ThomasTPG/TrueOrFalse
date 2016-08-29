@@ -16,7 +16,7 @@ public class SplitScreen extends AppCompatActivity {
     private TextView[] mFactDisplayer = new TextView[2];
     private TextView[] mScoreText = new TextView[2];
     private int[] mScore = new int[2];
-    private HashMapTools mHashMapTools;
+    private HashmapCombined mHashMapTools;
     private Handler mHandler = new Handler();
     private boolean mQuestionIsOver;
     private int mNumAnswersGiven;
@@ -29,7 +29,9 @@ public class SplitScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_split_screen);
 
-        mHashMapTools = new HashMapTools("cambridge_facts.txt", this);
+        String[] questions = getIntent().getStringArrayExtra("Questions");
+
+        mHashMapTools = new HashmapCombined(questions,this);
 
         setUpDisplay();
         setUpContent();

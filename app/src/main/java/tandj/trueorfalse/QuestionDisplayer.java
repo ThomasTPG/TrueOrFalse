@@ -225,7 +225,8 @@ public class QuestionDisplayer extends Activity {
                     setFact();
                     mCorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-                    if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+
+                    if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
                         mCountdownTimer.start();
                     }
                 }
@@ -243,9 +244,11 @@ public class QuestionDisplayer extends Activity {
                     setFact();
                     mIncorrect.setVisibility(View.GONE);
                     mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-                    if (mScore > 0 && mNumberOfQuestions <= MAX_QUESTIONS) {
+
+                    if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
                         mCountdownTimer.start();
                     }
+
                 }
             },2000);
             calculateNewScore(false);
@@ -380,6 +383,7 @@ public class QuestionDisplayer extends Activity {
         }
     }
 
+
     private void setUpCountdownTimer() {
         mCountdownTimer = new CountDownTimer(6000, 1000) {
 
@@ -405,6 +409,7 @@ public class QuestionDisplayer extends Activity {
                         if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
                             mCountdownTimer.start();
                             mTimerProgress.setProgress(0);
+
                         }
                     }
                 }, 2000);

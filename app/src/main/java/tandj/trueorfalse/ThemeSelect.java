@@ -209,9 +209,9 @@ public class ThemeSelect extends Activity {
 
     private int difficultyThresholds() {
         int val = 0;
-        if (countDifficultyScores("Easy") > 2000){
+        if (countDifficultyScores("Easy") > getResources().getInteger(R.integer.scores_to_unlock_medium)){
             val=1;
-            if (countDifficultyScores("Normal") > 2000) {
+            if (countDifficultyScores("Normal") > getResources().getInteger(R.integer.scores_to_unlock_hard)) {
                 val =2;
             }
         }
