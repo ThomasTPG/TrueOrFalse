@@ -1,0 +1,15 @@
+Wimbledon is the oldest tennis tournament in the world#true
+Wimbledon is the only major played on grass#true
+Wimlbedon takes place over two weeks#true
+Wimbledon was founded in 1877#true
+Wimbledon consists of five Junior events#true
+Since 2007, Wimbledon matches have been transmitted in high-definition#true
+The prize money is equal for men and women#true
+In 2016 the prize for winning the Singles event was £2,000,000#true
+Wimbledon is one of the five Grandslam tennis tournaments#false
+Wimbledon is the only major where women play up to 5 sets#false
+The singles events consist of 64 players#false
+The system of seeding was introduced during the 1924 Wimbledon Championships#false
+Dark blue and white are the traditional Wimbledon colours#false
+Since 1938 the BBC has broadcast the tournament on television in the UK#false
+Roger Federer won Wimbledon 6 consecutive times#false

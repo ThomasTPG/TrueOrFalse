@@ -128,7 +128,6 @@ public class QuestionDisplayer extends Activity {
 
         Bundle b = getIntent().getExtras();
         mTheme = b.getString("theme");
-//        mTheme = "cambridge_facts.txt";
         mHashMapTools = new HashMapTools(mTheme, this);
 
 
