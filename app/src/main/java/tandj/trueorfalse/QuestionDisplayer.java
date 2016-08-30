@@ -142,6 +142,7 @@ public class QuestionDisplayer extends Activity {
         mHashMapTools = new HashmapCombined(mThemesSelected, this);
 
 
+
         mScore = getResources().getInteger(R.integer.starting_score);
         MAX_QUESTIONS = getResources().getInteger(R.integer.number_of_questions_per_round);
         mPointsTracker = new int[MAX_QUESTIONS];

@@ -1,12 +1,14 @@
 package tandj.trueorfalse;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
-public class TwoPlayer extends AppCompatActivity {
+public class TwoPlayer extends Activity {
 
 
 
@@ -26,7 +28,7 @@ public class TwoPlayer extends AppCompatActivity {
     }
 
     private void setHomeButton() {
-        Button home = (Button) findViewById(R.id.go_home);
+        ImageButton home = (ImageButton) findViewById(R.id.go_home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

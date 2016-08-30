@@ -1,0 +1,14 @@
+Africa is the largest continent in the world#false
+Africa is the second most populous continent in the world#true
+Africa contains 55 fully recognised soveign states#false
+Africa's populations is the youngest among all the continents#true
+Libya is Africa's largest country by area#false
+Nigeria is Africa's largest country by populations#true
+Cairo is Africa's largest city#false
+Afri was a Latin name used to refer to people living in Africa#true
+Togo is the smallest country in Africa#false
+The most northernly point of Africa is in Tunisia#true
+The African Union is a 53-member federation consisting of all of Africa's states except Morocco#false
+Deforestation affects Africa at twice the world rate#true
+According to the United Nations' Human Development Report in 2003, the bottom 21 ranked nations were all African#false
+In 2007, Chinese companies invested a total of US$1 billion in Africa#true
