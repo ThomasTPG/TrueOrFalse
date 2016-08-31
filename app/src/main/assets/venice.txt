@@ -1,0 +1,18 @@
+Venice is the capital of the Veneto region#true
+The commune of Venice is made up of 5 boroughs#false
+There are 417 bridges in Venice#true
+There are fewer than 50 public beaches in Venice#false
+The Bridge of Sighs was built to connect the old prison in Doge’s Palace with the new one across the river#true
+There are two major bridges across the Grand Canal#false
+Ramo Varisco street is only 53 cm wide#true
+Houses in Venice are numbered according to the streets#false
+Venice got its first female gondolier in 2010#true
+In 1608 Council of Ten approved wearing masks only during Carnival. The ones who would broke the law were heavily punished, from five years in prison to public beating and binding to the pillar of shame#false
+Acqua alta, or higher water, happens when tide is 9 cm above normal height#true
+There are 157 canals in Venice#false
+The S-shaped Grand Canal is the biggest canal in Venice and it splits the city in two#true
+There are under 450 palaces (palazzi) in Venice#false
+Venice is sinking at the rate of 1-2 millimeters a year#true
+The Venice lagoon is 20 meters deep at its deepest point#false
+There are 118 islands, 416 bridges, 177 canals and 127 squares in Venice#true
+In Venice the water from drinking fountains is not safe for drinking#false

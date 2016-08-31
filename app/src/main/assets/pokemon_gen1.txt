@@ -1,0 +1,16 @@
+Gen I contains 151 pokemon#true
+Gen I spans 3 main videogames#false
+Gen I takes place in Kanto#true
+Gen I takes place in Johto#false
+Kanto is named after the Kanto region of Japan#true
+The Pokemon professor in Gen I is Prof. Birch#false
+Gen I games begin in Pallet Town#true
+Gen I is the only generation with 9 gyms#false
+Gym 3 in Gen I is in Vermillion City#true
+Gym 5 in Gen I is in Saffron City#false
+In Celadon City, you can win the Rainbow badge#true
+In Viridian City, you can win the Volcano badge#false
+Gen I introduced the most moves to the series, with 165#true
+Gen I is one of two generations that indexes its Pokémon in order of creation instead of by Pokédex number#false
+Gen I is the only generation without a playable female character#true
+Gen I has 14 different pokemon types#false
