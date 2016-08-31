@@ -14,9 +14,9 @@ public class FactFileNames
 
     static final String[] easyFiles = {"Cute animal facts", "Number facts", "Cambridge", "Solar System - Easy"};
 
-    static final String[] mediumFiles = {"Tasty Foods", "NBA", "London", "Solar System - Medium", "Wimbledon"};
+    static final String[] mediumFiles = {"Tasty Foods", "NBA", "London", "Solar System - Medium", "Wimbledon", "Pokemon - Gen I"};
 
-    static final String[] hardFiles = {"Solar System - Hard", "Africa"};
+    static final String[] hardFiles = {"Solar System - Hard", "Africa", "Venice"};
 
     static final String[] allFiles = {
             "Cute animal facts",
@@ -29,7 +29,9 @@ public class FactFileNames
             "Solar System - Medium",
             "Solar System - Hard",
             "Wimbledon",
-            "Africa"};
+            "Africa",
+            "Venice",
+            "Pokemon - Gen I"};
 
     static final String[] fileNames = {
             "cute_animal_facts.txt",
@@ -42,7 +44,9 @@ public class FactFileNames
             "solar_system_facts_medium.txt",
             "solar_system_facts_hard.txt",
             "wimbledon_medium.txt",
-            "africa.txt"};
+            "africa.txt",
+            "venice.txt",
+            "pokemon_gen1.txt"};
 
     static final String[] difficulties = {"Easy", "Medium", "Hard"};
 
