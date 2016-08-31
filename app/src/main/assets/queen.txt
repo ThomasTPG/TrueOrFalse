@@ -1,0 +1,12 @@
+There are only two original members of Queen alive today#false
+Queen guitarist, Brian May, has a PhD in astrophysics#true
+Queen wrote a song about special relativity#true
+Bohemium Rhapsody is an example of prog rock#true
+Bohemium Rhapsody achieved number 1 in both the UK and the US#false
+Freddie Mercury was born under the same name#false
+Freddie Mercury had Indian parents#true
+Freddie Mercury died the day after he announced he has AIDS#true
+Queen sang in the 1984 Christmas number 1, 'Do They Know it's Christmas?'#false
+Queen have released over 150 songs#true
+The band was named Happy before it was renamed to Queen#false
+Queen have spent 26 years in the UK albums charts#true
