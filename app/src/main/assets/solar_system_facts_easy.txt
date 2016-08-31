@@ -9,4 +9,3 @@ Earth is the only planet in the solar system not named after a god#true
 Days on Mercury are shorter than days on Earth#false
 The temperature on the surface of the sun is over 5000 degrees Celsius#true
 Man first stepped on the moon in 1969#true
-
