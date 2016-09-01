@@ -1,0 +1,16 @@
+Sheffield Utd�s Brian Deane scored the first goal in the English Premier League history#true
+1 English manager has won the league title#false
+The English Premier League began in 1992#true
+The English Premier League began on 15th September 1992#false
+Sir Alex Ferguson won 12 Premier League titles#true
+The first SKY TV deal was worth over �350 million over 5 years#false
+Ryan Giggs played in every Premier League season until his retirement#true
+The highest scoring game in the Premier League was 8-1 #false
+Blackburn have been given the most red cards#true
+Manchester United have received the most yellow cards#false
+In the 03/04 season, Arsenal was unbeaten#true
+Alan Shearer topped scoring charts with 245 goals#false
+In the 93/94 season, Swindon conceded 100 goals#true
+No goals were scored by goalkeepers before 2002#false
+In the 07/08 season Derby went 32 games without a win#true
+Liverpool won the first Premier League title#false

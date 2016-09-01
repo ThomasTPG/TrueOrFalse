@@ -55,6 +55,16 @@ public class StatisticDisplay extends Activity {
             stat.setText(statisticsUpdated.statisticArray[ii] + ": " + mStats.getStat(ii));
             linearLay.addView(stat);
         }
+
+        TextView correct = new TextView(this);
+        correct.setText("Correct answers per round: " + mStats.getStat(1)/mStats.getStat(2));
+        linearLay.addView(correct);
+
+        TextView incorrect = new TextView(this);
+        incorrect.setText("Incorrect answers per round: " + mStats.getStat(4)/mStats.getStat(2));
+        linearLay.addView(incorrect);
+
+
     }
 
     private void addAchievements() {
@@ -63,6 +73,9 @@ public class StatisticDisplay extends Activity {
         addSingleAchievement("Number of\nGames Played", getAchievementColour(mStats.getStat(2), 10,50,200));
         addSingleAchievement("Total Score", getAchievementColour(mStats.getStat(3), 20000,50000,200000));
         addSingleAchievement("Number of\nCorrect Answers", getAchievementColour(mStats.getStat(1), 100,500,2000));
+        addSingleAchievement("Number of Split Screen games played", getAchievementColour(0, 10, 50, 100));
+        addSingleAchievement("Number of Time Trial Games played", getAchievementColour(0, 10,50,100));
+        addSingleAchievement("Difficulties Unlocked", getAchievementColour(1, 1, 2, 3));
     }
 
     private void addSingleAchievement(String text, String colour) {
@@ -72,13 +85,13 @@ public class StatisticDisplay extends Activity {
         medal.setImageResource(R.drawable.medal1);
         setAchievementColour(colour, medal);
         LinearLayout.LayoutParams layoutParamsMedal = new LinearLayout.LayoutParams(200, 200);
-        LinearLayout.LayoutParams layoutParamsText = new LinearLayout.LayoutParams(200, 200, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParamsText = new LinearLayout.LayoutParams(400, 200, LinearLayout.LayoutParams.WRAP_CONTENT);
         medal.setLayoutParams(layoutParamsMedal);
         linearLayout.addView(medal);
         TextView stat = new TextView(this);
         stat.setText(text);
         stat.setLayoutParams(layoutParamsText);
-        stat.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8);
+        stat.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         stat.setGravity(Gravity.CENTER);
         linearLayout.addView(stat);
     }
