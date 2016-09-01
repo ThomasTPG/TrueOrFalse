@@ -39,6 +39,13 @@ public class ThemeSelect extends Activity {
         addListenerOnButton();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(ThemeSelect.this, MainScreen.class);
+        startActivity(back);
+        finish();
+    }
+
     private void setUpDisplay() {
         mGoButton = (Button) findViewById(R.id.go);
         mThemeSpinner = (Spinner) findViewById(R.id.theme_spinner);
