@@ -217,6 +217,8 @@ public class SplitScreen extends AppCompatActivity {
 
     private void endGame(int playerNo) {
         updateScoreText();
+        statisticsUpdated  stats = new statisticsUpdated(this);
+        stats.updateStat(statisticsUpdated.NUMBER_OF_SPLIT_SCREEN_GAMES,1);
         mQuestionIsOver = false;
         mNumAnswersGiven = 0;
         mPlayerNo = playerNo;

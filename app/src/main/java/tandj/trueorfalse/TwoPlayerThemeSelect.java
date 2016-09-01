@@ -149,12 +149,5 @@ public class TwoPlayerThemeSelect extends Activity {
 
     }
 
-    private Boolean boxesChecked() {
-        if (selectedFacts.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 }

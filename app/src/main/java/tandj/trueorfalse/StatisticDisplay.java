@@ -73,7 +73,7 @@ public class StatisticDisplay extends Activity {
         addSingleAchievement("Number of\nGames Played", getAchievementColour(mStats.getStat(2), 10,50,200));
         addSingleAchievement("Total Score", getAchievementColour(mStats.getStat(3), 20000,50000,200000));
         addSingleAchievement("Number of\nCorrect Answers", getAchievementColour(mStats.getStat(1), 100,500,2000));
-        addSingleAchievement("Number of Split Screen games played", getAchievementColour(0, 10, 50, 100));
+        addSingleAchievement("Number of Split Screen games played", getAchievementColour(mStats.getStat(6), 10, 50, 100));
         addSingleAchievement("Number of Time Trial Games played", getAchievementColour(0, 10,50,100));
         addSingleAchievement("Difficulties Unlocked", getAchievementColour(1, 1, 2, 3));
     }
