@@ -42,17 +42,17 @@ public class MainScreen extends Activity{
     {
         setContentView(R.layout.main_screen_layout);
 
-        mStartButton = (Button) findViewById(R.id.start);
+//        mStartButton = (Button) findViewById(R.id.start);
 
 
-        mStartButton.setText("Start");
+//        mStartButton.setText("Start");
 
 
-        setStatsButton();
+        //setStatsButton();
 
-        setTwoPlayerButton();
+        //setTwoPlayerButton();
 
-        setStartButton();
+//        setStartButton();
 
         setUpFileTools();
     }
