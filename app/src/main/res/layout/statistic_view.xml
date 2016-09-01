@@ -24,8 +24,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="20dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -40,7 +39,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/stats">
+                android:id="@+id/stats"
+                android:layout_marginBottom="20dp">
 
             </LinearLayout>
 
