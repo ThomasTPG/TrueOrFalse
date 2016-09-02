@@ -388,6 +388,7 @@ public class QuestionDisplayer extends Activity {
 
     private void quit()
     {
+        mCountdownTimer.cancel();
         Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
         startActivity(start);
         finish();
