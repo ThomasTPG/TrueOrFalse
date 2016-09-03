@@ -230,6 +230,7 @@ public class QuestionDisplayer extends Activity {
 
     }
 
+
     private void onCorrect()
     {
         mAnswerTracker[mNumberOfQuestions - 1] = 1;

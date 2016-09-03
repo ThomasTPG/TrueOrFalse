@@ -73,20 +73,30 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <Button
+        <!--<Button-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:text="Split Screen"-->
+            <!--android:id="@+id/split_screen_button"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:background="@drawable/buttonshape"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:textSize="20dp"-->
+            <!--android:drawableTop="@drawable/splitscreen"-->
+            <!--android:drawablePadding="0dp"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="2dp"-->
+            <!--android:textColor="#FFFFFF"-->
+            <!--android:layout_marginTop="10dp"/>-->
+        <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Split Screen"
             android:id="@+id/split_screen_button"
-            android:layout_gravity="center_horizontal"
             android:background="@drawable/buttonshape"
             android:layout_marginBottom="5dp"
-            android:textSize="20dp"
-            android:drawableTop="@drawable/splitscreen"
-            android:drawablePadding="0dp"
+            android:src="@drawable/splitscreen_text"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="2dp"
-            android:textColor="#FFFFFF"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"/>
     </LinearLayout>
 
@@ -96,21 +106,31 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <Button
+        <!--<Button-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:text="Time Trial"-->
+            <!--android:id="@+id/time_trial_button"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:background="@drawable/buttonshape"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:textSize="20dp"-->
+            <!--android:drawableTop="@drawable/alarm"-->
+            <!--android:drawablePadding="0dp"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="2dp"-->
+            <!--android:textColor="#FFFFFF"-->
+            <!--android:layout_marginTop="10dp"/>-->
+        <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Time Trial"
             android:id="@+id/time_trial_button"
-            android:layout_gravity="center_horizontal"
             android:background="@drawable/buttonshape"
             android:layout_marginBottom="5dp"
-            android:textSize="20dp"
-            android:drawableTop="@drawable/alarm"
-            android:drawablePadding="0dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="2dp"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/alarm_text"/>
 
     </LinearLayout>
 

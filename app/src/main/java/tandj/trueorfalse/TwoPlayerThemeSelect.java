@@ -57,6 +57,7 @@ public class TwoPlayerThemeSelect extends Activity {
     {
         Button back = (Button) findViewById(R.id.start_two_player);
         back.setText("Start");
+        back.setEnabled(false);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +128,12 @@ public class TwoPlayerThemeSelect extends Activity {
                                     }
                                 }
                             }
+                            Button start = (Button) findViewById(R.id.start_two_player);
+                            if (selectedFacts.size() > 0) {
+                                start.setEnabled(true);
+                            } else {
+                                start.setEnabled(false);
+                            }
                         }
                     });
 
@@ -141,5 +148,6 @@ public class TwoPlayerThemeSelect extends Activity {
         }
 
     }
+
 
 }

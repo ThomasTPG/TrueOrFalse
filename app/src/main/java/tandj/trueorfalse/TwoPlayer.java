@@ -40,7 +40,7 @@ public class TwoPlayer extends Activity {
     }
 
     private void setSplitScreenButton() {
-        final Button splitScreen = (Button) findViewById(R.id.split_screen_button);
+        final ImageButton splitScreen = (ImageButton) findViewById(R.id.split_screen_button);
         splitScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +53,7 @@ public class TwoPlayer extends Activity {
     }
 
     private void setTimeTrialButton() {
-        Button splitScreen = (Button) findViewById(R.id.time_trial_button);
+        ImageButton splitScreen = (ImageButton) findViewById(R.id.time_trial_button);
         splitScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
