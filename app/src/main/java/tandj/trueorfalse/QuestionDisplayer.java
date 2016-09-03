@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -43,8 +44,8 @@ public class QuestionDisplayer extends Activity {
     private Button mGoButton;
 
     //Text views that display the correct & incorrect messages
-    private TextView mCorrect;
-    private TextView mIncorrect;
+    private ImageView mCorrect;
+    private ImageView mIncorrect;
 
     /**
      * Handler to provide timing to the game
@@ -167,8 +168,8 @@ public class QuestionDisplayer extends Activity {
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
         mQuestionNumber = (TextView) findViewById(R.id.question_num);
         mNumberOfQuestions = 0;
-        mCorrect = (TextView) findViewById(R.id.correct_display);
-        mIncorrect = (TextView) findViewById(R.id.incorrect_display);
+        mCorrect = (ImageView) findViewById(R.id.correct_display);
+        mIncorrect = (ImageView) findViewById(R.id.incorrect_display);
         mIncorrect.setVisibility(View.GONE);
         mCorrect.setVisibility(View.GONE);
         mGoButton   = (Button)   findViewById(R.id.go_button);
@@ -438,6 +439,7 @@ public class QuestionDisplayer extends Activity {
                 setScoreDisplays();
 
                 setFact();
+                mCorrect.setVisibility(View.GONE);
                 mIncorrect.setVisibility(View.GONE);
                 mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
                 if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
