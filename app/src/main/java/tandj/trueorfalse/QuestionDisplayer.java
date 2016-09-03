@@ -8,15 +8,12 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -43,12 +40,7 @@ public class QuestionDisplayer extends Activity {
     /**
      * False button
      */
-    private Button mFalseButton;
-
-    /**
-     * True button
-     */
-    private Button mTrueButton;
+    private Button mGoButton;
 
     //Text views that display the correct & incorrect messages
     private TextView mCorrect;
@@ -87,6 +79,10 @@ public class QuestionDisplayer extends Activity {
     //Text view showing question number
     private TextView mQuestionNumber;
 
+    private TextView mPointsOnTrueDisplay;
+
+    private int MS_WHILE_WAITING = 2000;
+
     /**
      * Text view showing score to gamble
      */
@@ -102,6 +98,10 @@ public class QuestionDisplayer extends Activity {
      */
     private int mPointsToGamble;
 
+    private int mPointsOnTrue;
+
+    private int mPointsOnFalse;
+
     //array to track the number of points after each round
     private int[] mPointsTracker;
 
@@ -113,16 +113,15 @@ public class QuestionDisplayer extends Activity {
 
     private TextView mCountdownText;
 
-    private CountDownTimer mCountdownTimer;
+    private CountDownTimer mCountdownTimerRound;
+
+    private CountDownTimer mCountdownTimerWaiting;
 
     private String mTheme;
 
     private String[] mThemesSelected;
 
     private int mMissedQuestions;
-
-    private ProgressBar mTimerProgress;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,8 +149,8 @@ public class QuestionDisplayer extends Activity {
 
         setUpDisplay();
 
-        setUpCountdownTimer();
-        mCountdownTimer.start();
+        setUpCountdownTimers();
+        mCountdownTimerRound.start();
 
         setFact();
     }
@@ -162,7 +161,7 @@ public class QuestionDisplayer extends Activity {
     private void setUpDisplay() {
         setContentView(R.layout.question_displayer_layout);
 
-        mCountdownText = (TextView) findViewById(R.id.countdown_timer);
+        mCountdownText = (TextView) findViewById(R.id.time_countdown);
         mQuitButton = (Button) findViewById(R.id.quit);
         mButtonAndFactDisplayer = (LinearLayout) findViewById(R.id.fact_and_button_displayer);
         mFactDisplayer = (TextView) findViewById(R.id.fact_displayer);
@@ -172,20 +171,35 @@ public class QuestionDisplayer extends Activity {
         mIncorrect = (TextView) findViewById(R.id.incorrect_display);
         mIncorrect.setVisibility(View.GONE);
         mCorrect.setVisibility(View.GONE);
-        mTrueButton    = (Button)   findViewById(R.id.true_button);
-        mFalseButton   = (Button)   findViewById(R.id.false_button);
+        mGoButton   = (Button)   findViewById(R.id.go_button);
+        mPointsOnTrueDisplay = (TextView) findViewById(R.id.points_on_true);
         mScoreDisplay  = (TextView) findViewById(R.id.score_displayer);
         mScoreToGambleDisplay = (TextView) findViewById(R.id.score_to_gamble);
         mGamblingBar   = (SeekBar)  findViewById(R.id.seekBar);
-        mGamblingBar.setProgress(1);
+        mGamblingBar.setProgress(50);
+        mPointsOnFalse = mScore/2;
+        mPointsOnTrue = mScore/2;
+        mPointsOnTrueDisplay.setText("True: " + mPointsOnTrue);
+        mScoreToGambleDisplay.setText("False: " + mPointsOnFalse);
         mMissedQuestions = 0;
-        mTimerProgress = (ProgressBar) findViewById(R.id.timer_progress);
         mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mPointsToGamble = (int) ((progress * (mScore - 1) / 100) + 1);
-                mScoreToGambleDisplay.setText("Gamble: " + mPointsToGamble);
+                if (progress >=50)
+                {
+                    mPointsOnTrue = (int) Math.ceil((progress * mScore) / 100);
+
+                }
+                else
+                {
+                    mPointsOnTrue = (int) Math.floor((progress * mScore) / 100);
+
+                }
+                mPointsOnTrue = (int) Math.round((progress * mScore) / 100);
+                mPointsOnFalse = mScore - mPointsOnTrue;
+                mPointsOnTrueDisplay.setText("True: " + mPointsOnTrue);
+                mScoreToGambleDisplay.setText("False: " + mPointsOnFalse);
             }
 
             @Override
@@ -216,56 +230,20 @@ public class QuestionDisplayer extends Activity {
 
     }
 
-    /**
-     * Method which deals with the result of a true or false button being pressed
-     *
-     * @param answer The button that has been pressed
-     */
-    private void onButtonClicked(Boolean answer) {
-        mCountdownTimer.cancel();
-        mCountdownText.setText("Time Up!");
-        if (answer == mHashMapTools.getTrueOrFalse()) {
-            //Answer is correct, set a new question
-            mAnswerTracker[mNumberOfQuestions - 1] = 1;
-
-            mCorrect.setVisibility(View.VISIBLE);
-            mButtonAndFactDisplayer.setVisibility(View.GONE);
-
-            mHandler.postDelayed(new Runnable() {
-                public void run() {
-                    setFact();
-                    mCorrect.setVisibility(View.GONE);
-                    mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-
-                    if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
-                        mCountdownTimer.start();
-                    }
-                }
-            }, 2000);
-            calculateNewScore(true);
-
-        } else {
-            //Answer is wrong
-            mAnswerTracker[mNumberOfQuestions - 1] = 0;
-            mIncorrect.setVisibility(View.VISIBLE);
-            mButtonAndFactDisplayer.setVisibility(View.GONE);
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setFact();
-                    mIncorrect.setVisibility(View.GONE);
-                    mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-
-                    if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
-                        mCountdownTimer.start();
-                    }
-
-                }
-            },2000);
-            calculateNewScore(false);
-        }
-        checkIfFinished();
+    private void onCorrect()
+    {
+        mAnswerTracker[mNumberOfQuestions - 1] = 1;
+        mCorrect.setVisibility(View.VISIBLE);
+        calculateNewScore();
     }
+
+    private void onIncorrect()
+    {
+        mAnswerTracker[mNumberOfQuestions - 1] = 0;
+        mIncorrect.setVisibility(View.VISIBLE);
+        calculateNewScore();
+    }
+
 
     private void createGameOver(boolean win)
     {
@@ -303,7 +281,8 @@ public class QuestionDisplayer extends Activity {
         Gson gson = new Gson();
         String list = gson.toJson( mHashMapTools.getAskedQuestion());
         GameOver.putExtra("factsList",list);
-        mCountdownTimer.cancel();
+        mCountdownTimerRound.cancel();
+        mCountdownTimerWaiting.cancel();
         startActivity(GameOver);
         finish();
 
@@ -325,17 +304,10 @@ public class QuestionDisplayer extends Activity {
      * Sets the on click listeners for the true and false buttons
      */
     private void setUpButtons() {
-        mTrueButton.setOnClickListener(new View.OnClickListener() {
+        mGoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClicked(true);
-            }
-        });
-
-        mFalseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonClicked(false);
+                onGoPressed();
             }
         });
 
@@ -348,26 +320,37 @@ public class QuestionDisplayer extends Activity {
      */
     private void setScoreDisplays()
     {
-        mGamblingBar.setProgress(0);
         mScoreDisplay.setText("Score = " + mScore);
     }
 
     /**
      * Calculates the new score once an answer is given
-     * @param correct If the answer is correct or now
      */
-    private void calculateNewScore(boolean correct)
+    private void calculateNewScore()
     {
-        if (correct)
+        int lostPoints = 0;
+        if (mHashMapTools.getTrueOrFalse())
         {
-            mScore = mScore + mPointsToGamble;
+            lostPoints = mPointsOnFalse;
+            mScore = mScore - mPointsOnFalse;
         }
         else
         {
-            mScore = mScore - mPointsToGamble;
+            lostPoints = mPointsOnTrue;
+            mScore = mScore - mPointsOnTrue;
         }
-        setScoreDisplays();
-        //mPointsTracker[mNumberOfQuestions] = mScore;
+        if (lostPoints == 0)
+        {
+            mScoreDisplay.setText("Perfect!");
+
+        }
+        else
+        {
+            mScoreDisplay.setText("-" + lostPoints);
+
+        }
+        mCountdownTimerWaiting.start();
+
     }
 
     private void setQuitButton() {
@@ -382,53 +365,84 @@ public class QuestionDisplayer extends Activity {
 
     private void quit()
     {
+        mCountdownTimerWaiting.cancel();
+        mCountdownTimerRound.cancel();
         Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
         startActivity(start);
         finish();
     }
 
-
-    private void recordPoints() {
-        if (mNumberOfQuestions < MAX_QUESTIONS) {
-            mPointsTracker[mNumberOfQuestions] = mScore;
+    private void onGoPressed()
+    {
+        boolean correctAnswer = mHashMapTools.getTrueOrFalse();
+        mCountdownTimerRound.cancel();
+        if (mPointsOnTrue >= mScore/2)
+        {
+            //Player thought true
+            if(correctAnswer)
+            {
+                onCorrect();
+            }
+            else
+            {
+                onIncorrect();
+            }
         }
+        else
+        {
+            //Player thought false
+            if(correctAnswer)
+            {
+                onIncorrect();
+            }
+            else
+            {
+                onCorrect();
+            }
+        }
+        mButtonAndFactDisplayer.setVisibility(View.GONE);
+
+        mGamblingBar.setProgress(50);
+        checkIfFinished();
     }
 
 
-    private void setUpCountdownTimer() {
-        mCountdownTimer = new CountDownTimer(6000, 1000) {
+    private void setUpCountdownTimers() {
+        mCountdownTimerRound = new CountDownTimer(6000, 100) {
 
             public void onTick(long millisUntilFinished) {
-                mCountdownText.setText("seconds remaining: " + millisUntilFinished / 1000);
-                if (millisUntilFinished < 5000)
-                mTimerProgress.incrementProgressBy(1);
+                mCountdownText.setText("" + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
-                mCountdownText.setText("Time Up!");
-                mTimerProgress.incrementProgressBy(1);
                 mMissedQuestions = mMissedQuestions + 1;
                 mIncorrect.setVisibility(View.VISIBLE);
                 mButtonAndFactDisplayer.setVisibility(View.GONE);
                 mAnswerTracker[mNumberOfQuestions - 1] = 2;
 
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        setFact();
-                        mIncorrect.setVisibility(View.GONE);
-                        mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
-                        if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
-                            mCountdownTimer.start();
-                            mTimerProgress.setProgress(0);
-
-                        }
-                    }
-                }, 2000);
-//                calculateNewScore(false);
-                double newScore = mScore * 0.8;
-                mScore = (int) newScore;
-                setScoreDisplays();
+                onGoPressed();
                 checkIfFinished();
+            }
+        };
+
+        mCountdownTimerWaiting = new CountDownTimer(MS_WHILE_WAITING,100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mScoreDisplay.setTextSize((int) ((MS_WHILE_WAITING - millisUntilFinished)/70));
+
+            }
+
+            @Override
+            public void onFinish() {
+                setScoreDisplays();
+
+                setFact();
+                mIncorrect.setVisibility(View.GONE);
+                mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
+                if (mScore > 0 && mNumberOfQuestions < MAX_QUESTIONS) {
+                    mCountdownTimerRound.start();
+
+                }
             }
         };
     }

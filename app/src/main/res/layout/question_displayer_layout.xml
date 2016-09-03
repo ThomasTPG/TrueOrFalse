@@ -1,149 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:weightSum="1"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:background="#000000"
+        android:layout_weight="0.1">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <tandj.trueorfalse.AutoResizeTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="30sp"
+            android:id="@+id/question_num"
+            android:background="#000000"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.6" />
 
-            <LinearLayout
-                android:id="@+id/fact_and_button_displayer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="94dp"
-                    android:layout_height="wrap_content"
-                    android:text="New Text"
-                    android:id="@+id/question_num"
-                    android:layout_weight="0.5" />
-
-                <TextView
-                    android:id="@+id/fact_displayer"
-                    android:layout_weight="0.5"
-                    android:textSize="40sp"
-                    android:textColor="#000000"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5">
-
-                    <Button
-                        android:id="@+id/true_button"
-                        android:text="TRUE"
-                        android:textSize="40sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true" />
-
-                    <Button
-                        android:id="@+id/false_button"
-                        android:text="FALSE"
-                        android:textSize="40sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/correct_display"
-                android:text="@string/correct"
-                android:textSize="30sp"
-                android:textColor="#000000"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/incorrect_display"
-                android:text="@string/incorrect"
-                android:textSize="30sp"
-                android:textColor="#000000"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </FrameLayout>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="match_parent"
+            android:text="Quit"
+            android:id="@+id/quit"
+         />
 
     </LinearLayout>
 
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
+    <tandj.trueorfalse.AutoResizeTextView
         android:id="@+id/score_displayer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:layout_height="0dp"
+        android:gravity="center"
         android:textSize="30sp"
-        android:textColor="#000000"
-        android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <TextView
-        android:id="@+id/score_to_gamble"
+        android:background="#000000"
+        android:textColor="#FFFFFF"
+        />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textColor="#000000"
-        android:text="Gamble: 0"
-        android:gravity="center_horizontal"
-        android:layout_alignBottom="@+id/seekBar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_weight="0.4"
+        android:layout_height="0dp">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quit"
-        android:id="@+id/quit"
-        android:layout_above="@+id/score_displayer"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp" />
+        <LinearLayout
+            android:id="@+id/fact_and_button_displayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Seconds left"
-        android:id="@+id/countdown_timer"
-        android:layout_above="@+id/quit"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="58dp" />
+            <tandj.trueorfalse.AutoResizeTextView
+                android:id="@+id/fact_displayer"
+                android:textSize="100sp"
+                android:textColor="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/timer_progress"
-        android:layout_above="@+id/countdown_timer"
-        android:layout_alignLeft="@+id/countdown_timer"
-        android:layout_alignStart="@+id/countdown_timer"
-        android:max="5"
-        android:progress="0"
-        android:indeterminate="false" />
+        </LinearLayout>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/correct_display"
+            android:text="@string/correct"
+            android:textSize="30sp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/incorrect_display"
+            android:text="@string/incorrect"
+            android:textSize="30sp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="0.2"
+        android:weightSum="1">
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/seekBar"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_weight="0.5">
+
+            <tandj.trueorfalse.AutoResizeTextView
+                android:id="@+id/score_to_gamble"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:textSize="30sp"
+                android:textColor="#000000"
+                android:text="Gamble: 0"
+                android:gravity="center_horizontal"
+                />
+
+            <tandj.trueorfalse.AutoResizeTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:textSize="30sp"
+                android:textColor="#000000"
+                android:gravity="center_horizontal"
+                />
+
+            <tandj.trueorfalse.AutoResizeTextView
+                android:id="@+id/points_on_true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:textSize="30sp"
+                android:textColor="#000000"
+                android:text="Gamble: 0"
+                android:gravity="center_horizontal"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:weightSum="1"
+        android:layout_weight="0.2">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Go"
+            android:id="@+id/go_button"
+            android:textSize="50sp"
+            />
+
+        <tandj.trueorfalse.AutoResizeTextView
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:textSize="100sp"
+            android:gravity="center"
+            android:text="time"
+            android:id="@+id/time_countdown"/>
+
+    </LinearLayout>
+
+</LinearLayout>
