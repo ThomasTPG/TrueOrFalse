@@ -42,13 +42,25 @@ public class statisticsUpdated {
 
     public static final int NUMBER_OF_MISSED_QUESTIONS = 5;
 
+    public static final int NUMBER_OF_SPLIT_SCREEN_GAMES = 6;
 
+    public static final int NUMBER_OF_TIME_TRIAL_GAMES = 7;
+
+    public static final int NUMBER_OF_TRUE_ANSWERS = 8;
+
+    public static final int NUMBER_OF_FALSE_ANSWERS = 9;
+
+//Should include scores for each difficulty
     public static final String[] statisticArray = {"Number of questions answered",
                                                    "Number of correct answers",
                                                    "Number of rounds complete",
                                                    "Total score",
                                                    "Number of incorrect answers",
-                                                   "Number of missed questions"};
+                                                   "Number of missed questions",
+                                                   "Number of Split Screen games",
+                                                   "Number of Time Trial Games",
+                                                   "Number of True answers",
+                                                   "Number of False answers" };
 
     public statisticsUpdated(Context c)
     {

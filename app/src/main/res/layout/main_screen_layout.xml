@@ -8,18 +8,25 @@ android:layout_height="match_parent">
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:text="True or False"-->
+            <!--android:id="@+id/textView4"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:textSize="55dp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--/>-->
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="True or False"
-            android:id="@+id/textView4"
-            android:layout_gravity="center_horizontal"
-            android:textSize="55dp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            />
+            android:id="@+id/imageView"
+            android:src="@drawable/title5"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -39,24 +46,35 @@ android:layout_height="match_parent">
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <Button
+                <!--<Button-->
+                    <!--android:id="@+id/start"-->
+                    <!--android:text="One Player"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="fill_parent"-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:textColor="#FFFFFF"-->
+                    <!--android:shadowColor="#A8A8A8"-->
+                    <!--android:shadowDx="5"-->
+                    <!--android:shadowDy="3"-->
+                    <!--android:shadowRadius="5"-->
+                    <!--android:background="@drawable/buttonshape"-->
+                    <!--android:layout_marginBottom="5dp"-->
+                    <!--android:textSize="20dp"-->
+                    <!--android:drawableTop="@drawable/account"-->
+                    <!--android:drawablePadding="0dp"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginRight="2dp"/>-->
+                <ImageButton
                     android:id="@+id/start"
-                    android:text="One Player"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="#FFFFFF"
-                    android:shadowColor="#A8A8A8"
-                    android:shadowDx="5"
-                    android:shadowDy="3"
-                    android:shadowRadius="5"
+                    android:src="@drawable/account_text"
                     android:background="@drawable/buttonshape"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="20dp"
-                    android:drawableTop="@drawable/account"
-                    android:drawablePadding="0dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="2dp"/>
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -65,23 +83,18 @@ android:layout_height="match_parent">
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <Button
+
+                <ImageButton
+                    android:id="@+id/two_player_button"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="Two Player"
-                    android:id="@+id/two_player_button"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="#FFFFFF"
-                    android:shadowColor="#A8A8A8"
-                    android:shadowDx="5"
-                    android:shadowDy="3"
-                    android:shadowRadius="5"
+                    android:src="@drawable/account_multiple_text"
                     android:background="@drawable/buttonshape"
                     android:layout_marginBottom="5dp"
-                    android:textSize="20dp"
-                    android:drawableTop="@drawable/account_multiple"
                     android:layout_marginLeft="2dp"
-                    android:layout_marginRight="5dp"/>
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -103,23 +116,20 @@ android:layout_height="match_parent">
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <Button
+
+                <ImageButton
+                    android:id="@+id/stats_button"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="Stats &amp;\nAchievements"
-                    android:id="@+id/stats_button"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="#FFFFFF"
-                    android:shadowColor="#A8A8A8"
-                    android:shadowDx="5"
-                    android:shadowDy="3"
-                    android:shadowRadius="5"
+                    android:src="@drawable/trophy_outline_text"
                     android:background="@drawable/buttonshape"
                     android:layout_marginBottom="5dp"
-                    android:textSize="20dp"
-                    android:drawableTop="@drawable/trophy_outline"
+                    android:layout_marginRight="2dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="2dp"/>
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -128,23 +138,20 @@ android:layout_height="match_parent">
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <Button
+
+                <ImageButton
+                    android:id="@+id/help_button"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="Help &amp;\nSettings"
-                    android:id="@+id/help_button"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="#FFFFFF"
-                    android:shadowColor="#A8A8A8"
-                    android:shadowDx="5"
-                    android:shadowDy="3"
-                    android:shadowRadius="5"
+                    android:src="@drawable/settings_text"
                     android:background="@drawable/buttonshape"
-                    android:textSize="20dp"
-                    android:drawableTop="@drawable/settings"
                     android:layout_marginBottom="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginLeft="2dp"
-                    android:layout_marginRight="5dp"/>
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:paddingTop="300dp"
+                    android:paddingBottom="300dp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

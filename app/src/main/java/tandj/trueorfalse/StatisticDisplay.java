@@ -14,21 +14,32 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Thomas on 26/08/2016.
  */
 public class StatisticDisplay extends Activity {
 
     statisticsUpdated mStats;
+    ThemeSelect mThemeSelect;
 
     private int mNumAchievements;
     private LinearLayout mAchievementLayout;
 
+    private String defaultFile = FactFileNames.fileNames[0];
+    String mFileToOpen;
+    ArrayList<String> selectedFactFiles = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFileToOpen = defaultFile;
+
         mStats = new statisticsUpdated(this);
         setContentView(R.layout.statistic_view);
+
+        mThemeSelect = new ThemeSelect();
 
         Button menu = (Button) findViewById(R.id.menu_button);
         menu.setText("Menu");
@@ -55,14 +66,43 @@ public class StatisticDisplay extends Activity {
             stat.setText(statisticsUpdated.statisticArray[ii] + ": " + mStats.getStat(ii));
             linearLay.addView(stat);
         }
+
+        TextView correct = new TextView(this);
+        correct.setText("Correct answers per round: " + mStats.getStat(1)/mStats.getStat(2));
+        linearLay.addView(correct);
+
+        TextView incorrect = new TextView(this);
+        incorrect.setText("Incorrect answers per round: " + mStats.getStat(4)/mStats.getStat(2));
+        linearLay.addView(incorrect);
+
+        TextView easyScore = new TextView(this);
+        easyScore.setText("Total Easy score: " + mThemeSelect.countDifficultyScores("Easy"));
+        linearLay.addView(easyScore);
+
+        TextView normalScore = new TextView(this);
+        normalScore.setText("Total Normal score: " + mThemeSelect.countDifficultyScores("Normal"));
+        linearLay.addView(normalScore);
+
+        TextView hardScore = new TextView(this);
+        hardScore.setText("Total Hard score: " + mThemeSelect.countDifficultyScores("Hard"));
+        linearLay.addView(hardScore);
+
     }
 
     private void addAchievements() {
         mAchievementLayout = (LinearLayout) findViewById(R.id.achievements);
 
+
+
         addSingleAchievement("Number of\nGames Played", getAchievementColour(mStats.getStat(2), 10,50,200));
         addSingleAchievement("Total Score", getAchievementColour(mStats.getStat(3), 20000,50000,200000));
         addSingleAchievement("Number of\nCorrect Answers", getAchievementColour(mStats.getStat(1), 100,500,2000));
+        addSingleAchievement("Number of Split Screen games played", getAchievementColour(mStats.getStat(6), 10, 50, 100));
+        addSingleAchievement("Number of Time Trial Games played", getAchievementColour(mStats.getStat(7), 10,50,100));
+        addSingleAchievement("Difficulties Unlocked", getAchievementColour(difficultyThresholds(), 0, 1, 2));
+        addSingleAchievement("Easy Score", getAchievementColour(mThemeSelect.countDifficultyScores("Easy"), getResources().getInteger(R.integer.scores_to_unlock_easy), (getResources().getInteger(R.integer.scores_to_unlock_easy) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_easy)+ 10000)));
+        addSingleAchievement("Normal Score", getAchievementColour(mThemeSelect.countDifficultyScores("Normal"), getResources().getInteger(R.integer.scores_to_unlock_medium), (getResources().getInteger(R.integer.scores_to_unlock_medium) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_medium)+ 10000)));
+        addSingleAchievement("Hard Score", getAchievementColour(mThemeSelect.countDifficultyScores("Hard"), getResources().getInteger(R.integer.scores_to_unlock_hard), (getResources().getInteger(R.integer.scores_to_unlock_hard) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_hard)+ 10000)));
     }
 
     private void addSingleAchievement(String text, String colour) {
@@ -72,13 +112,13 @@ public class StatisticDisplay extends Activity {
         medal.setImageResource(R.drawable.medal1);
         setAchievementColour(colour, medal);
         LinearLayout.LayoutParams layoutParamsMedal = new LinearLayout.LayoutParams(200, 200);
-        LinearLayout.LayoutParams layoutParamsText = new LinearLayout.LayoutParams(200, 200, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParamsText = new LinearLayout.LayoutParams(400, 200, LinearLayout.LayoutParams.WRAP_CONTENT);
         medal.setLayoutParams(layoutParamsMedal);
         linearLayout.addView(medal);
         TextView stat = new TextView(this);
         stat.setText(text);
         stat.setLayoutParams(layoutParamsText);
-        stat.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8);
+        stat.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
         stat.setGravity(Gravity.CENTER);
         linearLayout.addView(stat);
     }
@@ -115,4 +155,15 @@ public class StatisticDisplay extends Activity {
     protected void onPause() {
         super.onPause();
     }
+    private int difficultyThresholds() {
+        int val = 0;
+        if (mThemeSelect.countDifficultyScores("Easy") > getResources().getInteger(R.integer.scores_to_unlock_medium)){
+            val=1;
+            if (mThemeSelect.countDifficultyScores("Normal") > getResources().getInteger(R.integer.scores_to_unlock_hard)) {
+                val =2;
+            }
+        }
+        return val;
+    }
+
 }

@@ -48,5 +48,8 @@ public class TimeTrialFinished extends Activity{
 
         TextView scores = (TextView) findViewById(R.id.scores);
         scores.setText("Player 1 scored: " + p1Score + " and Player 2 scored : " + p2Score);
+
+        statisticsUpdated  stats = new statisticsUpdated(this);
+        stats.updateStat(statisticsUpdated.NUMBER_OF_TIME_TRIAL_GAMES,1);
     }
 }

@@ -222,6 +222,12 @@ public class QuestionDisplayer extends Activity {
      * @param answer The button that has been pressed
      */
     private void onButtonClicked(Boolean answer) {
+        statisticsUpdated  stats = new statisticsUpdated(this);
+        if (answer == true) {
+            stats.updateStat(statisticsUpdated.NUMBER_OF_TRUE_ANSWERS,1);
+        } else {
+            stats.updateStat(statisticsUpdated.NUMBER_OF_FALSE_ANSWERS,1);
+        }
         mCountdownTimer.cancel();
         mCountdownText.setText("Time Up!");
         if (answer == mHashMapTools.getTrueOrFalse()) {
@@ -382,6 +388,7 @@ public class QuestionDisplayer extends Activity {
 
     private void quit()
     {
+        mCountdownTimer.cancel();
         Intent start = new Intent(QuestionDisplayer.this, MainScreen.class);
         startActivity(start);
         finish();

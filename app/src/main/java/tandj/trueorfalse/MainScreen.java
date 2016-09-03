@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.io.File;
 
@@ -17,7 +18,7 @@ public class MainScreen extends Activity{
     /**
      * Button which starts the true or false game
      */
-    private Button mStartButton;
+    private ImageButton mStartButton;
 
     /**
      * File tools
@@ -42,10 +43,10 @@ public class MainScreen extends Activity{
     {
         setContentView(R.layout.main_screen_layout);
 
-        mStartButton = (Button) findViewById(R.id.start);
+        mStartButton = (ImageButton) findViewById(R.id.start);
 
 
-        mStartButton.setText("Start");
+//        mStartButton.setText("Start");
 
 
         setStatsButton();
@@ -59,7 +60,7 @@ public class MainScreen extends Activity{
 
     private void setStatsButton()
     {
-        Button stats = (Button) findViewById(R.id.stats_button);
+        ImageButton stats = (ImageButton) findViewById(R.id.stats_button);
         stats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +73,7 @@ public class MainScreen extends Activity{
 
     private void setTwoPlayerButton()
     {
-        Button twoPlayer = (Button) findViewById(R.id.two_player_button);
+        ImageButton twoPlayer = (ImageButton) findViewById(R.id.two_player_button);
         twoPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
