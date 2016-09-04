@@ -158,7 +158,7 @@ public class ThemeSelect extends Activity {
                             case 1:
                                 mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("Normal"));
                                 if (difficultyThresholds() < 1) {
-                                    mChooseThemeText.setText("You need 2000 points in Easy mode to unlock Medium mode");
+                                    mChooseThemeText.setText("You need " + getResources().getInteger(R.integer.scores_to_unlock_medium) + " points in Easy mode to unlock Medium mode");
                                     mThemeSpinner.setVisibility(View.GONE);
                                 }
                                 else {
@@ -168,7 +168,7 @@ public class ThemeSelect extends Activity {
                             case 2:
                                 mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("Hard"));
                                 if (difficultyThresholds() < 2) {
-                                    mChooseThemeText.setText("You need 2000 points in Normal mode to unlock Hard mode");
+                                    mChooseThemeText.setText("You need " + getResources().getInteger(R.integer.scores_to_unlock_hard) + " points in Medium mode to unlock Hard mode");
                                     mThemeSpinner.setVisibility(View.GONE);
                                 }
                                 else {

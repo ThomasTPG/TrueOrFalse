@@ -2,6 +2,6 @@
     <integer name="starting_score">100</integer>
     <integer name="number_of_questions_per_round">10</integer>
     <integer name="scores_to_unlock_easy">0</integer>
-    <integer name="scores_to_unlock_medium">2000</integer>
-    <integer name="scores_to_unlock_hard">2000</integer>
+    <integer name="scores_to_unlock_medium">1000</integer>
+    <integer name="scores_to_unlock_hard">1000</integer>
 </resources>
