@@ -21,12 +21,6 @@ public class MainScreen extends Activity{
     private ImageButton mStartButton;
 
     /**
-     * File tools
-     */
-    private FileTools mFileTools;
-
-
-    /**
      * Method called when the activity is created
      * @param savedInstanceState
      */
@@ -54,8 +48,6 @@ public class MainScreen extends Activity{
         setTwoPlayerButton();
 
         setStartButton();
-
-        setUpFileTools();
     }
 
     private void setStatsButton()
@@ -88,13 +80,6 @@ public class MainScreen extends Activity{
     protected void onResume() {
         super.onResume();
 
-    }
-
-    private void setUpFileTools()
-    {
-        String scoreDataFilePath = getFilesDir() + "/" + FileTools.scoreDataFileName;
-        mFileTools.setScoreFile(new File(scoreDataFilePath));
-        mFileTools.init();
     }
 
     /**

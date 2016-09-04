@@ -44,4 +44,11 @@ public class TimeTrialWaiting extends Activity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(TimeTrialWaiting.this, TwoPlayer.class);
+        startActivity(back);
+        finish();
+    }
 }

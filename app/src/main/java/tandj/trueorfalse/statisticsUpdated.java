@@ -40,15 +40,13 @@ public class statisticsUpdated {
 
     public static final int NUMBER_OF_INCORRECT_ANSWERS = 4;
 
-    public static final int NUMBER_OF_MISSED_QUESTIONS = 5;
+    public static final int NUMBER_OF_SPLIT_SCREEN_GAMES = 5;
 
-    public static final int NUMBER_OF_SPLIT_SCREEN_GAMES = 6;
+    public static final int NUMBER_OF_TIME_TRIAL_GAMES = 6;
 
-    public static final int NUMBER_OF_TIME_TRIAL_GAMES = 7;
+    public static final int NUMBER_OF_TRUE_ANSWERS = 7;
 
-    public static final int NUMBER_OF_TRUE_ANSWERS = 8;
-
-    public static final int NUMBER_OF_FALSE_ANSWERS = 9;
+    public static final int NUMBER_OF_FALSE_ANSWERS = 8;
 
 //Should include scores for each difficulty
     public static final String[] statisticArray = {"Number of questions answered",
@@ -56,7 +54,6 @@ public class statisticsUpdated {
                                                    "Number of rounds complete",
                                                    "Total score",
                                                    "Number of incorrect answers",
-                                                   "Number of missed questions",
                                                    "Number of Split Screen games",
                                                    "Number of Time Trial Games",
                                                    "Number of True answers",

@@ -52,4 +52,11 @@ public class TimeTrialFinished extends Activity{
         statisticsUpdated  stats = new statisticsUpdated(this);
         stats.updateStat(statisticsUpdated.NUMBER_OF_TIME_TRIAL_GAMES,1);
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(TimeTrialFinished.this, TwoPlayer.class);
+        startActivity(back);
+        finish();
+    }
 }

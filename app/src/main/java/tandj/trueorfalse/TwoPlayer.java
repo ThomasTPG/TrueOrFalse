@@ -64,4 +64,11 @@ public class TwoPlayer extends Activity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(TwoPlayer.this, MainScreen.class);
+        startActivity(back);
+        finish();
+    }
 }

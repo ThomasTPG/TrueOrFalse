@@ -23,6 +23,8 @@ public class TwoPlayerThemeSelect extends Activity {
 
     private Bundle mBundle;
 
+    private FileTools mFileTools;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,7 @@ public class TwoPlayerThemeSelect extends Activity {
 
         Intent intent = getIntent();
         mBundle = intent.getExtras();
+        mFileTools = new FileTools(this);
 
         mDisplayer = (LinearLayout) findViewById(R.id.store_check_boxes);
 
@@ -94,21 +97,23 @@ public class TwoPlayerThemeSelect extends Activity {
                 final String currentFile = FactFileNames.difficultyArrays[ii][jj];
                 for (int ll = 0; ll < FactFileNames.allFiles.length; ll++) {
                     if (FactFileNames.allFiles[ll].equals(currentFile)) {
-                        totalScore = totalScore + FileTools.getScore(FactFileNames.fileNames[ll]);
+                        totalScore = totalScore + mFileTools.getScore(FactFileNames.fileNames[ll]);
                     }
                 }
 
             }
 
 
-            String resName = "scores_to_unlock_" + FactFileNames.difficulties[1].toLowerCase();
+            String resName = "scores_to_unlock_" + FactFileNames.difficulties[ii].toLowerCase();
             int id = getResources().getIdentifier(resName, "integer", getPackageName());
             int requiredScore = getResources().getInteger(id);
+            System.out.println(totalScore + " asfi " + requiredScore + resName);
             if (totalScore >= requiredScore)
             {
                 for (int kk = 0; kk < FactFileNames.difficultyArrays[ii].length; kk ++)
                 {
                     CheckBox newCheckBox = new CheckBox(this);
+                    System.out.println("new check box");
                     final String currentFile = FactFileNames.difficultyArrays[ii][kk];
                     newCheckBox.setText(currentFile);
                     newCheckBox.setOnClickListener(new View.OnClickListener() {

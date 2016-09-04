@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QuestionDisplayer">
+        <activity android:name=".QuestionDisplayer"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,6 +24,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".ThemeSelect">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UserFileMenu">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".EditUserFiles"
+            android:windowSoftInputMode="adjustPan">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

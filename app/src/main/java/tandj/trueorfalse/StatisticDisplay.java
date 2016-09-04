@@ -31,10 +31,13 @@ public class StatisticDisplay extends Activity {
     String mFileToOpen;
     ArrayList<String> selectedFactFiles = new ArrayList<String>();
 
+    private FileTools mFileTools;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFileToOpen = defaultFile;
+        mFileTools = new FileTools(this);
 
         mStats = new statisticsUpdated(this);
         setContentView(R.layout.statistic_view);
@@ -67,24 +70,27 @@ public class StatisticDisplay extends Activity {
             linearLay.addView(stat);
         }
 
+        int rounds = Math.max(mStats.getStat(2), 1);
+
+
         TextView correct = new TextView(this);
-        correct.setText("Correct answers per round: " + mStats.getStat(1)/mStats.getStat(2));
+        correct.setText("Correct answers per round: " + mStats.getStat(1)/rounds);
         linearLay.addView(correct);
 
         TextView incorrect = new TextView(this);
-        incorrect.setText("Incorrect answers per round: " + mStats.getStat(4)/mStats.getStat(2));
+        incorrect.setText("Incorrect answers per round: " + mStats.getStat(4) / rounds);
         linearLay.addView(incorrect);
 
         TextView easyScore = new TextView(this);
-        easyScore.setText("Total Easy score: " + mThemeSelect.countDifficultyScores("Easy"));
+        easyScore.setText("Total Easy score: " + countDifficultyScores("Easy"));
         linearLay.addView(easyScore);
 
         TextView normalScore = new TextView(this);
-        normalScore.setText("Total Normal score: " + mThemeSelect.countDifficultyScores("Normal"));
+        normalScore.setText("Total Normal score: " + countDifficultyScores("Normal"));
         linearLay.addView(normalScore);
 
         TextView hardScore = new TextView(this);
-        hardScore.setText("Total Hard score: " + mThemeSelect.countDifficultyScores("Hard"));
+        hardScore.setText("Total Hard score: " + countDifficultyScores("Hard"));
         linearLay.addView(hardScore);
 
     }
@@ -94,15 +100,15 @@ public class StatisticDisplay extends Activity {
 
 
 
-        addSingleAchievement("Number of\nGames Played", getAchievementColour(mStats.getStat(2), 10,50,200));
-        addSingleAchievement("Total Score", getAchievementColour(mStats.getStat(3), 20000,50000,200000));
-        addSingleAchievement("Number of\nCorrect Answers", getAchievementColour(mStats.getStat(1), 100,500,2000));
+        addSingleAchievement("Number of\nGames Played", getAchievementColour(mStats.getStat(2), 10, 50, 200));
+        addSingleAchievement("Total Score", getAchievementColour(mStats.getStat(3), 20000, 50000, 200000));
+        addSingleAchievement("Number of\nCorrect Answers", getAchievementColour(mStats.getStat(1), 100, 500, 2000));
         addSingleAchievement("Number of Split Screen games played", getAchievementColour(mStats.getStat(6), 10, 50, 100));
-        addSingleAchievement("Number of Time Trial Games played", getAchievementColour(mStats.getStat(7), 10,50,100));
+        addSingleAchievement("Number of Time Trial Games played", getAchievementColour(mStats.getStat(7), 10, 50, 100));
         addSingleAchievement("Difficulties Unlocked", getAchievementColour(difficultyThresholds(), 0, 1, 2));
-        addSingleAchievement("Easy Score", getAchievementColour(mThemeSelect.countDifficultyScores("Easy"), getResources().getInteger(R.integer.scores_to_unlock_easy), (getResources().getInteger(R.integer.scores_to_unlock_easy) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_easy)+ 10000)));
-        addSingleAchievement("Normal Score", getAchievementColour(mThemeSelect.countDifficultyScores("Normal"), getResources().getInteger(R.integer.scores_to_unlock_medium), (getResources().getInteger(R.integer.scores_to_unlock_medium) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_medium)+ 10000)));
-        addSingleAchievement("Hard Score", getAchievementColour(mThemeSelect.countDifficultyScores("Hard"), getResources().getInteger(R.integer.scores_to_unlock_hard), (getResources().getInteger(R.integer.scores_to_unlock_hard) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_hard)+ 10000)));
+        addSingleAchievement("Easy Score", getAchievementColour(countDifficultyScores("Easy"), getResources().getInteger(R.integer.scores_to_unlock_easy), (getResources().getInteger(R.integer.scores_to_unlock_easy) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_easy) + 10000)));
+        addSingleAchievement("Normal Score", getAchievementColour(countDifficultyScores("Normal"), getResources().getInteger(R.integer.scores_to_unlock_medium), (getResources().getInteger(R.integer.scores_to_unlock_medium) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_medium) + 10000)));
+        addSingleAchievement("Hard Score", getAchievementColour(countDifficultyScores("Hard"), getResources().getInteger(R.integer.scores_to_unlock_hard), (getResources().getInteger(R.integer.scores_to_unlock_hard) + 5000), (getResources().getInteger(R.integer.scores_to_unlock_hard) + 10000)));
     }
 
     private void addSingleAchievement(String text, String colour) {
@@ -157,13 +163,55 @@ public class StatisticDisplay extends Activity {
     }
     private int difficultyThresholds() {
         int val = 0;
-        if (mThemeSelect.countDifficultyScores("Easy") > getResources().getInteger(R.integer.scores_to_unlock_medium)){
+        if (countDifficultyScores("Easy") > getResources().getInteger(R.integer.scores_to_unlock_medium)){
             val=1;
-            if (mThemeSelect.countDifficultyScores("Normal") > getResources().getInteger(R.integer.scores_to_unlock_hard)) {
+            if (countDifficultyScores("Normal") > getResources().getInteger(R.integer.scores_to_unlock_hard)) {
                 val =2;
             }
         }
         return val;
     }
+
+    public int countDifficultyScores(String difficulty) {
+        int totalScore = 0;
+        if (difficulty.equals("Easy")) {
+            for (int i = 0; i < FactFileNames.easyFiles.length; i++) {
+                String selectedTheme = FactFileNames.easyFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + mFileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        if (difficulty.equals("Normal")) {
+            for (int i = 0; i < FactFileNames.mediumFiles.length; i++) {
+                String selectedTheme = FactFileNames.mediumFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + mFileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        if (difficulty.equals("Hard")) {
+            for (int i = 0; i < FactFileNames.hardFiles.length; i++) {
+                String selectedTheme = FactFileNames.hardFiles[i];
+                for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
+                    if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
+                        mFileToOpen = FactFileNames.fileNames[ii];
+                        totalScore = totalScore + mFileTools.getScore(mFileToOpen);
+
+                    }
+                }
+            }
+        }
+        return totalScore;
+    }
+
 
 }

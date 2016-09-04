@@ -143,4 +143,12 @@ public class TimeTrial extends Activity{
 
         mFalseButton = (Button) findViewById(R.id.false_button_time_trial);
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent back = new Intent(TimeTrial.this, TwoPlayer.class);
+        mCountDownTimer.cancel();
+        startActivity(back);
+        finish();
+    }
 }
