@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class SplitScreen extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class SplitScreen extends AppCompatActivity {
     private boolean mQuestionIsOver;
     private int mNumAnswersGiven;
     private int mPlayerNo;
+    private TextView mCountdown;
 
 
 
@@ -48,6 +50,7 @@ public class SplitScreen extends AppCompatActivity {
         mFactDisplayer[1] = (TextView) findViewById(R.id.fact_displayer_2);
         mScoreText[0] = (TextView) findViewById(R.id.score_1);
         mScoreText[1] = (TextView) findViewById(R.id.score_2);
+        mCountdown = (TextView) findViewById(R.id.split_countdown);
 
         setUpButtons();
 
@@ -86,14 +89,16 @@ public class SplitScreen extends AppCompatActivity {
 //                String text = Long.toString(millisUntilFinished / 1000);
                 int count = (int) (millisUntilFinished / 1000) - 1;
                 if (count != 0) {
-                    setFactDisplays(Long.toString((millisUntilFinished / 1000) - 1));
+                    setCountdownText(Long.toString((millisUntilFinished / 1000) - 1));
                 } else {
-                    setFactDisplays("Go!");
+                    setCountdownText("Go!");
                 }
             }
 
             @Override
             public void onFinish() {
+                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.split_countdown_ll);
+                linearLayout.setVisibility(View.GONE);
                 for (int i=0; i<2; i++) {
                     mTrueButton[i].setVisibility(View.VISIBLE);
                     mFalseButton[i].setVisibility(View.VISIBLE);
@@ -107,6 +112,10 @@ public class SplitScreen extends AppCompatActivity {
         for (int i=0; i<2; i++) {
             mFactDisplayer[i].setText(text);
         }
+    }
+
+    private void setCountdownText(String text) {
+        mCountdown.setText(text);
     }
 
     private void setFact() {
