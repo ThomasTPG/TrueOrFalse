@@ -138,7 +138,6 @@ public class QuestionDisplayer extends Activity {
         {
             mTheme = "All " + b.getString("Difficulty");
         }
-//        mTheme = "cambridge_facts.txt";
         mHashMapTools = new HashmapCombined(mThemesSelected, this);
 
 
@@ -309,6 +308,7 @@ public class QuestionDisplayer extends Activity {
         mGoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mGoButton.setEnabled(false);
                 onGoPressed();
             }
         });
@@ -442,6 +442,7 @@ public class QuestionDisplayer extends Activity {
                 setScoreDisplays();
 
                 setFact();
+                mGoButton.setEnabled(true);
                 mCorrect.setVisibility(View.GONE);
                 mIncorrect.setVisibility(View.GONE);
                 mButtonAndFactDisplayer.setVisibility(View.VISIBLE);
