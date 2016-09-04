@@ -29,14 +29,17 @@ public class ThemeSelect extends Activity {
     public static String mLastSinglePlayerTheme;
     private String mSelectedDifficulty;
     public static String mLastSinglePlayerDifficulty;
+    private FileTools mFileTools;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFileToOpen = defaultFile;
+        mFileTools = new FileTools(this);
+
         setContentView(R.layout.content_theme_select);
         setUpDisplay();
-        addListenerOnButton();
+
     }
 
     @Override
@@ -51,7 +54,7 @@ public class ThemeSelect extends Activity {
         mThemeSpinner = (Spinner) findViewById(R.id.theme_spinner);
         mDifficultySpinner = (Spinner) findViewById(R.id.difficulty_spinner);
         mScoreDisplay = (TextView) findViewById(R.id.your_hiscore);
-        mScoreDisplay.setText("High score: " + FileTools.getScore(defaultFile));
+        mScoreDisplay.setText("High score: " + mFileTools.getScore(defaultFile));
         mDifficultyScoreDisplay = (TextView) findViewById(R.id.difficulty_score);
         mDifficultyScoreDisplay.setText("Difficuly Score");
         mChooseThemeText = (TextView) findViewById(R.id.choose_theme);
@@ -88,7 +91,7 @@ public class ThemeSelect extends Activity {
                                     if (FactFileNames.difficultyArrays[ii][jj].equals(FactFileNames.allFiles[kk]))
                                     {
                                         selectedFactFiles.add(FactFileNames.fileNames[kk]);
-                                        mScoreDisplay.setText("High score: " + FileTools.getScore("All " + mSelectedDifficulty));
+                                        mScoreDisplay.setText("High score: " + mFileTools.getScore("All " + mSelectedDifficulty));
                                     }
                                 }
                             }
@@ -124,7 +127,7 @@ public class ThemeSelect extends Activity {
                         {
                             selectedFactFiles.clear();
                             selectedFactFiles.add(FactFileNames.fileNames[ii]);
-                            mScoreDisplay.setText("High score: " + FileTools.getScore(FactFileNames.fileNames[ii]));
+                            mScoreDisplay.setText("High score: " + mFileTools.getScore(FactFileNames.fileNames[ii]));
 
                         }
                     }
@@ -208,12 +211,12 @@ public class ThemeSelect extends Activity {
             {
                 if (array[mm].equals(FactFileNames.allFiles[ii]))
                 {
-                    newArray[mm] = array[mm] + ": " + FileTools.getScore(FactFileNames.fileNames[ii]);
+                    newArray[mm] = array[mm] + ": " + mFileTools.getScore(FactFileNames.fileNames[ii]);
                 }
             }
         }
         newArray[array.length] = "Random";
-        newArray[array.length + 1] = "All: " + FileTools.getScore("All " + mSelectedDifficulty);
+        newArray[array.length + 1] = "All: " + mFileTools.getScore("All " + mSelectedDifficulty);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, newArray);
         // Specify the layout to use when the list of choices appears
@@ -247,7 +250,7 @@ public class ThemeSelect extends Activity {
                 for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
                     if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
                         mFileToOpen = FactFileNames.fileNames[ii];
-                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+                        totalScore = totalScore + mFileTools.getScore(mFileToOpen);
 
                     }
                 }
@@ -259,7 +262,7 @@ public class ThemeSelect extends Activity {
                 for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
                     if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
                         mFileToOpen = FactFileNames.fileNames[ii];
-                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+                        totalScore = totalScore + mFileTools.getScore(mFileToOpen);
 
                     }
                 }
@@ -271,7 +274,7 @@ public class ThemeSelect extends Activity {
                 for (int ii = 0; ii < FactFileNames.allFiles.length; ii++) {
                     if (selectedTheme.equals(FactFileNames.allFiles[ii])) {
                         mFileToOpen = FactFileNames.fileNames[ii];
-                        totalScore = totalScore + FileTools.getScore(mFileToOpen);
+                        totalScore = totalScore + mFileTools.getScore(mFileToOpen);
 
                     }
                 }

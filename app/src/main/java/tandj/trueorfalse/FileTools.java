@@ -1,5 +1,7 @@
 package tandj.trueorfalse;
 
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,9 +37,11 @@ public class FileTools
 
     private static int[] mListOfScores;
 
-    public static void setScoreFile(File f)
+    public FileTools(Context c)
     {
-        scoreFile = f;
+        String scoreDataFilePath = c.getFilesDir() + "/" + FileTools.scoreDataFileName;
+        scoreFile = new File(scoreDataFilePath);
+        init();
     }
 
     public static void init()
@@ -57,7 +61,28 @@ public class FileTools
         {
             mListOfScores[ii] = 0;
         }
+        checkFileExists();
         checkForUpdates();
+    }
+
+    private static void checkFileExists()
+    {
+        if (!scoreFile.exists())
+        {
+            try
+            {
+                FileWriter fileWriter = new FileWriter(scoreFile);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write("");
+
+                bufferedWriter.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+
+            }
+        }
     }
 
     private static void checkForUpdates()

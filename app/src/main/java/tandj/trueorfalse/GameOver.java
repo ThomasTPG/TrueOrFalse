@@ -63,7 +63,7 @@ public class GameOver extends Activity {
         }
         mScore.setText("Score: " + results.getInt("score"));
 
-        int questionsAnswered = results.getInt("numQuestions") - results.getInt("missedTracker");
+        int questionsAnswered = results.getInt("numQuestions");
         mNumberofQuestions.setText("Number of questions answered: " + questionsAnswered);
 
         setScrollView();
@@ -116,9 +116,6 @@ public class GameOver extends Activity {
             String givenAnswer = "";
             switch (answers[index])
             {
-                case (2):
-                    givenAnswer = "None";
-                    break;
                 case (1):
                     givenAnswer = "True";
                     break;

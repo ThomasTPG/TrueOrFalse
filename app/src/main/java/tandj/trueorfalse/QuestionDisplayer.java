@@ -39,9 +39,16 @@ public class QuestionDisplayer extends Activity {
     private TextView mFactDisplayer;
 
     /**
+     * Boolean which says if we're currently waitnig between questions
+     */
+    private boolean waiting = false;
+
+    /**
      * False button
      */
     private Button mGoButton;
+
+    private FileTools mFileTools;
 
     //Text views that display the correct & incorrect messages
     private ImageView mCorrect;
@@ -122,7 +129,6 @@ public class QuestionDisplayer extends Activity {
 
     private String[] mThemesSelected;
 
-    private int mMissedQuestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +136,7 @@ public class QuestionDisplayer extends Activity {
 
         Bundle b = getIntent().getExtras();
         mThemesSelected = b.getStringArray("theme");
+        mFileTools = new FileTools(this);
         if(mThemesSelected.length == 1)
         {
             mTheme = mThemesSelected[0];
@@ -181,7 +188,6 @@ public class QuestionDisplayer extends Activity {
         mPointsOnTrue = mScore/2;
         mPointsOnTrueDisplay.setText("True: " + mPointsOnTrue);
         mScoreToGambleDisplay.setText("False: " + mPointsOnFalse);
-        mMissedQuestions = 0;
         mGamblingBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -249,9 +255,9 @@ public class QuestionDisplayer extends Activity {
     private void createGameOver(boolean win)
     {
         //Save the score if it's a new hiscore
-        if (mScore > FileTools.getScore(mTheme))
+        if (mScore > mFileTools.getScore(mTheme))
         {
-            FileTools.writeData(mTheme, mScore);
+            mFileTools.writeData(mTheme, mScore);
         }
 
         //Update stats
@@ -268,8 +274,8 @@ public class QuestionDisplayer extends Activity {
         stats.updateStat(statisticsUpdated.NUMBER_OF_CORRECT_ANSWERS, numberCorrect);
         stats.updateStat(statisticsUpdated.NUMBER_OF_ROUNDS_COMPLETE,1);
         stats.updateStat(statisticsUpdated.TOTAL_SCORE,mScore);
-        stats.updateStat(statisticsUpdated.NUMBER_OF_INCORRECT_ANSWERS, mNumberOfQuestions - numberCorrect - mMissedQuestions);
-        stats.updateStat(statisticsUpdated.NUMBER_OF_MISSED_QUESTIONS, mMissedQuestions);
+        stats.updateStat(statisticsUpdated.NUMBER_OF_INCORRECT_ANSWERS, mNumberOfQuestions - numberCorrect);
+
 
         //Create an intent for the summary page
         Intent GameOver = new Intent(QuestionDisplayer.this, GameOver.class);
@@ -278,7 +284,6 @@ public class QuestionDisplayer extends Activity {
         GameOver.putExtra("numQuestions", mNumberOfQuestions);
         GameOver.putExtra("pointTracker", mPointsTracker);
         GameOver.putExtra("answerTracker", mAnswerTracker);
-        GameOver.putExtra("missedTracker", mMissedQuestions);
         Gson gson = new Gson();
         String list = gson.toJson( mHashMapTools.getAskedQuestion());
         GameOver.putExtra("factsList",list);
@@ -352,6 +357,7 @@ public class QuestionDisplayer extends Activity {
 
         }
         mCountdownTimerWaiting.start();
+        waiting = true;
 
     }
 
@@ -376,39 +382,47 @@ public class QuestionDisplayer extends Activity {
 
     private void onGoPressed()
     {
-        boolean correctAnswer = mHashMapTools.getTrueOrFalse();
-        mCountdownTimerRound.cancel();
-        statisticsUpdated  stats = new statisticsUpdated(this);
-        if (mPointsOnTrue >= mScore/2)
+        if (!waiting)
         {
-            //Player thought true
-            stats.updateStat(statisticsUpdated.NUMBER_OF_TRUE_ANSWERS,1);
-            if(correctAnswer)
+            boolean correctAnswer = mHashMapTools.getTrueOrFalse();
+            mCountdownTimerRound.cancel();
+            statisticsUpdated  stats = new statisticsUpdated(this);
+            if (mPointsOnTrue >= mScore/2)
             {
-                onCorrect();
+                //Player thought true
+                stats.updateStat(statisticsUpdated.NUMBER_OF_TRUE_ANSWERS,1);
+                if(correctAnswer)
+                {
+                    onCorrect();
+                }
+                else
+                {
+                    onIncorrect();
+                }
             }
             else
             {
-                onIncorrect();
+                //Player thought false
+                stats.updateStat(statisticsUpdated.NUMBER_OF_FALSE_ANSWERS,1);
+                if(correctAnswer)
+                {
+                    onIncorrect();
+                }
+                else
+                {
+                    onCorrect();
+                }
             }
-        }
-        else
-        {
-            //Player thought false
-            stats.updateStat(statisticsUpdated.NUMBER_OF_FALSE_ANSWERS,1);
-            if(correctAnswer)
-            {
-                onIncorrect();
-            }
-            else
-            {
-                onCorrect();
-            }
-        }
-        mButtonAndFactDisplayer.setVisibility(View.GONE);
+            mButtonAndFactDisplayer.setVisibility(View.GONE);
 
-        mGamblingBar.setProgress(50);
-        checkIfFinished();
+            mGamblingBar.setProgress(50);
+            mPointsOnFalse = mScore/2;
+            mPointsOnTrue = mScore/2;
+            mPointsOnTrueDisplay.setText("True: " + mPointsOnTrue);
+            mScoreToGambleDisplay.setText("False: " + mPointsOnFalse);
+            checkIfFinished();
+        }
+
     }
 
 
@@ -420,25 +434,22 @@ public class QuestionDisplayer extends Activity {
             }
 
             public void onFinish() {
-                mMissedQuestions = mMissedQuestions + 1;
-                mIncorrect.setVisibility(View.VISIBLE);
                 mButtonAndFactDisplayer.setVisibility(View.GONE);
-                mAnswerTracker[mNumberOfQuestions - 1] = 2;
-
                 onGoPressed();
-                checkIfFinished();
             }
         };
 
         mCountdownTimerWaiting = new CountDownTimer(MS_WHILE_WAITING,100) {
             @Override
             public void onTick(long millisUntilFinished) {
+
                 mScoreDisplay.setTextSize((int) ((MS_WHILE_WAITING - millisUntilFinished)/70));
 
             }
 
             @Override
             public void onFinish() {
+                waiting = false;
                 setScoreDisplays();
 
                 setFact();
