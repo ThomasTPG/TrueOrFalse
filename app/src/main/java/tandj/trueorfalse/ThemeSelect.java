@@ -29,6 +29,7 @@ public class ThemeSelect extends Activity {
     public static String mLastSinglePlayerTheme;
     private String mSelectedDifficulty;
     public static String mLastSinglePlayerDifficulty;
+    public String mSelectedThemeRemember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class ThemeSelect extends Activity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mSelectedTheme = String.valueOf(mThemeSpinner.getSelectedItem());
                 mSelectedTheme = mSelectedTheme.split(":")[0];
+//                mSelectedThemeRemember = mSelectedTheme;
 
                 if (mSelectedTheme.equals("All"))
                 {
@@ -292,7 +294,7 @@ public class ThemeSelect extends Activity {
     }
 
     private void rememberOptions() {
-        mLastSinglePlayerTheme = mSelectedTheme;
+        mLastSinglePlayerTheme = mSelectedThemeRemember;
         mLastSinglePlayerDifficulty = mSelectedDifficulty;
     }
 }

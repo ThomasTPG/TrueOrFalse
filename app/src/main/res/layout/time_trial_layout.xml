@@ -1,54 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/current_player"/>
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="0.1">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/current_score"/>
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/time_remaining"/>
+            <tandj.trueorfalse.AutoResizeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_player"
+                android:text="&quot;current player&quot;"
+                android:layout_weight="0.5"
+                android:textSize="18dp"/>
 
+            <tandj.trueorfalse.AutoResizeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_score"
+                android:text="&quot;score&quot;"
+                android:layout_weight="0.5"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.15">
+
+        <tandj.trueorfalse.AutoResizeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/time_remaining"
+            android:text="&quot;time remaining&quot;"
+            android:textSize="24dp"/>
+    </LinearLayout>
+
+    <tandj.trueorfalse.AutoResizeTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/question_to_display" />
+        android:id="@+id/question_to_display"
+        android:text="question"
+        android:textSize="34dp"
+        android:layout_weight="0.45" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_weight="0.3"
+        android:layout_margin="5dp">
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="True"
-            android:id="@+id/true_button_time_trial"/>
+            android:id="@+id/true_button_time_trial"
+            android:layout_weight="0.5"
+            android:background="@drawable/main_button"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp"
+            android:layout_marginRight="2dp"
+            />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="False"
-            android:id="@+id/false_button_time_trial"/>
+            android:id="@+id/false_button_time_trial"
+            android:layout_weight="0.5"
+            android:background="@drawable/main_button"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp"
+            android:layout_marginLeft="2dp"/>
 
     </LinearLayout>
-
 
 
 </LinearLayout>
