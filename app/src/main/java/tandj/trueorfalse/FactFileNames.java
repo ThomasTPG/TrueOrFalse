@@ -12,11 +12,11 @@ public class FactFileNames
     // 1) Add it to the correct difficulty array
     // 2) Add it to the allFiles array and the fileNames array, making sure that they are at the same index in both
 
-    static final String[] easyFiles = {"Cute animal facts", "Number facts", "Cambridge", "Solar System - Easy", "Premier League", "Olympics"};
+    static final String[] easyFiles = {"Cute animal facts", "Number facts", "Cambridge", "Solar System - Easy", "Premier League", "Olympics", "British History - Easy"};
 
-    static final String[] mediumFiles = {"Tasty Foods", "NBA", "London", "Solar System - Medium", "Wimbledon", "Pokemon - Gen I", "Queen"};
+    static final String[] mediumFiles = {"Tasty Foods", "NBA", "London", "Solar System - Medium", "Wimbledon", "Pokemon - Gen I", "Queen", "British History - Medium"};
 
-    static final String[] hardFiles = {"Solar System - Hard", "Africa", "Venice"};
+    static final String[] hardFiles = {"Solar System - Hard", "Africa", "Venice", "British History - Hard"};
 
     static final String[] allFiles = {
             "Cute animal facts",
@@ -34,7 +34,10 @@ public class FactFileNames
             "Pokemon - Gen I",
             "Queen",
             "Premier League",
-            "Olympics"};
+            "Olympics",
+            "British History - Easy",
+            "British History - Medium",
+            "British History - Hard"};
 
     static final String[] fileNames = {
             "cute_animal_facts.txt",
@@ -52,7 +55,10 @@ public class FactFileNames
             "pokemon_gen1.txt",
             "queen.txt",
             "PremierLeague.txt",
-            "olympics.txt"};
+            "olympics.txt",
+            "british_history_easy",
+            "british_history_medium",
+            "british_history_hard"};
 
     static final String[] difficulties = {"Easy", "Medium", "Hard"};
 

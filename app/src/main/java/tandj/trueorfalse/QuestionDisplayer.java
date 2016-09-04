@@ -410,7 +410,7 @@ public class QuestionDisplayer extends Activity {
 
 
     private void setUpCountdownTimers() {
-        mCountdownTimerRound = new CountDownTimer(6000, 100) {
+        mCountdownTimerRound = new CountDownTimer(8000, 100) {
 
             public void onTick(long millisUntilFinished) {
                 mCountdownText.setText("" + millisUntilFinished / 1000);
