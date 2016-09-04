@@ -378,9 +378,11 @@ public class QuestionDisplayer extends Activity {
     {
         boolean correctAnswer = mHashMapTools.getTrueOrFalse();
         mCountdownTimerRound.cancel();
+        statisticsUpdated  stats = new statisticsUpdated(this);
         if (mPointsOnTrue >= mScore/2)
         {
             //Player thought true
+            stats.updateStat(statisticsUpdated.NUMBER_OF_TRUE_ANSWERS,1);
             if(correctAnswer)
             {
                 onCorrect();
@@ -393,6 +395,7 @@ public class QuestionDisplayer extends Activity {
         else
         {
             //Player thought false
+            stats.updateStat(statisticsUpdated.NUMBER_OF_FALSE_ANSWERS,1);
             if(correctAnswer)
             {
                 onIncorrect();
