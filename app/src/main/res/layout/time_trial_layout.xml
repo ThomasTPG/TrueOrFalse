@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_margin="4dp">
 
             <tandj.trueorfalse.AutoResizeTextView
                 android:layout_width="wrap_content"
@@ -39,7 +40,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.15">
+        android:layout_weight="0.15"
+        android:layout_margin="4dp">
 
         <tandj.trueorfalse.AutoResizeTextView
             android:layout_width="wrap_content"
@@ -55,7 +57,8 @@
         android:id="@+id/question_to_display"
         android:text="question"
         android:textSize="34dp"
-        android:layout_weight="0.45" />
+        android:layout_weight="0.45"
+        android:layout_margin="4dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
