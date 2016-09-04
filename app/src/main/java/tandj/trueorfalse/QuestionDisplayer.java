@@ -138,7 +138,6 @@ public class QuestionDisplayer extends Activity {
         {
             mTheme = "All " + b.getString("Difficulty");
         }
-//        mTheme = "cambridge_facts.txt";
         mHashMapTools = new HashmapCombined(mThemesSelected, this);
 
 
@@ -309,6 +308,7 @@ public class QuestionDisplayer extends Activity {
         mGoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mGoButton.setEnabled(false);
                 onGoPressed();
             }
         });
@@ -378,9 +378,11 @@ public class QuestionDisplayer extends Activity {
     {
         boolean correctAnswer = mHashMapTools.getTrueOrFalse();
         mCountdownTimerRound.cancel();
+        statisticsUpdated  stats = new statisticsUpdated(this);
         if (mPointsOnTrue >= mScore/2)
         {
             //Player thought true
+            stats.updateStat(statisticsUpdated.NUMBER_OF_TRUE_ANSWERS,1);
             if(correctAnswer)
             {
                 onCorrect();
@@ -393,6 +395,7 @@ public class QuestionDisplayer extends Activity {
         else
         {
             //Player thought false
+            stats.updateStat(statisticsUpdated.NUMBER_OF_FALSE_ANSWERS,1);
             if(correctAnswer)
             {
                 onIncorrect();
@@ -439,6 +442,7 @@ public class QuestionDisplayer extends Activity {
                 setScoreDisplays();
 
                 setFact();
+                mGoButton.setEnabled(true);
                 mCorrect.setVisibility(View.GONE);
                 mIncorrect.setVisibility(View.GONE);
                 mButtonAndFactDisplayer.setVisibility(View.VISIBLE);

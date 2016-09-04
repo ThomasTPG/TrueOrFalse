@@ -14,13 +14,15 @@
 
         <tandj.trueorfalse.AutoResizeTextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text=""
             android:textSize="30sp"
             android:id="@+id/question_num"
             android:background="#000000"
             android:textColor="#FFFFFF"
-            android:layout_weight="0.6" />
+            android:layout_weight="0.6"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"/>
 
         <Button
             android:layout_width="0dp"
@@ -30,6 +32,9 @@
             android:background="@drawable/buttonshape"
             android:text="Quit"
             android:id="@+id/quit"
+            android:layout_margin="5dp"
+            android:textSize="22dp"
+            android:layout_marginLeft="20dp"
          />
 
     </LinearLayout>
@@ -145,17 +150,6 @@
         android:weightSum="1"
         android:layout_weight="0.2">
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:text="Go"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/buttonshape"
-            android:id="@+id/go_button"
-            android:textSize="50sp"
-            />
-
         <tandj.trueorfalse.AutoResizeTextView
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -164,6 +158,18 @@
             android:gravity="center"
             android:text="time"
             android:id="@+id/time_countdown"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Go"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/buttonshape"
+            android:id="@+id/go_button"
+            android:textSize="40sp"
+            android:layout_margin="5dp"
+            />
 
     </LinearLayout>
 
