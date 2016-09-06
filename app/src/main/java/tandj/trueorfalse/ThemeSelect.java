@@ -26,9 +26,10 @@ public class ThemeSelect extends Activity {
     ArrayList<String> selectedFactFiles = new ArrayList<String>();
     private TextView mChooseThemeText;
     private String mSelectedTheme;
-    public static String mLastSinglePlayerTheme;
+    public static int mLastSinglePlayerTheme;
     private String mSelectedDifficulty;
-    public static String mLastSinglePlayerDifficulty;
+    public static int mLastSinglePlayerDifficulty;
+    public String mSelectedThemeRemember;
     private FileTools mFileTools;
 
     @Override
@@ -59,6 +60,7 @@ public class ThemeSelect extends Activity {
         mDifficultyScoreDisplay.setText("Difficuly Score");
         mChooseThemeText = (TextView) findViewById(R.id.choose_theme);
 
+
         setUpThemeSpinner(FactFileNames.easyFiles);
         setUpDifficultySpinner();
 
@@ -75,6 +77,7 @@ public class ThemeSelect extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mSelectedTheme = String.valueOf(mThemeSpinner.getSelectedItem());
+                mSelectedThemeRemember = mSelectedTheme;
                 mSelectedTheme = mSelectedTheme.split(":")[0];
 
                 if (mSelectedTheme.equals("All"))
@@ -158,7 +161,7 @@ public class ThemeSelect extends Activity {
                             case 1:
                                 mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("Normal"));
                                 if (difficultyThresholds() < 1) {
-                                    mChooseThemeText.setText("You need 2000 points in Easy mode to unlock Medium mode");
+                                    mChooseThemeText.setText("You need " + getResources().getInteger(R.integer.scores_to_unlock_medium) + " points in Easy mode to unlock Medium mode");
                                     mThemeSpinner.setVisibility(View.GONE);
                                 }
                                 else {
@@ -168,7 +171,7 @@ public class ThemeSelect extends Activity {
                             case 2:
                                 mDifficultyScoreDisplay.setText("Difficulty score: " + countDifficultyScores("Hard"));
                                 if (difficultyThresholds() < 2) {
-                                    mChooseThemeText.setText("You need 2000 points in Normal mode to unlock Hard mode");
+                                    mChooseThemeText.setText("You need " + getResources().getInteger(R.integer.scores_to_unlock_hard) + " points in Medium mode to unlock Hard mode");
                                     mThemeSpinner.setVisibility(View.GONE);
                                 }
                                 else {
@@ -223,9 +226,7 @@ public class ThemeSelect extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mThemeSpinner.setAdapter(adapter);
-        if (mLastSinglePlayerTheme != null) {
-            mThemeSpinner.setSelection(((ArrayAdapter) mThemeSpinner.getAdapter()).getPosition(mLastSinglePlayerTheme));
-        }
+        mThemeSpinner.setSelection(mLastSinglePlayerTheme);
 //        mThemeSpinner.setSelection(1);
     }
 
@@ -236,9 +237,7 @@ public class ThemeSelect extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mDifficultySpinner.setAdapter(adapter);
-        if (mLastSinglePlayerDifficulty != null) {
-            mDifficultySpinner.setSelection(((ArrayAdapter) mDifficultySpinner.getAdapter()).getPosition(mLastSinglePlayerDifficulty));
-        }
+        mDifficultySpinner.setSelection(mLastSinglePlayerDifficulty);
 //        mDifficultySpinner.setSelection(1);
     }
 
@@ -295,7 +294,7 @@ public class ThemeSelect extends Activity {
     }
 
     private void rememberOptions() {
-        mLastSinglePlayerTheme = mSelectedTheme;
-        mLastSinglePlayerDifficulty = mSelectedDifficulty;
+        mLastSinglePlayerTheme = ((ArrayAdapter) mThemeSpinner.getAdapter()).getPosition(mSelectedThemeRemember);
+        mLastSinglePlayerDifficulty = ((ArrayAdapter) mDifficultySpinner.getAdapter()).getPosition(mSelectedDifficulty);
     }
 }

@@ -100,7 +100,11 @@
                 android:layout_height="wrap_content"
                 android:text="Go!"
                 android:id="@+id/go"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/main_button"
+                android:textColor="#FFFFFF"
+                android:textSize="26dp"
+                android:padding="15dp"/>
         </LinearLayout>
 
     </LinearLayout>

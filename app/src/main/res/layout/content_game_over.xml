@@ -18,26 +18,31 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_weight="0.1"
             android:id="@+id/result_text"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="32dp"
+            android:textAllCaps="true"
+            android:layout_marginTop="20dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_weight="0.08"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/scoretext" />
+            android:id="@+id/scoretext"
+            android:layout_gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_weight="0.08"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/numquestionstext" />
+            android:id="@+id/numquestionstext"
+            android:layout_gravity="center"/>
 
         <ScrollView
             android:layout_width="match_parent"
             android:id="@+id/fact_scroll_view"
-            android:layout_weight="0.5"
+            android:layout_weight="0.54"
             android:layout_height="0dp">
 
             <LinearLayout
@@ -50,19 +55,52 @@
             </LinearLayout>
         </ScrollView>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:text="Play Again"
-            android:id="@+id/playAgain" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:weightSum="2"
+            android:layout_weight="0.2"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:text="Home"
-            android:id="@+id/goHome" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="2dp">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Play Again"
+                    android:id="@+id/playAgain"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/main_button"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="2dp">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Home"
+                    android:id="@+id/goHome"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp"
+                    android:background="@drawable/main_button"/>
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>

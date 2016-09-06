@@ -2,6 +2,7 @@ package tandj.trueorfalse;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -64,7 +65,7 @@ public class GameOver extends Activity {
         mScore.setText("Score: " + results.getInt("score"));
 
         int questionsAnswered = results.getInt("numQuestions");
-        mNumberofQuestions.setText("Number of questions answered: " + questionsAnswered);
+        mNumberofQuestions.setText("Questions Answered: " + questionsAnswered);
 
         setScrollView();
 
@@ -117,14 +118,24 @@ public class GameOver extends Activity {
             switch (answers[index])
             {
                 case (1):
-                    givenAnswer = "True";
+                    givenAnswer = "true";
                     break;
                 case (0):
-                    givenAnswer = "False";
+                    givenAnswer = "false";
                     break;
             }
             TextView display = new TextView(this);
-            display.setText(fact + "\nYour answer: " + givenAnswer + "\nCorrect answer: " + correctAnswer);
+            display.setTextSize(16);
+            display.setPadding(0,0,0,2);
+//            display.setText(fact + "\nYour answer: " + givenAnswer + "\nCorrect answer: " + correctAnswer);
+            display.setText(fact + "\nYour Answer: " + givenAnswer);
+            if (givenAnswer.equals("None")) {} else {
+                if (givenAnswer.equals(correctAnswer)) {
+                    display.setTextColor(Color.parseColor("#00b200"));
+                } else {
+                    display.setTextColor(Color.parseColor("#ff0000"));
+                }
+            }
             mFactDisplay.addView(display);
             index ++;
         }
